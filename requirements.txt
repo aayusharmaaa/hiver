@@ -6,5 +6,8 @@ scikit-learn>=1.3
 scipy>=1.10
 # Sentence embeddings: optional for intent discovery (falls back to TF-IDF + LSA) but required for embedding / hybrid retrieval (BM25 works without it).
 sentence-transformers>=3.0
+# Support agent: typed schemas/config, and the Gemini REST client (no Gemini SDK needed; the key comes from GEMINI_API_KEY)
+pydantic>=2.5
+requests>=2.31
 pytest>=7.4
 kagglehub>=0.3
