@@ -1,0 +1,244 @@
+# Worked examples for the calibration labeling guide.
+#
+# Rules for this file:
+#   * Every case_id must be a train_retrieval case. The guide builder refuses golden, reserve, dev or calibration cases,
+#     so none of the 200 cases you will label (and none of the 250 golden cases) can appear here.
+#   * The conversation text is pulled from the data when the guide is built; only the case id and the reading live here.
+#   * A "reading" shows how the guide's rules apply. It is one defensible reading, not ground truth, and it never names
+#     the system's suggestion (the guide prints that separately, from the data).
+
+sections:
+  - key: candidate_not_authority
+    title: The system's suggestion is sometimes wrong
+    intro: >-
+      These train cases show the suggestion pointing at an intent the conversation does not support. The point is not that the
+      suggestion is bad, only that you must decide from the conversation.
+    cases:
+      - case_id: case_1185
+        reading: >-
+          The customer asks whether the new app can sell an open return: a question about ticket types in the app.
+          Nothing in the conversation concerns a delay or a refund. The closest existing intent is `ticket_booking_query`.
+      - case_id: case_2232529
+        reading: >-
+          A question about whether a veterans badge and old ID are enough evidence; the agent confirms. There is no
+          complaint. The closest existing intent is `ticket_booking_query` (fare or discount eligibility). If you feel
+          fare-eligibility questions deserve their own intent, say so in `human_notes`.
+      - case_id: case_1707839
+        reading: >-
+          Unprompted praise for the company and its staff; the agent thanks the customer and passes it on.
+          This is `praise_positive_feedback`.
+      - case_id: case_1205564
+        reading: >-
+          The customer says they are "really glad" they paid for the onboard internet and that posting the tweet would be a
+          miracle. The sarcasm is the complaint, and it is about the Wi-Fi: `onboard_wifi_issue`. The agent gives a support number.
+
+  - key: multi_intent
+    title: More than one intent in a case
+    intro: >-
+      Choose the request the agent has to act on first and name the other in `human_notes` as `also: <intent>`.
+    cases:
+      - case_id: case_1139723
+        reading: >-
+          Two things: a complaint about an overcrowded train and the explicit question "How do I claim a refund?". The question is
+          what the agent has to act on, so a defensible primary intent is `delay_repay_refund_claim` with
+          `also: journey_disruption_complaint`. The agent's reply points to a general complaints page and does not answer the
+          refund question, which matters for `human_resolved`.
+      - case_id: case_1353023
+        reading: >-
+          The first message asks whether a train is running, so the main request is `service_status_delay_enquiry`. Later the
+          customer also asks whether the ticket is valid tomorrow: add `also: ticket_booking_query`.
+      - case_id: case_2669898
+        reading: >-
+          Anger about misleading advice and a long wait, a specific ticket-validity point (Advance Off-Peak versus Advance), and
+          finally "I am logging a formal complaint" about a staff member's behaviour. The conversation ends on the complaint, so
+          `customer_service_complaint` with `also: ticket_booking_query` is a defensible reading, and the escalation signal
+          `formal_complaint_or_customer_relations` is visible. `ticket_booking_query` as primary is also defensible; the skill
+          being shown is the note: pick the one you judge the customer most wants addressed and name the other.
+
+  - key: opening_line_misleading
+    title: When the opening line is not the real request
+    intro: >-
+      Label the real request and say that you did in `human_notes`.
+    cases:
+      - case_id: case_1620103
+        reading: >-
+          The opening asks whether an advance ticket can be used when trains restart, but the customer then restates the question:
+          "What I'm asking is can I still use later today". The real request is ticket validity (`ticket_booking_query`),
+          even though the context is a disruption.
+
+  - key: confusable_pairs
+    title: Confusable intents
+    intro: >-
+      Short cases for the pairs the system confuses most. Each one shows the deciding detail.
+    cases:
+      - case_id: case_1451163
+        reading: >-
+          Status versus complaint. A sarcastic complaint with no question. With nothing asked about status or timing, this
+          fits `journey_disruption_complaint` better than a status enquiry.
+      - case_id: case_1330426
+        reading: >-
+          Status versus claim. "Any chance that the 13:43 ... will still be running?" is a direct status question
+          (`service_status_delay_enquiry`). The later refund question is a second request: note `also: delay_repay_refund_claim`.
+      - case_id: case_1694230
+        reading: >-
+          Claim versus ticket. "I want money back for two tickets ... delayed journey": the money is claimed because of the delay,
+          so `delay_repay_refund_claim`.
+      - case_id: case_1329607
+        reading: >-
+          Claim versus status. "Do we get our ticket fare back????" while stranded, and no reply. A refund question tied to a
+          disruption is `delay_repay_refund_claim`; the stranded detail is context (and worth a note for the escalation signal).
+      - case_id: case_494597
+        reading: >-
+          Chitchat versus praise. A joke about the customer's wife on a busy, delayed train; the agent jokes back. There is no
+          request, no real praise and no real complaint: `chitchat_non_support`.
+      - case_id: case_875344
+        reading: >-
+          Chitchat versus praise. "Thank you to the guard who helped my daughter": thanks aimed at a staff member, which the agent
+          follows up so it can be passed on. This is `praise_positive_feedback`.
+      - case_id: case_1148900
+        reading: >-
+          Chitchat versus complaint. A joke about an announcement; the agent replies in kind. Humour about staff is not a complaint
+          about staff: `chitchat_non_support`.
+      - case_id: case_2694730
+        reading: >-
+          Seat versus journey. "What is the point in reserving a seat if [they] put me in the unreserved coach anyway?" The
+          reservation was not honoured: `seat_reservation_issue`.
+      - case_id: case_813058
+        reading: >-
+          Seat versus journey. The air conditioning is too cold and staff say they adjusted it. There is no delay, seat or ticket
+          issue, so no intent fits well. The closest is `journey_disruption_complaint` (onboard experience); write a note. If you
+          find several cases like this, that is how a possible new intent gets noticed.
+      - case_id: case_590467
+        reading: >-
+          Ticket versus status. "Will my ticket be valid to travel tomorrow instead of today due to overcrowding?" The
+          request is ticket validity (`ticket_booking_query`); the overcrowding is only the reason.
+      - case_id: case_1329593
+        reading: >-
+          Ticket versus status. "What if you have an off peak return and are trying to travel tonight?" is a short, clear ticket
+          question (`ticket_booking_query`). Short is not the same as unclear.
+
+  - key: fallback
+    title: Using the fallback
+    intro: >-
+      `unclear_or_media_only` is for messages whose purpose you cannot tell, not for messages you find hard to classify.
+    cases:
+      - case_id: case_1162203
+        reading: >-
+          Only a mention and a link, and the agent's reply does not reveal a request either. Nothing visible says what the
+          customer wants: `unclear_or_media_only`. Label what you can see, not what the link might contain. (Check the whole
+          conversation first: a bare link that is followed by clear chat or a clear question is labelled by that chat or question.)
+      - case_id: case_1163025
+        reading: >-
+          A one-line fragment of someone else's thread ("DBS class 67?") with no context and no reply. You cannot tell whether it
+          is a question, a joke or something else: `unclear_or_media_only`.
+      - case_id: case_1527238
+        reading: >-
+          An organisation-style broadcast post, not a request. It is clear what the message is, so it is not unclear.
+          `chitchat_non_support` is the closer fit; add a note such as "not a customer request".
+
+  - key: new_intent
+    title: When to propose NEW:<name>
+    intro: >-
+      Use `NEW:<snake_case_name>` only when no existing intent fits and you would expect the same kind of case to recur.
+      Describe the intent in `human_notes`. For a one-off, pick the closest intent and explain. The registry already notes that
+      lost-property and accessibility requests currently hide inside broader intents. Whether to keep any new intent is decided
+      later by the reviewer, after the comparison report.
+    cases:
+      - case_id: case_2507047
+        reading: >-
+          The customer left a bag on the train and asks the brand to locate it; the agent gives a lost-property number and a form.
+          If you meet several cases like this, `NEW:lost_property` is a reasonable proposal.
+      - case_id: case_1500244
+        reading: >-
+          Disability assistance was sent to the wrong carriage and the customer says the system needs improving for disabled
+          passengers. Existing intents fit poorly. Label the closest one and set the escalation signal to
+          `accessibility_or_assistance`. Use `NEW:accessibility_assistance` only if you think such cases deserve their own intent.
+
+  - key: resolution_type
+    title: "Resolution type: what the agent did"
+    intro: >-
+      Judge the agent's main move, using the most specific type that fits. A link inside a compensation or refund reply does not
+      make it `self_service`.
+    cases:
+      - case_id: case_1694230
+        reading: >-
+          "You can claim compensation via our Delay Repay form": `compensation`. A link is present, but a compensation claim is
+          more specific than `self_service`.
+      - case_id: case_1295272
+        reading: >-
+          "You can apply for this here <link>" in answer to a refund question: `refund`.
+      - case_id: case_1235021
+        reading: >-
+          The agent says the service is booked to run with residual delays and points to the Live Updates link: `self_service`
+          (the pointer is the main content). If the answer itself were in the reply and the link were incidental, use
+          `information_provided`.
+      - case_id: case_2271509
+        reading: >-
+          "No our service I'm afraid, you would need to speak with [another operator]": `redirected_to_other_operator`.
+      - case_id: case_2392332
+        reading: >-
+          The agent asks for a reference, then "Can you please DM us": `redirected_to_dm`.
+      - case_id: case_1451163
+        reading: >-
+          The agent only asks "Which service are you on?": `clarification_requested`.
+      - case_id: case_113998
+        reading: >-
+          "I can see your case is with Customer Relations": `escalated`.
+      - case_id: case_1609645
+        reading: >-
+          "We will be sure to pass on your comments": `feedback_acknowledged`.
+      - case_id: case_1329593
+        reading: >-
+          The brand never replied: `unresolved`.
+
+  - key: resolved
+    title: "Resolved: yes, no or unclear"
+    intro: >-
+      Judge only what is visible in the public conversation.
+    cases:
+      - case_id: case_1330426
+        reading: >-
+          `yes`. The agent answers (the train is unlikely to run; claim link for a delay over 30 minutes) and the customer says
+          "Cheers, much appreciated".
+      - case_id: case_1620103
+        reading: >-
+          `no`. The customer ends by saying the live updates were not helpful and the train they waited for is not happening.
+          The customer pushes back.
+      - case_id: case_75055
+        reading: >-
+          `unclear`. The agent asks for a reference, then tells the customer to DM it; the customer says "done thanks". The
+          substance moves to DMs, so you cannot see whether the refund chase succeeded.
+      - case_id: case_1329593
+        reading: >-
+          `no`. The request was never answered because the brand never replied.
+
+  - key: escalation
+    title: Escalation signal
+    intro: >-
+      This describes a signal in the conversation, not a policy. Choose the strongest that applies and mention the others in
+      `human_notes`. No clear legal-threat or media-threat case turned up in the train cases reviewed for this guide, so there
+      is no example for `legal_media_or_ombudsman_threat`; use it if you meet one.
+    cases:
+      - case_id: case_1500244
+        reading: >-
+          `accessibility_or_assistance`. The agent also asks whether the customer wants to make a complaint, so
+          `formal_complaint_or_customer_relations` is visible too; mention it in the notes.
+      - case_id: case_991875
+        reading: >-
+          `accessibility_or_assistance`: the customer says they have Aspergers, are anxious and tearful, and asked for help.
+          `safety_or_vulnerability` is also arguable; say which you chose and why.
+      - case_id: case_2771522
+        reading: >-
+          `safety_or_vulnerability`: drunk, aggressive passengers, and staff who walked past without acting.
+      - case_id: case_2368116
+        reading: >-
+          `repeated_unresolved_contact`: three weeks waiting for a refund and no reply to emails.
+      - case_id: case_75055
+        reading: >-
+          `needs_account_or_booking_lookup`: the agent needs the customer's booking reference and moves to DM.
+      - case_id: case_113998
+        reading: >-
+          `formal_complaint_or_customer_relations`: the agent confirms the case is already with Customer Relations.
+      - case_id: case_1235021
+        reading: >-
+          `none`: a plain status question with a normal answer.

@@ -1,0 +1,66 @@
+{
+  "input": "C:\\Users\\Aayush Sharma\\OneDrive\\Desktop\\hiver\\data\\raw\\twcs.csv",
+  "cleaning": {
+    "input_rows": 2811774,
+    "dropped_invalid_tweet_id": 0,
+    "dropped_invalid_inbound": 0,
+    "dropped_exact_duplicates": 0,
+    "dropped_conflicting_duplicates": 0,
+    "unparseable_created_at": 0,
+    "unparseable_in_response_to": 0,
+    "unparseable_response_ids": 0,
+    "output_rows": 2811774
+  },
+  "reconstruction_full_dataset": {
+    "tweets": 2811774,
+    "conversations": 798197,
+    "edges": 4027154,
+    "single_tweet_conversations": 0,
+    "missing_parent_refs": 3862,
+    "dangling_response_refs": 172500,
+    "self_references": 0,
+    "parents_inferred_from_response_list": 0
+  },
+  "brand": "VirginTrains",
+  "filter": {
+    "brand": "VirginTrains",
+    "conversations_total": 798197,
+    "conversations_with_brand_reply": 14853,
+    "conversations_mention_only": 0,
+    "conversations_selected": 14853,
+    "tweets_selected": 65810
+  },
+  "segmentation": {
+    "conversations": 14853,
+    "orphans_linked": 0,
+    "episodes": 17913,
+    "continuation_episodes": 435,
+    "conversations_split": 361,
+    "multi_customer_conversations": 1231,
+    "unattributed_tweets": 246,
+    "owner_sources": {
+      "self": 36675,
+      "parent_chain": 28725,
+      "mention": 101,
+      "sole_customer": 63
+    }
+  },
+  "hidden_agents": [
+    "115793",
+    "120576",
+    "121428",
+    "121516",
+    "122155",
+    "122649",
+    "124107",
+    "242596"
+  ],
+  "cases": 17913,
+  "gap_hours": 24.0,
+  "outputs": {
+    "conversations": "C:\\Users\\Aayush Sharma\\OneDrive\\Desktop\\hiver\\data\\processed\\virgintrains_conversations.parquet",
+    "tweets": "C:\\Users\\Aayush Sharma\\OneDrive\\Desktop\\hiver\\data\\processed\\virgintrains_tweets.parquet",
+    "cases": "C:\\Users\\Aayush Sharma\\OneDrive\\Desktop\\hiver\\data\\processed\\virgintrains_cases.parquet"
+  },
+  "elapsed_seconds": 87.9
+}

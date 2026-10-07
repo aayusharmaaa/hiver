@@ -1,0 +1,305 @@
+# Human-curated naming of the discovered clusters (reviewed against cluster previews and
+# per-cluster resolution behaviour). This is *candidate* labelling, not ground truth.
+#
+# Clusters are matched to this file by overlap between `anchor_terms` and each cluster's
+# current top TF-IDF terms (not by numeric id), so re-running discovery with a different
+# KMeans numbering still maps correctly. `cluster_id_at_review` is only informational.
+#
+# `final_intent` is the *recommended merged taxonomy* entry; several clusters may share one
+# when their customer goal and the agent's replies are indistinguishable in the data.
+
+meta:
+  reviewed_on: "2026-10-07"
+  review_status: candidate_not_ground_truth
+  fit_set: train_and_dev_customers_only
+  k_at_review: 12
+
+clusters:
+  - cluster_id_at_review: 1
+    anchor_terms: [train, trains, time, running, cancelled, delayed, going]
+    name: service_running_enquiry
+    final_intent: service_status_delay_enquiry
+    description: >-
+      Customer asks whether a specific service is running, cancelled, or when trains will operate
+      (often at a named time or route).
+    auto_handle_hint: unclear
+    notes: >-
+      Agents answer with live operational data the system will not have; only holding or
+      redirect-to-live-updates replies look safe.
+    escalation_triggers:
+      - "NEEDS_REVIEW: customer is stranded or reports safety/vulnerability (e.g. late night, no way home)"
+      - "NEEDS_REVIEW: question requires live operational data not present in the retrieval corpus"
+
+  - cluster_id_at_review: 9
+    anchor_terms: [time, running, going, cancelled, hi, idea, delayed, update]
+    name: service_status_update_request
+    final_intent: service_status_delay_enquiry
+    description: >-
+      Short requests for an update on a named service ("what's happening with the 19:37?", "any update?").
+    auto_handle_hint: unclear
+    notes: Near-duplicate of service_running_enquiry; same agent templates ("we are awaiting an update as to when ...").
+    escalation_triggers:
+      - "NEEDS_REVIEW: customer reports being stuck on a moving/stopped train"
+
+  - cluster_id_at_review: 2
+    anchor_terms: [delayed, time, delays, delay, late, mins, waiting, hour]
+    name: delay_in_progress_report
+    final_intent: service_status_delay_enquiry
+    description: >-
+      Customer is currently delayed or waiting and asks for news, or complains about missing announcements.
+    auto_handle_hint: unclear
+    notes: >-
+      Blends status enquiries with complaints. Agent replies reuse the same status and Delay Repay templates
+      as the two clusters above, so the data does not separate them.
+    escalation_triggers:
+      - "NEEDS_REVIEW: delay long enough to affect onward travel or accommodation"
+
+  - cluster_id_at_review: 3
+    anchor_terms: [refund, delay, repay, claim, delayed, compensation, cancelled, ticket]
+    name: delay_repay_refund_claim
+    final_intent: delay_repay_refund_claim
+    description: >-
+      Customer asks about, chases, or disputes a Delay Repay claim, refund, or compensation for a delayed or
+      cancelled journey.
+    auto_handle_hint: unclear
+    notes: >-
+      Highest DM-redirect rate of all clusters and the only one dominated by compensation/refund replies.
+      Typical agent patterns: link to the claim page, "it can take up to N days", ask for a VT reference number.
+      Approving or denying a claim is outside what public replies show.
+    escalation_triggers:
+      - "NEEDS_REVIEW: claim already submitted and waiting beyond the stated processing window"
+      - "NEEDS_REVIEW: customer disputes the delay length or a rejected claim"
+      - "NEEDS_REVIEW: mentions of legal action, ombudsman, or media"
+
+  - cluster_id_at_review: 10
+    anchor_terms: [ticket, tickets, hi, app, advance, use, travel, return]
+    name: ticket_booking_query
+    final_intent: ticket_booking_query
+    description: >-
+      Questions about ticket validity, advance tickets, bookings, using a ticket on another train, or app/booking problems.
+    auto_handle_hint: unclear
+    notes: >-
+      Agents often answer directly ("yes you can") but also ask for a booking reference via DM or point to the
+      aftersales team, which the agent cannot act on.
+    escalation_triggers:
+      - "NEEDS_REVIEW: needs booking reference or account lookup"
+      - "NEEDS_REVIEW: fare dispute, penalty fare, or ticket refused at the barrier"
+
+  - cluster_id_at_review: 6
+    anchor_terms: [seat, seats, reserved, reservations, reservation, unreserved, quiet]
+    name: seat_reservation_issue
+    final_intent: seat_reservation_issue
+    description: >-
+      Reserved seats missing, double-booked, or not honoured; overcrowding and people standing.
+    auto_handle_hint: unclear
+    notes: Agents mostly acknowledge and suggest speaking to onboard staff; real remedies happen on the train.
+    escalation_triggers:
+      - "NEEDS_REVIEW: accessibility need, vulnerable passenger, or safety concern with crowding"
+
+  - cluster_id_at_review: 11
+    anchor_terms: [wifi, free, wi, fi, work, paid, code, working]
+    name: onboard_wifi_issue
+    final_intent: onboard_wifi_issue
+    description: Onboard Wi-Fi not connecting, not working after paying, or paid-for access disputes.
+    auto_handle_hint: likely_yes
+    notes: >-
+      Most templated cluster in the data: agents ask what the problem is, then give reconnect/forget-network
+      steps (the highest troubleshooting share of any cluster). Payment disputes are a different handling path.
+    escalation_triggers:
+      - "NEEDS_REVIEW: customer paid and asks for a refund"
+      - "NEEDS_REVIEW: troubleshooting steps already tried without success"
+
+  - cluster_id_at_review: 4
+    anchor_terms: [class, upgrade, service, food, lounge, firstclass, 1st]
+    name: first_class_service_issue
+    final_intent: first_class_catering_issue
+    description: First class catering, lounge, upgrade, or reduced first class service; includes some positive remarks.
+    auto_handle_hint: unclear
+    notes: Replies mix information ("we run a reduced first class service") and feedback acknowledgement.
+    escalation_triggers:
+      - "NEEDS_REVIEW: customer asks for a partial refund or upgrade compensation"
+
+  - cluster_id_at_review: 5
+    anchor_terms: [train, trains, virgin, manager, people, staff, carriages, cancelled]
+    name: journey_disruption_complaint
+    final_intent: journey_disruption_complaint
+    description: >-
+      Venting or reporting a disrupted or overcrowded journey (cancellations, half-length trains, announcements,
+      train manager), without a clear question; includes some lost-property and misc. requests.
+    auto_handle_hint: unclear
+    notes: >-
+      Broad and heterogeneous. Agents usually reply "which service are you on?" first. Lost property and
+      accessibility requests hide here and probably deserve their own intents with more data.
+    escalation_triggers:
+      - "NEEDS_REVIEW: safety incident, harassment, or unwell passenger"
+      - "NEEDS_REVIEW: lost property or assistance request needing a human lookup"
+
+  - cluster_id_at_review: 7
+    anchor_terms: [service, customer, staff, complaint, customers, phone, rude, response]
+    name: customer_service_complaint
+    final_intent: customer_service_complaint
+    description: >-
+      Complaint about staff, customer service, unanswered complaints/phone lines, or the quality of a previous brand response.
+    auto_handle_hint: likely_no
+    notes: >-
+      Second-highest DM-redirect rate; includes replies to earlier brand responses and meta-complaints about
+      28-day response times. Agents ask "were you looking to make a complaint?" and point to the complaints form.
+    escalation_triggers:
+      - "NEEDS_REVIEW: formal complaint, unresolved prior contact, or staff misconduct allegation"
+      - "NEEDS_REVIEW: threat of social escalation (media) or legal action"
+
+  - cluster_id_at_review: 8
+    anchor_terms: [thank, journey, great, time, staff, thanks, lovely, day]
+    name: praise_positive_feedback
+    final_intent: praise_positive_feedback
+    description: Thanks, compliments for staff or journeys, and positive feedback.
+    auto_handle_hint: likely_yes
+    notes: Highest resolved share of any cluster; agents thank the customer and pass the comments on.
+    escalation_triggers:
+      - "NEEDS_REVIEW: praise that names staff (may need forwarding to a team)"
+
+  - cluster_id_at_review: 0
+    anchor_terms: [morning, good, just, ferrell, today, toilet, day, love]
+    name: chitchat_non_support
+    final_intent: chitchat_non_support
+    description: >-
+      Greetings, jokes, photos, and general chatter that do not request support; also contains a few real
+      complaints that were pulled in by short, low-content wording.
+    auto_handle_hint: likely_yes
+    notes: >-
+      Mixed cluster; its ambiguous members are often genuine complaints. Lowest-risk to auto-handle only if
+      a reliable "no support request" check exists.
+    escalation_triggers:
+      - "NEEDS_REVIEW: message contains an actual complaint or safety remark hidden in casual wording"
+
+# Descriptions of the merged (recommended final) intents.
+final_intents:
+  service_status_delay_enquiry: >-
+    Customer asks whether a service is running, delayed, or cancelled, or asks for an update on a delay
+    they are currently experiencing. Merged from three clusters whose customer goal and agent replies are
+    indistinguishable in the data.
+  delay_repay_refund_claim: >-
+    Customer asks about, chases, or disputes a Delay Repay claim, refund, or compensation for a delayed or
+    cancelled journey.
+  ticket_booking_query: >-
+    Questions about ticket validity, advance tickets, bookings, using a ticket on another train, or app/booking problems.
+  seat_reservation_issue: Reserved seats missing, double-booked, or not honoured; overcrowding and people standing.
+  onboard_wifi_issue: Onboard Wi-Fi not connecting, not working after paying, or paid-for access disputes.
+  first_class_catering_issue: First class catering, lounge, upgrade, or reduced first class service.
+  journey_disruption_complaint: >-
+    Venting or reporting a disrupted or overcrowded journey without a clear question; broad and heterogeneous
+    (lost property and accessibility requests hide here).
+  customer_service_complaint: >-
+    Complaint about staff, customer service, unanswered complaints or phone lines, or the quality of an earlier brand response.
+  praise_positive_feedback: Thanks, compliments for staff or journeys, and positive feedback.
+  chitchat_non_support: Greetings, jokes, photos, and general chatter that do not request support.
+
+# Inclusion / exclusion criteria drafted from the cluster examples and agent replies.
+# They are a DRAFT for the human calibration pass; the calibration labels may overturn them.
+intent_criteria:
+  service_status_delay_enquiry:
+    inclusion:
+      - Asks whether a named train or service is running, delayed, or cancelled, or when it will depart or arrive.
+      - Asks for news or an update while currently delayed, waiting, or stuck.
+      - Asks how announced disruption (engineering works, flooding, strikes) affects travel today.
+    exclusion:
+      - Asks about Delay Repay, a refund, or compensation (use delay_repay_refund_claim).
+      - Reports or vents about a disrupted journey with no question (use journey_disruption_complaint).
+      - Asks whether a ticket is valid on a different train (use ticket_booking_query).
+  journey_disruption_complaint:
+    inclusion:
+      - Reports or complains about a cancelled, late, crowded, or short-formed train without asking a specific question.
+      - Complains about announcements or information given during the disruption.
+    exclusion:
+      - Contains a concrete question about a service's status (use service_status_delay_enquiry).
+      - Complaint is mainly about staff behaviour or an unanswered complaint (use customer_service_complaint).
+      - Complaint is mainly about a missing or unhonoured seat reservation (use seat_reservation_issue).
+  chitchat_non_support:
+    inclusion:
+      - Greeting, joke, photo, or remark that asks for nothing and complains about nothing.
+    exclusion:
+      - Any complaint, question, or safety remark, however casual (use the matching support intent).
+      - Thanks or compliments aimed at the journey or staff (use praise_positive_feedback).
+  customer_service_complaint:
+    inclusion:
+      - Complains about staff conduct, an unhelpful or rude response, an unanswered complaint, or phone or contact lines.
+      - Replies to an earlier brand answer to say it was inadequate.
+    exclusion:
+      - Complaint about the disruption itself with no customer-service element (use journey_disruption_complaint).
+      - Asks for compensation or a refund as the main request (use delay_repay_refund_claim).
+  delay_repay_refund_claim:
+    inclusion:
+      - Asks how to claim, chases, or disputes Delay Repay, a refund, or compensation for a delayed or cancelled journey.
+    exclusion:
+      - Asks for a ticket-price refund because of a change of plans or a ticketing error (use ticket_booking_query).
+      - Asks for compensation for the wifi, catering, or seats specifically (use that intent; note the refund request in human_notes).
+  ticket_booking_query:
+    inclusion:
+      - Asks about ticket validity, advance or off-peak rules, using a ticket on another train, tickets or collection, or app or booking problems.
+    exclusion:
+      - Asks for delay compensation (use delay_repay_refund_claim).
+      - Asks whether a train is running (use service_status_delay_enquiry).
+      - Asks about seat reservations only (use seat_reservation_issue).
+  seat_reservation_issue:
+    inclusion:
+      - Reserved seat missing, double-booked, unavailable, or not honoured; asks where unreserved seats are; seat reservation fees or coach choice.
+    exclusion:
+      - General overcrowding complaint with no reservation element (use journey_disruption_complaint).
+  onboard_wifi_issue:
+    inclusion:
+      - Onboard wifi not connecting, slow, not working after payment, or portal or code problems.
+    exclusion:
+      - Wifi mentioned only as a passing joke or sarcasm in an otherwise different complaint (use that complaint's intent; note in human_notes).
+  first_class_catering_issue:
+    inclusion:
+      - First class catering, lounge access, upgrades, or reduced first-class service.
+    exclusion:
+      - Standard class food or trolley remarks (use journey_disruption_complaint or chitchat_non_support, as fits).
+  praise_positive_feedback:
+    inclusion:
+      - Thanks, compliments for staff or a journey, or positive feedback with no request.
+    exclusion:
+      - Sarcastic thanks that is really a complaint (use the complaint intent).
+      - Thanks sent as a reply that confirms a resolution (keep the intent of the original request).
+  unclear_or_media_only:
+    inclusion:
+      - Opening message has no usable text (mention only, photo or link only, a single word) and the request cannot be inferred.
+    exclusion:
+      - Short but clear requests ("any update?", "refund?") (use the matching intent).
+
+# One-line distinctions between intents that the data confuses. Used verbatim in the labeling guide.
+confusable_notes:
+  - pair: [service_status_delay_enquiry, journey_disruption_complaint]
+    note: A question about a service's status or timing is a status enquiry; venting or reporting disruption with no question is a complaint. If both are present, choose the main request and note the other.
+  - pair: [chitchat_non_support, praise_positive_feedback]
+    note: Praise is directed at the journey or staff. Chit-chat asks for and praises nothing. Doubtful warmth is chit-chat.
+  - pair: [chitchat_non_support, customer_service_complaint]
+    note: Casual or sarcastic wording that criticises staff or a reply is a complaint, not chit-chat.
+  - pair: [chitchat_non_support, journey_disruption_complaint]
+    note: Any complaint about the journey is a disruption complaint, even if short or jokey.
+  - pair: [delay_repay_refund_claim, ticket_booking_query]
+    note: Delay-related compensation is a Delay Repay claim; refunds or changes caused by the customer's own ticket or plans are ticket queries.
+  - pair: [delay_repay_refund_claim, customer_service_complaint]
+    note: If the main ask is money for a delay, it is a claim. If the main grievance is how the brand treated the customer, it is a service complaint.
+  - pair: [seat_reservation_issue, journey_disruption_complaint]
+    note: Mentions a reservation or a specific seat is a seat issue; general crowding or standing is a disruption complaint.
+  - pair: [ticket_booking_query, service_status_delay_enquiry]
+    note: >-
+      "Can I use my ticket on the next train?" during disruption is a ticket query;
+      "is the next train running?" is a status enquiry.
+  - pair: [customer_service_complaint, journey_disruption_complaint]
+    note: Staff, response, or contact failures are service complaints; the train itself being late, cancelled, or crowded is a disruption complaint.
+
+# Not clusters: handled outside KMeans.
+special:
+  - cluster_id: -1
+    name: unclear_or_media_only
+    final_intent: unclear_or_media_only
+    description: Opening message has too little text after cleaning (mention only, photo/link only, fewer than 3 content words).
+    auto_handle_hint: likely_no
+    escalation_triggers:
+      - "NEEDS_REVIEW: always ask a clarifying question or route to a human"
+  - cluster_id: -3
+    name: continuation_no_opening
+    final_intent: null
+    description: Episode that resumes a thread after more than the gap threshold; it has no true opening message and is excluded from intent discovery.

@@ -1,0 +1,1408 @@
+{
+  "meta": {
+    "n_corpus": 10380,
+    "n_queries_eligible": 1712,
+    "n_queries_dropped_no_relevant": 1,
+    "n_tune": 855,
+    "n_test": 857,
+    "sem_weight": 0.9,
+    "intent_weight": 0.15,
+    "weights_source": "tuned on the tune half",
+    "headline_rule": "intent_and_resolution",
+    "retriever": {
+      "n_corpus": 10380,
+      "index_fields": [
+        "customer_problem"
+      ],
+      "sem_weight": 0.9,
+      "intent_weight": 0.15,
+      "bm25": {
+        "k1": 1.5,
+        "b": 0.75
+      },
+      "embedding_model": "sentence-transformers/all-MiniLM-L6-v2"
+    },
+    "noise_rate_for_tuning": 0.3,
+    "mean_relevant_per_query": {
+      "intent_and_resolution": 651.2637106184364,
+      "intent": 1592.739789964994
+    },
+    "dev_cases_total": 2210,
+    "query_selection": "strong evidence + non-fallback candidate intent"
+  },
+  "tuning": {
+    "sem_weight": 0.9,
+    "intent_weight": 0.15,
+    "sem_sweep": [
+      {
+        "sem_weight": 0.0,
+        "mrr": 0.39063705537651094
+      },
+      {
+        "sem_weight": 0.1,
+        "mrr": 0.4021556727673637
+      },
+      {
+        "sem_weight": 0.2,
+        "mrr": 0.41629107893473216
+      },
+      {
+        "sem_weight": 0.3,
+        "mrr": 0.4281517037198027
+      },
+      {
+        "sem_weight": 0.4,
+        "mrr": 0.4348892601962783
+      },
+      {
+        "sem_weight": 0.5,
+        "mrr": 0.4493295102546679
+      },
+      {
+        "sem_weight": 0.6,
+        "mrr": 0.45338753698621936
+      },
+      {
+        "sem_weight": 0.7,
+        "mrr": 0.467150373912167
+      },
+      {
+        "sem_weight": 0.8,
+        "mrr": 0.4735485305110597
+      },
+      {
+        "sem_weight": 0.9,
+        "mrr": 0.4788503839486598
+      },
+      {
+        "sem_weight": 1.0,
+        "mrr": 0.47535018837391674
+      }
+    ],
+    "intent_sweep": [
+      {
+        "intent_weight": 0.0,
+        "mrr_clean_intent": 0.4788503839486598,
+        "mrr_noisy_intent": 0.4788503839486598,
+        "objective": 0.4788503839486598
+      },
+      {
+        "intent_weight": 0.05,
+        "mrr_clean_intent": 0.5520585325123617,
+        "mrr_noisy_intent": 0.5284627798548808,
+        "objective": 0.5402606561836212
+      },
+      {
+        "intent_weight": 0.1,
+        "mrr_clean_intent": 0.5877524769219136,
+        "mrr_noisy_intent": 0.5423538981575893,
+        "objective": 0.5650531875397514
+      },
+      {
+        "intent_weight": 0.15,
+        "mrr_clean_intent": 0.6024221835580496,
+        "mrr_noisy_intent": 0.5361383351425713,
+        "objective": 0.5692802593503103
+      },
+      {
+        "intent_weight": 0.2,
+        "mrr_clean_intent": 0.6083396715223625,
+        "mrr_noisy_intent": 0.5229039221865643,
+        "objective": 0.5656217968544635
+      },
+      {
+        "intent_weight": 0.3,
+        "mrr_clean_intent": 0.6115162179836804,
+        "mrr_noisy_intent": 0.47783688871316526,
+        "objective": 0.5446765533484228
+      },
+      {
+        "intent_weight": 0.5,
+        "mrr_clean_intent": 0.6126585716674393,
+        "mrr_noisy_intent": 0.42994847615175585,
+        "objective": 0.5213035239095976
+      }
+    ]
+  },
+  "test": {
+    "intent_and_resolution": {
+      "BM25": {
+        "n_queries": 857,
+        "recall@1": 0.22287047841306884,
+        "recall@3": 0.4469078179696616,
+        "recall@5": 0.5507584597432905,
+        "mrr": 0.3717960263188918,
+        "precision@5": 0.2161026837806301,
+        "mrr_ci95": [
+          0.3490919449715582,
+          0.3962551321694943
+        ],
+        "recall@1_ci95": [
+          0.1971995332555426,
+          0.24970828471411902
+        ],
+        "recall@5_ci95": [
+          0.5192240373395567,
+          0.5834597432905484
+        ]
+      },
+      "Embedding": {
+        "n_queries": 857,
+        "recall@1": 0.2870478413068845,
+        "recall@3": 0.5215869311551925,
+        "recall@5": 0.6161026837806302,
+        "mrr": 0.4430773739774977,
+        "precision@5": 0.27701283547257877,
+        "mrr_ci95": [
+          0.41823819527329414,
+          0.4697014597366854
+        ],
+        "recall@1_ci95": [
+          0.2590431738623104,
+          0.31624854142357056
+        ],
+        "recall@5_ci95": [
+          0.5822637106184364,
+          0.6487747957992999
+        ]
+      },
+      "Hybrid": {
+        "n_queries": 857,
+        "recall@1": 0.29871645274212366,
+        "recall@3": 0.5180863477246208,
+        "recall@5": 0.6231038506417736,
+        "mrr": 0.44477579133897527,
+        "precision@5": 0.2805134189031505,
+        "mrr_ci95": [
+          0.4200109411843538,
+          0.4716031614116808
+        ],
+        "recall@1_ci95": [
+          0.2671820303383897,
+          0.3313885647607935
+        ],
+        "recall@5_ci95": [
+          0.5927654609101517,
+          0.6581096849474912
+        ]
+      },
+      "Hybrid + intent": {
+        "n_queries": 857,
+        "recall@1": 0.4072345390898483,
+        "recall@3": 0.6896149358226371,
+        "recall@5": 0.7841306884480747,
+        "mrr": 0.5721229017174553,
+        "precision@5": 0.41400233372228706,
+        "mrr_ci95": [
+          0.5473568496831666,
+          0.5976164441507332
+        ],
+        "recall@1_ci95": [
+          0.37456242707117854,
+          0.441073512252042
+        ],
+        "recall@5_ci95": [
+          0.7561260210035006,
+          0.8133022170361727
+        ]
+      }
+    },
+    "intent": {
+      "BM25": {
+        "n_queries": 857,
+        "recall@1": 0.5204200700116686,
+        "recall@3": 0.7584597432905484,
+        "recall@5": 0.8413068844807468,
+        "mrr": 0.6597225507077232,
+        "precision@5": 0.48774795799299886,
+        "mrr_ci95": [
+          0.6345721434740192,
+          0.6847705099068898
+        ],
+        "recall@1_ci95": [
+          0.48774795799299886,
+          0.5531213535589264
+        ],
+        "recall@5_ci95": [
+          0.8179696616102684,
+          0.8658109684947491
+        ]
+      },
+      "Embedding": {
+        "n_queries": 857,
+        "recall@1": 0.6721120186697783,
+        "recall@3": 0.8658109684947491,
+        "recall@5": 0.9066511085180864,
+        "mrr": 0.7755109676877229,
+        "precision@5": 0.6385064177362894,
+        "mrr_ci95": [
+          0.7543319816117219,
+          0.7976038059118349
+        ],
+        "recall@1_ci95": [
+          0.6417736289381564,
+          0.7036172695449242
+        ],
+        "recall@5_ci95": [
+          0.8856476079346558,
+          0.9253208868144691
+        ]
+      },
+      "Hybrid": {
+        "n_queries": 857,
+        "recall@1": 0.6686114352392065,
+        "recall@3": 0.8506417736289381,
+        "recall@5": 0.9066511085180864,
+        "mrr": 0.7693180265324505,
+        "precision@5": 0.6301050175029171,
+        "mrr_ci95": [
+          0.7466388366122526,
+          0.7916754995221171
+        ],
+        "recall@1_ci95": [
+          0.6371061843640606,
+          0.6989498249708285
+        ],
+        "recall@5_ci95": [
+          0.8856476079346558,
+          0.926487747957993
+        ]
+      },
+      "Hybrid + intent": {
+        "n_queries": 857,
+        "recall@1": 0.9533255542590432,
+        "recall@3": 0.9906651108518086,
+        "recall@5": 0.9953325554259043,
+        "mrr": 0.9727282538542749,
+        "precision@5": 0.947024504084014,
+        "mrr_ci95": [
+          0.9639441375913079,
+          0.9810817855326315
+        ],
+        "recall@1_ci95": [
+          0.9393232205367561,
+          0.9673278879813302
+        ],
+        "recall@5_ci95": [
+          0.9906651108518086,
+          0.9988331388564761
+        ]
+      }
+    }
+  },
+  "tune_half": {
+    "BM25": {
+      "n_queries": 855,
+      "recall@1": 0.25263157894736843,
+      "recall@3": 0.45146198830409356,
+      "recall@5": 0.560233918128655,
+      "mrr": 0.39063705537651094,
+      "precision@5": 0.22409356725146198,
+      "mrr_ci95": [
+        0.3642236871505722,
+        0.4164214791295001
+      ],
+      "recall@1_ci95": [
+        0.2222222222222222,
+        0.2818713450292398
+      ],
+      "recall@5_ci95": [
+        0.5274561403508773,
+        0.591812865497076
+      ]
+    },
+    "Embedding": {
+      "n_queries": 855,
+      "recall@1": 0.32514619883040935,
+      "recall@3": 0.5532163742690058,
+      "recall@5": 0.6631578947368421,
+      "mrr": 0.47535018837391674,
+      "precision@5": 0.31087719298245614,
+      "mrr_ci95": [
+        0.45029766148907274,
+        0.5008258795446124
+      ],
+      "recall@1_ci95": [
+        0.29473684210526313,
+        0.3567251461988304
+      ],
+      "recall@5_ci95": [
+        0.631578947368421,
+        0.6947368421052632
+      ]
+    },
+    "Hybrid": {
+      "n_queries": 855,
+      "recall@1": 0.3286549707602339,
+      "recall@3": 0.5625730994152047,
+      "recall@5": 0.664327485380117,
+      "mrr": 0.4788503839486598,
+      "precision@5": 0.31157894736842107,
+      "mrr_ci95": [
+        0.453841159599027,
+        0.5054782065610252
+      ],
+      "recall@1_ci95": [
+        0.2982456140350877,
+        0.36257309941520466
+      ],
+      "recall@5_ci95": [
+        0.6339181286549708,
+        0.695906432748538
+      ]
+    },
+    "Hybrid + intent": {
+      "n_queries": 855,
+      "recall@1": 0.45380116959064326,
+      "recall@3": 0.7052631578947368,
+      "recall@5": 0.7871345029239766,
+      "mrr": 0.6024221835580496,
+      "precision@5": 0.4212865497076023,
+      "mrr_ci95": [
+        0.5784787388552286,
+        0.6267164144929959
+      ],
+      "recall@1_ci95": [
+        0.42105263157894735,
+        0.4853801169590643
+      ],
+      "recall@5_ci95": [
+        0.7578947368421053,
+        0.8140350877192982
+      ]
+    }
+  },
+  "random": {
+    "intent_and_resolution": {
+      "n_queries": 857,
+      "recall@1": 0.052508751458576426,
+      "recall@3": 0.15635939323220538,
+      "recall@5": 0.23687281213535588,
+      "mrr": 0.15191288951307014,
+      "precision@5": 0.06137689614935823,
+      "mrr_ci95": [
+        0.13645533988442624,
+        0.16803013413769483
+      ],
+      "recall@1_ci95": [
+        0.038506417736289385,
+        0.0676779463243874
+      ],
+      "recall@5_ci95": [
+        0.20770128354725786,
+        0.2637106184364061
+      ]
+    },
+    "intent": {
+      "n_queries": 857,
+      "recall@1": 0.14935822637106183,
+      "recall@3": 0.35939323220536756,
+      "recall@5": 0.49941656942823803,
+      "mrr": 0.31113298902970704,
+      "precision@5": 0.15029171528588098,
+      "mrr_ci95": [
+        0.28935978144924607,
+        0.3314673081896306
+      ],
+      "recall@1_ci95": [
+        0.12602100350058343,
+        0.17269544924154026
+      ],
+      "recall@5_ci95": [
+        0.4679113185530922,
+        0.5320886814469078
+      ]
+    }
+  },
+  "stress": [
+    {
+      "wrong_intent_rate": 0.0,
+      "mode": "query only",
+      "recall@5": 0.6231038506417736,
+      "mrr": 0.44477579133897527
+    },
+    {
+      "wrong_intent_rate": 0.0,
+      "mode": "soft intent bonus",
+      "recall@5": 0.7841306884480747,
+      "mrr": 0.5721229017174553
+    },
+    {
+      "wrong_intent_rate": 0.0,
+      "mode": "hard intent filter",
+      "recall@5": 0.8028004667444574,
+      "mrr": 0.5870985050224383
+    },
+    {
+      "wrong_intent_rate": 0.15,
+      "mode": "query only",
+      "recall@5": 0.6231038506417736,
+      "mrr": 0.44477579133897527
+    },
+    {
+      "wrong_intent_rate": 0.15,
+      "mode": "soft intent bonus",
+      "recall@5": 0.7362893815635939,
+      "mrr": 0.5330683877568884
+    },
+    {
+      "wrong_intent_rate": 0.15,
+      "mode": "hard intent filter",
+      "recall@5": 0.6697782963827305,
+      "mrr": 0.491593451385198
+    },
+    {
+      "wrong_intent_rate": 0.3,
+      "mode": "query only",
+      "recall@5": 0.6231038506417736,
+      "mrr": 0.44477579133897527
+    },
+    {
+      "wrong_intent_rate": 0.3,
+      "mode": "soft intent bonus",
+      "recall@5": 0.7141190198366394,
+      "mrr": 0.5191331235683051
+    },
+    {
+      "wrong_intent_rate": 0.3,
+      "mode": "hard intent filter",
+      "recall@5": 0.5554259043173863,
+      "mrr": 0.40449676637557525
+    },
+    {
+      "wrong_intent_rate": 0.5,
+      "mode": "query only",
+      "recall@5": 0.6231038506417736,
+      "mrr": 0.44477579133897527
+    },
+    {
+      "wrong_intent_rate": 0.5,
+      "mode": "soft intent bonus",
+      "recall@5": 0.6394399066511085,
+      "mrr": 0.46908919246512615
+    },
+    {
+      "wrong_intent_rate": 0.5,
+      "mode": "hard intent filter",
+      "recall@5": 0.4025670945157526,
+      "mrr": 0.29921777137315675
+    }
+  ],
+  "ablation": {
+    "index_fields": [
+      "customer_problem",
+      "historical_response"
+    ],
+    "metrics": {
+      "BM25": {
+        "n_queries": 857,
+        "recall@1": 0.23803967327887982,
+        "recall@3": 0.4305717619603267,
+        "recall@5": 0.5414235705950992,
+        "mrr": 0.37720330966964244,
+        "precision@5": 0.22637106184364061,
+        "mrr_ci95": [
+          0.3503950205381334,
+          0.40120997911361717
+        ],
+        "recall@1_ci95": [
+          0.20883897316219371,
+          0.264906651108518
+        ],
+        "recall@5_ci95": [
+          0.5075845974329055,
+          0.574095682613769
+        ]
+      },
+      "Embedding": {
+        "n_queries": 857,
+        "recall@1": 0.2777129521586931,
+        "recall@3": 0.5075845974329055,
+        "recall@5": 0.6359393232205367,
+        "mrr": 0.4367355978167107,
+        "precision@5": 0.28168028004667445,
+        "mrr_ci95": [
+          0.4124767702243491,
+          0.46209035529505005
+        ],
+        "recall@1_ci95": [
+          0.24737456242707118,
+          0.30688448074679114
+        ],
+        "recall@5_ci95": [
+          0.6067677946324388,
+          0.6686114352392065
+        ]
+      },
+      "Hybrid": {
+        "n_queries": 857,
+        "recall@1": 0.29054842473745623,
+        "recall@3": 0.5274212368728122,
+        "recall@5": 0.6359393232205367,
+        "mrr": 0.44275863231551127,
+        "precision@5": 0.2847141190198366,
+        "mrr_ci95": [
+          0.41733867984180206,
+          0.4671067466675101
+        ],
+        "recall@1_ci95": [
+          0.2590431738623104,
+          0.3197491248541423
+        ],
+        "recall@5_ci95": [
+          0.6044340723453909,
+          0.6709451575262544
+        ]
+      },
+      "Hybrid + intent": {
+        "n_queries": 857,
+        "recall@1": 0.43757292882147025,
+        "recall@3": 0.6931155192532089,
+        "recall@5": 0.7817969661610268,
+        "mrr": 0.5897840070190703,
+        "precision@5": 0.42450408401400236,
+        "mrr_ci95": [
+          0.5653980479837516,
+          0.6164022579826665
+        ],
+        "recall@1_ci95": [
+          0.40606767794632437,
+          0.4702742123687281
+        ],
+        "recall@5_ci95": [
+          0.7549591598599766,
+          0.809801633605601
+        ]
+      }
+    }
+  },
+  "per_intent": [
+    {
+      "key": "service_status_delay_enquiry",
+      "n": 268,
+      "recall_at_1": 0.48507462686567165,
+      "recall_at_5": 0.835820895522388,
+      "mrr": 0.6363917462013909
+    },
+    {
+      "key": "journey_disruption_complaint",
+      "n": 130,
+      "recall_at_1": 0.3769230769230769,
+      "recall_at_5": 0.7923076923076923,
+      "mrr": 0.5482895407267919
+    },
+    {
+      "key": "seat_reservation_issue",
+      "n": 74,
+      "recall_at_1": 0.47297297297297297,
+      "recall_at_5": 0.7567567567567568,
+      "mrr": 0.6024918698469693
+    },
+    {
+      "key": "ticket_booking_query",
+      "n": 72,
+      "recall_at_1": 0.4305555555555556,
+      "recall_at_5": 0.8055555555555556,
+      "mrr": 0.59049657010237
+    },
+    {
+      "key": "customer_service_complaint",
+      "n": 67,
+      "recall_at_1": 0.22388059701492538,
+      "recall_at_5": 0.6567164179104478,
+      "mrr": 0.4127274969201863
+    },
+    {
+      "key": "praise_positive_feedback",
+      "n": 64,
+      "recall_at_1": 0.375,
+      "recall_at_5": 0.828125,
+      "mrr": 0.5878483643878865
+    },
+    {
+      "key": "delay_repay_refund_claim",
+      "n": 63,
+      "recall_at_1": 0.2222222222222222,
+      "recall_at_5": 0.746031746031746,
+      "mrr": 0.4515666432333099
+    },
+    {
+      "key": "chitchat_non_support",
+      "n": 57,
+      "recall_at_1": 0.5087719298245614,
+      "recall_at_5": 0.7543859649122807,
+      "mrr": 0.6369219291485897
+    },
+    {
+      "key": "onboard_wifi_issue",
+      "n": 35,
+      "recall_at_1": 0.4,
+      "recall_at_5": 0.7142857142857143,
+      "mrr": 0.5375661163907597
+    },
+    {
+      "key": "first_class_catering_issue",
+      "n": 27,
+      "recall_at_1": 0.2962962962962963,
+      "recall_at_5": 0.7037037037037037,
+      "mrr": 0.46427581133463486
+    }
+  ],
+  "by_length": [
+    {
+      "key": "8-15 tokens",
+      "n": 527,
+      "recall_at_1": 0.38140417457305503,
+      "recall_at_5": 0.7722960151802657,
+      "mrr": 0.5507285060183514
+    },
+    {
+      "key": "4-7 tokens",
+      "n": 181,
+      "recall_at_1": 0.49171270718232046,
+      "recall_at_5": 0.856353591160221,
+      "mrr": 0.6517851111211793
+    },
+    {
+      "key": "16+ tokens",
+      "n": 121,
+      "recall_at_1": 0.33884297520661155,
+      "recall_at_5": 0.7107438016528925,
+      "mrr": 0.5089819607171301
+    },
+    {
+      "key": "1-3 tokens",
+      "n": 28,
+      "recall_at_1": 0.6428571428571429,
+      "recall_at_5": 0.8571428571428571,
+      "mrr": 0.7326957764457764
+    }
+  ],
+  "by_resolution_type": [
+    {
+      "key": "information_provided",
+      "n": 471,
+      "recall_at_1": 0.5966029723991507,
+      "recall_at_5": 0.9575371549893843,
+      "mrr": 0.7502699353017824
+    },
+    {
+      "key": "self_service",
+      "n": 109,
+      "recall_at_1": 0.1834862385321101,
+      "recall_at_5": 0.6422018348623854,
+      "mrr": 0.3835445063006521
+    },
+    {
+      "key": "compensation",
+      "n": 79,
+      "recall_at_1": 0.20253164556962025,
+      "recall_at_5": 0.6708860759493671,
+      "mrr": 0.4084797050550996
+    },
+    {
+      "key": "feedback_acknowledged",
+      "n": 67,
+      "recall_at_1": 0.1044776119402985,
+      "recall_at_5": 0.4626865671641791,
+      "mrr": 0.2654571544937638
+    },
+    {
+      "key": "redirected_to_other_operator",
+      "n": 50,
+      "recall_at_1": 0.22,
+      "recall_at_5": 0.54,
+      "mrr": 0.38070927417133205
+    },
+    {
+      "key": "redirected_to_dm",
+      "n": 33,
+      "recall_at_1": 0.18181818181818182,
+      "recall_at_5": 0.5151515151515151,
+      "mrr": 0.3575918047318032
+    },
+    {
+      "key": "refund",
+      "n": 22,
+      "recall_at_1": 0.09090909090909091,
+      "recall_at_5": 0.4090909090909091,
+      "mrr": 0.21541543901502383
+    },
+    {
+      "key": "troubleshooting",
+      "n": 14,
+      "recall_at_1": 0.2857142857142857,
+      "recall_at_5": 0.7142857142857143,
+      "mrr": 0.4181140954992852
+    },
+    {
+      "key": "escalated",
+      "n": 12,
+      "recall_at_1": 0.16666666666666666,
+      "recall_at_5": 0.3333333333333333,
+      "mrr": 0.3034649789564067
+    }
+  ],
+  "failures": {
+    "n_queries_without_hit_in_top5": 185,
+    "kinds": {
+      "same_intent_but_other_resolution_type": 178,
+      "very_short_query": 4,
+      "no_same_intent_in_top5": 3
+    }
+  },
+  "near_duplicate_top1_rate": 0.0,
+  "examples": {
+    "good": [
+      {
+        "case_id": "case_1295259",
+        "query": "please explain why you are failing to deliver your transportation from London from Euston. 2100 canceled 2140 delayed I need to get back to Manchester",
+        "intent": "service_status_delay_enquiry",
+        "resolution_type": "compensation",
+        "first_relevant_rank": 1,
+        "results": [
+          {
+            "rank": 1,
+            "case_id": "case_1426856",
+            "score": 1.0990782976150513,
+            "intent": "service_status_delay_enquiry",
+            "resolution_type": "compensation",
+            "problem": "5:20 from Euston to Manchester has been delayed for ages, how do I complain?",
+            "response": "You can claim for the delays here - https://t.co/alwxuSCJ0l",
+            "relevant": true,
+            "reasons": [
+              "same candidate intent (service_status_delay_enquiry)",
+              "same resolution type (compensation)",
+              "shared terms: delayed, euston, manchester"
+            ]
+          },
+          {
+            "rank": 2,
+            "case_id": "case_1325187",
+            "score": 1.0969202518463135,
+            "intent": "service_status_delay_enquiry",
+            "resolution_type": "self_service",
+            "problem": "my 12.40 London Euston to Manchester train is cancelled. What do I do?",
+            "response": "We are awaiting an update as to when the line will reopen. Live Updates can be found via https://t.co/QlcukyjBGT",
+            "relevant": false,
+            "reasons": [
+              "same candidate intent (service_status_delay_enquiry)",
+              "different resolution type (self_service vs query's compensation)",
+              "shared terms: euston, london, manchester"
+            ]
+          },
+          {
+            "rank": 3,
+            "case_id": "case_1462303",
+            "score": 1.0753371715545654,
+            "intent": "service_status_delay_enquiry",
+            "resolution_type": "information_provided",
+            "problem": "the train to Manchester from Euston at 13:00 is cancelled how do i get there as soon as possible?",
+            "response": "You'd need to get the next available one after your booked one. | We wouldn't know which ones will be free, however Coach C and U will be unreserved.",
+            "relevant": false,
+            "reasons": [
+              "same candidate intent (service_status_delay_enquiry)",
+              "different resolution type (information_provided vs query's compensation)",
+              "shared terms: euston, manchester"
+            ]
+          }
+        ]
+      },
+      {
+        "case_id": "case_676680",
+        "query": "since latest windows update laptop won't connect fully to 1st class Wi-Fi, I keep getting this message when connecting. Any ideas to solve?",
+        "intent": "onboard_wifi_issue",
+        "resolution_type": "troubleshooting",
+        "first_relevant_rank": 3,
+        "results": [
+          {
+            "rank": 1,
+            "case_id": "case_813000",
+            "score": 1.0797792673110962,
+            "intent": "onboard_wifi_issue",
+            "resolution_type": "self_service",
+            "problem": "Whenever I\ufe0f try to connect to @VirginTrains wifi. #frustrated #firstclass #reallynot",
+            "response": "Try using https://t.co/1JEOSVPtGN",
+            "relevant": false,
+            "reasons": [
+              "same candidate intent (onboard_wifi_issue)",
+              "different resolution type (self_service vs query's troubleshooting)",
+              "shared terms: connect"
+            ]
+          },
+          {
+            "rank": 2,
+            "case_id": "case_2671264",
+            "score": 0.9754241704940796,
+            "intent": "onboard_wifi_issue",
+            "resolution_type": "information_provided",
+            "problem": "WiFi never works in first class \ud83d\ude21\ud83d\ude21",
+            "response": "I see, might be worth a call to the support team on 0330 088 1271, Paul | Thanks Paul and apologies for this",
+            "relevant": false,
+            "reasons": [
+              "same candidate intent (onboard_wifi_issue)",
+              "different resolution type (information_provided vs query's troubleshooting)",
+              "shared terms: class"
+            ]
+          },
+          {
+            "rank": 3,
+            "case_id": "case_614064",
+            "score": 0.9572511911392212,
+            "intent": "onboard_wifi_issue",
+            "resolution_type": "troubleshooting",
+            "problem": "do you have a weblink so I can connect to your Wi-fi in first class please? It never connects automatically \ud83e\udd2c",
+            "response": "If you type https://t.co/1JEOSVPtGN into your browser's URL bar, this should load up the WiFi.",
+            "relevant": true,
+            "reasons": [
+              "same candidate intent (onboard_wifi_issue)",
+              "same resolution type (troubleshooting)",
+              "shared terms: class, connect, fi, wi"
+            ]
+          }
+        ]
+      },
+      {
+        "case_id": "case_2515078",
+        "query": "> next one with an advance ticket? I booked the whole journey through your website, but the cancelled train is a Northern one.",
+        "intent": "ticket_booking_query",
+        "resolution_type": "information_provided",
+        "first_relevant_rank": 1,
+        "results": [
+          {
+            "rank": 1,
+            "case_id": "case_529445",
+            "score": 1.0348842144012451,
+            "intent": "ticket_booking_query",
+            "resolution_type": "information_provided",
+            "problem": "hi. I had a ticket with a booked seat valid for the 8:50 MK to Manchester which has been cancelled. Will I need a new ticket to get a later train?",
+            "response": "Your ticket will be valid on the next available service Marc. Sorry for the cancellation of your train.",
+            "relevant": true,
+            "reasons": [
+              "same candidate intent (ticket_booking_query)",
+              "same resolution type (information_provided)",
+              "shared terms: booked, cancelled, ticket, train"
+            ]
+          },
+          {
+            "rank": 2,
+            "case_id": "case_1340118",
+            "score": 1.0244243144989014,
+            "intent": "ticket_booking_query",
+            "resolution_type": "information_provided",
+            "problem": "Hi @VirginTrains - I've just got this but no idea if I can use my advance ticket on another train? Please advise.",
+            "response": "Hi there, you can use your ticket on the next available service",
+            "relevant": true,
+            "reasons": [
+              "same candidate intent (ticket_booking_query)",
+              "same resolution type (information_provided)",
+              "shared terms: advance, ticket, train"
+            ]
+          },
+          {
+            "rank": 3,
+            "case_id": "case_857033",
+            "score": 1.012842059135437,
+            "intent": "ticket_booking_query",
+            "resolution_type": "information_provided",
+            "problem": "hi. Booked off peak ticket on website and ticket is for a London midland route. Looks like will miss the train due to traffic",
+            "response": "Hi Darren, if you have an Off-Peak ticket then you should be fine to travel on the next O/P service :) | Thanks for confirming Darren. If your ticket is valid on London \u2026",
+            "relevant": true,
+            "reasons": [
+              "same candidate intent (ticket_booking_query)",
+              "same resolution type (information_provided)",
+              "shared terms: booked, ticket, train, website"
+            ]
+          }
+        ]
+      },
+      {
+        "case_id": "case_1639512",
+        "query": "Fab wknd in Wales for nephew's baptism. 2.5 hrs delayed (no fault of @VirginTrains -their staff were excellent) nearly home, but shattered!",
+        "intent": "praise_positive_feedback",
+        "resolution_type": "information_provided",
+        "first_relevant_rank": 2,
+        "results": [
+          {
+            "rank": 1,
+            "case_id": "case_1355423",
+            "score": 1.066158413887024,
+            "intent": "praise_positive_feedback",
+            "resolution_type": "feedback_acknowledged",
+            "problem": "Fab service on the 13.40 Eus-Man. Friendly staff & very relaxing journey. 1st experience of 1st class service. Well worth it!",
+            "response": "Love it, we'll be sure to pass on your kind words, Sharon \ud83d\ude03",
+            "relevant": false,
+            "reasons": [
+              "same candidate intent (praise_positive_feedback)",
+              "different resolution type (feedback_acknowledged vs query's information_provided)",
+              "shared terms: fab, staff"
+            ]
+          },
+          {
+            "rank": 2,
+            "case_id": "case_1087069",
+            "score": 1.0615943670272827,
+            "intent": "praise_positive_feedback",
+            "resolution_type": "information_provided",
+            "problem": "excellent service Warrington to Edinburgh. Son unfortunately sick in carriage. Guard and staff couldn\u2019t do enough to help",
+            "response": "Oh no \ud83d\ude48 Hope he's feeling better today :) Thanks for getting in touch",
+            "relevant": true,
+            "reasons": [
+              "same candidate intent (praise_positive_feedback)",
+              "same resolution type (information_provided)",
+              "shared terms: excellent, staff"
+            ]
+          },
+          {
+            "rank": 3,
+            "case_id": "case_1748987",
+            "score": 1.051963448524475,
+            "intent": "praise_positive_feedback",
+            "resolution_type": "feedback_acknowledged",
+            "problem": "Congratulations! @VirginTrains on excellent service 14.15h Birmingham to Preston so superior to @GWRHelp #caringcounts",
+            "response": "Thanks Harry, we'll be sure to pass your comments on \ud83d\ude0a",
+            "relevant": false,
+            "reasons": [
+              "same candidate intent (praise_positive_feedback)",
+              "different resolution type (feedback_acknowledged vs query's information_provided)",
+              "shared terms: excellent"
+            ]
+          }
+        ]
+      },
+      {
+        "case_id": "case_2733671",
+        "query": "Previous @virgintrains \u201ctalking toilet\u201d was merely insipid & mildly aggravating New \u201ccheery American\u201d Christmas version makes me want to commit violence against perpetrator responsible!",
+        "intent": "chitchat_non_support",
+        "resolution_type": "information_provided",
+        "first_relevant_rank": 1,
+        "results": [
+          {
+            "rank": 1,
+            "case_id": "case_147515",
+            "score": 1.102704405784607,
+            "intent": "chitchat_non_support",
+            "resolution_type": "information_provided",
+            "problem": "loving the new talky toilet announcements",
+            "response": "We love it too Ben! Bet you didn't expect to her Will Ferrell whilst in our loos today.",
+            "relevant": true,
+            "reasons": [
+              "same candidate intent (chitchat_non_support)",
+              "same resolution type (information_provided)",
+              "shared terms: new, toilet"
+            ]
+          },
+          {
+            "rank": 2,
+            "case_id": "case_1139739",
+            "score": 1.0709577798843384,
+            "intent": "chitchat_non_support",
+            "resolution_type": "feedback_acknowledged",
+            "problem": "Dear @VirginTrains - the will Ferrell toilet announcement thing is irritating and intrusive. Make it stop!",
+            "response": "Well that takes the fun out of it. We'll pass on your comments, Chris",
+            "relevant": false,
+            "reasons": [
+              "same candidate intent (chitchat_non_support)",
+              "different resolution type (feedback_acknowledged vs query's information_provided)",
+              "shared terms: make, toilet"
+            ]
+          },
+          {
+            "rank": 3,
+            "case_id": "case_2902920",
+            "score": 1.0439647436141968,
+            "intent": "chitchat_non_support",
+            "resolution_type": "information_provided",
+            "problem": "Loving the new \u2018toilet voice\u2019!! \ud83d\ude02",
+            "response": "Can't beat a bit of Will Ferrell :)",
+            "relevant": true,
+            "reasons": [
+              "same candidate intent (chitchat_non_support)",
+              "same resolution type (information_provided)",
+              "shared terms: new, toilet"
+            ]
+          }
+        ]
+      },
+      {
+        "case_id": "case_1320725",
+        "query": "Loving the announcements on @VirginTrains \ud83d\ude82 this morning: \u201cThe onboard shop is located in carriage C - that\u2019s C for cheese sandwich.\u201d \ud83d\ude02",
+        "intent": "seat_reservation_issue",
+        "resolution_type": "information_provided",
+        "first_relevant_rank": 3,
+        "results": [
+          {
+            "rank": 1,
+            "case_id": "case_2353145",
+            "score": 1.0185470581054688,
+            "intent": "seat_reservation_issue",
+            "resolution_type": "self_service",
+            "problem": "Thank you for being so delayed in changing the carriage letters and seat reservations on the 18:30 from New Street to Euston, I really wanted to play musical chairs and \u2026",
+            "response": "We'll pass on your comments regarding this. If you do wish to make a complaint regarding the staff please get in touch through our website: https://t.co/t20UbyOCSn",
+            "relevant": false,
+            "reasons": [
+              "same candidate intent (seat_reservation_issue)",
+              "different resolution type (self_service vs query's information_provided)",
+              "shared terms: carriage"
+            ]
+          },
+          {
+            "rank": 2,
+            "case_id": "case_2663916",
+            "score": 0.9687594175338745,
+            "intent": "seat_reservation_issue",
+            "resolution_type": "self_service",
+            "problem": "yet again battling to get a table seat in stinky carriage C to be able to work.on my journey. This unreserved switch is awful You've basically thrown two fingers up at d\u2026",
+            "response": "Not great to hear, Neil :/ Apologies for the inconvenience caused. You can block book a seat at the ticket office for your",
+            "relevant": false,
+            "reasons": [
+              "same candidate intent (seat_reservation_issue)",
+              "different resolution type (self_service vs query's information_provided)",
+              "shared terms: c, carriage"
+            ]
+          },
+          {
+            "rank": 3,
+            "case_id": "case_2879124",
+            "score": 0.9634488821029663,
+            "intent": "seat_reservation_issue",
+            "resolution_type": "information_provided",
+            "problem": "Probably the entirety of coach c (not the people. Just the contents of the shop)...",
+            "response": "We're with you on that one! Contemplating ordering a second breakfast..",
+            "relevant": true,
+            "reasons": [
+              "same candidate intent (seat_reservation_issue)",
+              "same resolution type (information_provided)",
+              "shared terms: c, shop"
+            ]
+          }
+        ]
+      }
+    ],
+    "bad": [
+      {
+        "case_id": "case_1011870",
+        "query": "Hi @VirginTrains on what planet can you justify this price? Will I have my own private carriage, hand-waited on by Tom Hardy? \ud83d\ude43",
+        "intent": "chitchat_non_support",
+        "resolution_type": "troubleshooting",
+        "first_relevant_rank": 47,
+        "results": [
+          {
+            "rank": 1,
+            "case_id": "case_699681",
+            "score": 0.9250267148017883,
+            "intent": "first_class_catering_issue",
+            "resolution_type": "information_provided",
+            "problem": "How does it even cost that much!! I would be expecting a first class carriage for myself with a butler. I could fly to America for that! #MerryChristmas #thingsicouldget\u2026",
+            "response": "We do offer Advance tickets which are subject to availability. If all these Advance fares sell out the only tickets available would be open tickets, which are more expen\u2026",
+            "relevant": false,
+            "reasons": [
+              "different candidate intent (first_class_catering_issue vs query chitchat_non_support)",
+              "different resolution type (information_provided vs query's troubleshooting)",
+              "shared terms: carriage"
+            ]
+          },
+          {
+            "rank": 2,
+            "case_id": "case_1438376",
+            "score": 0.9208049178123474,
+            "intent": "seat_reservation_issue",
+            "resolution_type": "information_provided",
+            "problem": "Your carriage awaits - your usual seat? On the floor. Again. Such value for money. @VirginTrains",
+            "response": "As you can travel on any Off-Peak service with your ticket. You would be required to reserve your own seat | once you had chosen which service you were travelling on. We\u2026",
+            "relevant": false,
+            "reasons": [
+              "different candidate intent (seat_reservation_issue vs query chitchat_non_support)",
+              "different resolution type (information_provided vs query's troubleshooting)",
+              "shared terms: carriage"
+            ]
+          },
+          {
+            "rank": 3,
+            "case_id": "case_2723805",
+            "score": 0.8102198839187622,
+            "intent": "chitchat_non_support",
+            "resolution_type": "information_provided",
+            "problem": "Hello @VirginTrains myself & buddy's have been sitting on the floor for 4 hours now on the way back from Edinburgh.We spent over \u00a3680 on the tickets & we are on your fin\u2026",
+            "response": "You can always book reservations through us. Again we're really sorry about your experience yesterday. | I'm afraid that if you don't reserve a seat and the service is b\u2026",
+            "relevant": false,
+            "reasons": [
+              "same candidate intent (chitchat_non_support)",
+              "different resolution type (information_provided vs query's troubleshooting)"
+            ]
+          }
+        ]
+      },
+      {
+        "case_id": "case_2960895",
+        "query": "Dear @VirginTrains, whilst I really appreciate your on average 2 hour service for London Euston to Manchester Piccadilly, I would also love for you to sort out your air conditioning/heating machine hybrid you appear to have on full blast on my current \u00a380 per\u2026",
+        "intent": "praise_positive_feedback",
+        "resolution_type": "self_service",
+        "first_relevant_rank": 9,
+        "results": [
+          {
+            "rank": 1,
+            "case_id": "case_2828509",
+            "score": 1.0927776098251343,
+            "intent": "praise_positive_feedback",
+            "resolution_type": "feedback_acknowledged",
+            "problem": "Such a beautiful journey to and from london over the weekend @VirginTrains . Was just a shame about the mix up with prices and payments. But very helpful staff on the 17\u2026",
+            "response": "Thanks for the great feedback. Sorry to hear there were some issues, hope they all got sorted for you",
+            "relevant": false,
+            "reasons": [
+              "same candidate intent (praise_positive_feedback)",
+              "different resolution type (feedback_acknowledged vs query's self_service)",
+              "shared terms: euston, journey, london, piccadilly"
+            ]
+          },
+          {
+            "rank": 2,
+            "case_id": "case_1324084",
+            "score": 1.0468910932540894,
+            "intent": "praise_positive_feedback",
+            "resolution_type": "information_provided",
+            "problem": "What's the status of @VirginTrains London Euston-Manchester service? #VTUPDATE anyone at #LondonEuston. About to head there from east london",
+            "response": "These services are currently showing as running, however may meet with delays due to disruption earlier today.",
+            "relevant": false,
+            "reasons": [
+              "same candidate intent (praise_positive_feedback)",
+              "different resolution type (information_provided vs query's self_service)",
+              "shared terms: euston, london, manchester, service"
+            ]
+          },
+          {
+            "rank": 3,
+            "case_id": "case_1295472",
+            "score": 1.0376332998275757,
+            "intent": "praise_positive_feedback",
+            "resolution_type": "information_provided",
+            "problem": "Is this effecting London Euston service's heading to Manchester Piccidilly?",
+            "response": "It is, please travel with @122155 from St Pancras to Sheffield and then onwards to Manchester | That service will still be running Joe",
+            "relevant": false,
+            "reasons": [
+              "same candidate intent (praise_positive_feedback)",
+              "different resolution type (information_provided vs query's self_service)",
+              "shared terms: euston, london, manchester, service"
+            ]
+          }
+        ]
+      },
+      {
+        "case_id": "case_527334",
+        "query": "trying to get to Birmingham now can I use virgin from Watford with this??",
+        "intent": "service_status_delay_enquiry",
+        "resolution_type": "refund",
+        "first_relevant_rank": 246,
+        "results": [
+          {
+            "rank": 1,
+            "case_id": "case_1295501",
+            "score": 1.149999976158142,
+            "intent": "service_status_delay_enquiry",
+            "resolution_type": "information_provided",
+            "problem": "Anyway to get to Birmingham from Watford Junction?",
+            "response": "Services are now running so you can wait for the next available service.",
+            "relevant": false,
+            "reasons": [
+              "same candidate intent (service_status_delay_enquiry)",
+              "different resolution type (information_provided vs query's refund)",
+              "shared terms: birmingham, watford"
+            ]
+          },
+          {
+            "rank": 2,
+            "case_id": "case_1324152",
+            "score": 1.0208020210266113,
+            "intent": "service_status_delay_enquiry",
+            "resolution_type": "information_provided",
+            "problem": "What\u2019s the easiest way to get from watford junction to Birmingham international / new street / Solihull?",
+            "response": "If you speak to station staff they will be able to advise on the best route Jamie.",
+            "relevant": false,
+            "reasons": [
+              "same candidate intent (service_status_delay_enquiry)",
+              "different resolution type (information_provided vs query's refund)",
+              "shared terms: birmingham, watford"
+            ]
+          },
+          {
+            "rank": 3,
+            "case_id": "case_691090",
+            "score": 0.9977375268936157,
+            "intent": "service_status_delay_enquiry",
+            "resolution_type": "information_provided",
+            "problem": "whats the best way of getting back towards Birmingham from Watford Junction? All services look to be cancelled...",
+            "response": "That service will run to Birmingham :-) | Ahhhhhh, it's terminating at Birmingham International, you will be able to connect from there though",
+            "relevant": false,
+            "reasons": [
+              "same candidate intent (service_status_delay_enquiry)",
+              "different resolution type (information_provided vs query's refund)",
+              "shared terms: birmingham, watford"
+            ]
+          }
+        ]
+      },
+      {
+        "case_id": "case_2125846",
+        "query": "next time you\u2019re replacing/refurbishing trains, any chance of more loos? Had to walk the through 4 carriages \ud83d\ude1e",
+        "intent": "journey_disruption_complaint",
+        "resolution_type": "feedback_acknowledged",
+        "first_relevant_rank": 23,
+        "results": [
+          {
+            "rank": 1,
+            "case_id": "case_2134051",
+            "score": 1.1239103078842163,
+            "intent": "journey_disruption_complaint",
+            "resolution_type": "redirected_to_other_operator",
+            "problem": "Train from Leeds running well over 45 mins late 1st class carriage 100c \ud83d\ude13 no water in the loos worth every penny!! \ud83d\ude21",
+            "response": "Hi Mark, are you travelling with @120576 ?",
+            "relevant": false,
+            "reasons": [
+              "same candidate intent (journey_disruption_complaint)",
+              "different resolution type (redirected_to_other_operator vs query's feedback_acknowledged)",
+              "shared terms: carriage, loo, train"
+            ]
+          },
+          {
+            "rank": 2,
+            "case_id": "case_546166",
+            "score": 1.032616138458252,
+            "intent": "journey_disruption_complaint",
+            "resolution_type": "information_provided",
+            "problem": "Multiple @VirginTrains cancelled and delays but no extra carriages added to deal with the amount of people trying to get on one train?\ud83d\ude44\ud83d\ude44",
+            "response": "Apologies Caz, but due to the disruption across our network, we wouldn't be able to get extra carriages added to a service",
+            "relevant": false,
+            "reasons": [
+              "same candidate intent (journey_disruption_complaint)",
+              "different resolution type (information_provided vs query's feedback_acknowledged)",
+              "shared terms: carriage, train"
+            ]
+          },
+          {
+            "rank": 3,
+            "case_id": "case_799150",
+            "score": 1.0076661109924316,
+            "intent": "journey_disruption_complaint",
+            "resolution_type": "information_provided",
+            "problem": "If @140497 are accepting @VirginTrains customers on our route you\u2019d think they\u2019d put on additional carriages.",
+            "response": "Ticket acceptance is in place with Chiltern Railways.",
+            "relevant": false,
+            "reasons": [
+              "same candidate intent (journey_disruption_complaint)",
+              "different resolution type (information_provided vs query's feedback_acknowledged)",
+              "shared terms: carriage"
+            ]
+          }
+        ]
+      },
+      {
+        "case_id": "case_2581849",
+        "query": "I just parked for 26 minutes and had to pay \u00a35 - no staff around to sort this out. How do I get my \u00a35 back @VirginTrains ? Mrs Grumpy in Wolverhampton",
+        "intent": "customer_service_complaint",
+        "resolution_type": "compensation",
+        "first_relevant_rank": 38,
+        "results": [
+          {
+            "rank": 1,
+            "case_id": "case_1301999",
+            "score": 0.9849863052368164,
+            "intent": "customer_service_complaint",
+            "resolution_type": "redirected_to_dm",
+            "problem": "NHS midwife with a rare day off had my wallet stolen. Contacted @VirginTrains to replace my tickets, informed i have to pay again #helpme",
+            "response": "Do you have a crime reference number? Please DM us the details? | We'll respond to your DM",
+            "relevant": false,
+            "reasons": [
+              "same candidate intent (customer_service_complaint)",
+              "different resolution type (redirected_to_dm vs query's compensation)",
+              "shared terms: pay"
+            ]
+          },
+          {
+            "rank": 2,
+            "case_id": "case_102438",
+            "score": 0.9799420833587646,
+            "intent": "customer_service_complaint",
+            "resolution_type": "self_service",
+            "problem": "Seriously, my wife just drove to the pickup area in Weston Carpark Crewe and despite a 20 minute free wait and only being there 9 minutes it\u2019s charged us \u00a312?! WTF?",
+            "response": "Apologies Ian, as this is a station issue, you would need to dispute this at the ticket office so this can be looked into further for you",
+            "relevant": false,
+            "reasons": [
+              "same candidate intent (customer_service_complaint)",
+              "different resolution type (self_service vs query's compensation)",
+              "shared terms: just, minute"
+            ]
+          },
+          {
+            "rank": 3,
+            "case_id": "case_2418470",
+            "score": 0.9471268653869629,
+            "intent": "customer_service_complaint",
+            "resolution_type": "redirected_to_other_operator",
+            "problem": "poor excuse of a company. Fuming with having to pay an extra \u00a347.80 today after an awful journey to Leeds on 27/10/17 \ud83d\ude21\ud83d\ude21\ud83d\ude21",
+            "response": "You'll need to speak with @120576 as they're the team they can advise on those services",
+            "relevant": false,
+            "reasons": [
+              "same candidate intent (customer_service_complaint)",
+              "different resolution type (redirected_to_other_operator vs query's compensation)",
+              "shared terms: pay"
+            ]
+          }
+        ]
+      },
+      {
+        "case_id": "case_2472316",
+        "query": "Dog sat on table in First class? Sod any paying passengers who are allergic to them",
+        "intent": "seat_reservation_issue",
+        "resolution_type": "self_service",
+        "first_relevant_rank": 12,
+        "results": [
+          {
+            "rank": 1,
+            "case_id": "case_628955",
+            "score": 1.0,
+            "intent": "chitchat_non_support",
+            "resolution_type": "information_provided",
+            "problem": "what is your policy on dogs? I'm allergic so sat in drinks carriage c and there is a dog!",
+            "response": "Dogs are allowed on our services, if you speak with a member of the onboard team they can advise on available seats in other carriages if you wish to move seats. | They \u2026",
+            "relevant": false,
+            "reasons": [
+              "different candidate intent (chitchat_non_support vs query seat_reservation_issue)",
+              "different resolution type (information_provided vs query's self_service)",
+              "shared terms: allergic, dog, sat"
+            ]
+          },
+          {
+            "rank": 2,
+            "case_id": "case_999463",
+            "score": 0.9543406963348389,
+            "intent": "seat_reservation_issue",
+            "resolution_type": "information_provided",
+            "problem": "Do u need to buy a ticket for a dog/Cat if occupying a seat?",
+            "response": "They don't need tickets, but we do ask that the don't sit on the seats unless it's covered.",
+            "relevant": false,
+            "reasons": [
+              "same candidate intent (seat_reservation_issue)",
+              "different resolution type (information_provided vs query's self_service)",
+              "shared terms: dog"
+            ]
+          },
+          {
+            "rank": 3,
+            "case_id": "case_1163039",
+            "score": 0.8818894624710083,
+            "intent": "seat_reservation_issue",
+            "resolution_type": "feedback_acknowledged",
+            "problem": "Well done! Booked Priority Seat as we have a Guide Dog. Why did you give us standard seats? Pointless phoning up to book!",
+            "response": "We'll pass on your comments",
+            "relevant": false,
+            "reasons": [
+              "same candidate intent (seat_reservation_issue)",
+              "different resolution type (feedback_acknowledged vs query's self_service)",
+              "shared terms: dog"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

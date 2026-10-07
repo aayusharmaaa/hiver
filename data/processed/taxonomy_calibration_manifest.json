@@ -1,0 +1,78 @@
+{
+  "config": {
+    "seed": 42,
+    "target_size": 200,
+    "low_margin_fraction": 0.5,
+    "low_margin_quantile": 0.4
+  },
+  "source_split": "golden_pool_reserve",
+  "reserve_cases": 1240,
+  "exclusions": {
+    "shares_group_with_golden": 128,
+    "continuation_episode_no_opening": 22,
+    "does_not_start_with_customer": 8
+  },
+  "eligible_cases": 1082,
+  "eligible_by_candidate_intent": {
+    "service_status_delay_enquiry": 253,
+    "journey_disruption_complaint": 170,
+    "praise_positive_feedback": 124,
+    "chitchat_non_support": 106,
+    "ticket_booking_query": 95,
+    "seat_reservation_issue": 84,
+    "customer_service_complaint": 84,
+    "delay_repay_refund_claim": 78,
+    "first_class_catering_issue": 40,
+    "onboard_wifi_issue": 36,
+    "unclear_or_media_only": 12
+  },
+  "quotas": {
+    "service_status_delay_enquiry": 30,
+    "journey_disruption_complaint": 28,
+    "chitchat_non_support": 24,
+    "customer_service_complaint": 24,
+    "delay_repay_refund_claim": 22,
+    "ticket_booking_query": 20,
+    "seat_reservation_issue": 20,
+    "unclear_or_media_only": 14,
+    "praise_positive_feedback": 8,
+    "first_class_catering_issue": 5,
+    "onboard_wifi_issue": 5
+  },
+  "selected_by_candidate_intent": {
+    "service_status_delay_enquiry": 31,
+    "journey_disruption_complaint": 29,
+    "chitchat_non_support": 24,
+    "customer_service_complaint": 24,
+    "delay_repay_refund_claim": 22,
+    "seat_reservation_issue": 20,
+    "ticket_booking_query": 20,
+    "unclear_or_media_only": 12,
+    "praise_positive_feedback": 8,
+    "first_class_catering_issue": 5,
+    "onboard_wifi_issue": 5
+  },
+  "selection_reason": {
+    "diverse_coverage": 95,
+    "low_margin_boundary": 93,
+    "all_eligible": 12
+  },
+  "n_selected": 200,
+  "leakage_checks_all_zero": {
+    "not_in_reserve": 0,
+    "duplicate_case_ids": 0,
+    "case_ids_in_golden": 0,
+    "customers_shared_with_golden": 0,
+    "conversations_shared_with_golden": 0,
+    "groups_shared_with_golden": 0
+  },
+  "calibration_case_ids_sha256": "2fb43349104230f490dc9187b9f373e038a6acdc56959a43023361fd8e433be2",
+  "source_columns_sha256": "b625aae984c0e4c6cafc984a1be80b0ab433a4b4827ff48112d78870428e4953",
+  "golden_case_ids_sha256": "f84b54baaf0331ac47db0925fb67542999e614f78de953ed6e160f185230444c",
+  "notes": [
+    "Sample is stratified to over-represent confusable intents; use stratum_weight for within-intent prevalence only.",
+    "Reserve cases that share a group, customer, conversation, tweet, or opening text with any golden case were excluded.",
+    "human_* columns are empty. Do not pre-fill them with model output.",
+    "source_columns_sha256 fingerprints every non-human column; the labeling tool refuses to run if it changes."
+  ]
+}

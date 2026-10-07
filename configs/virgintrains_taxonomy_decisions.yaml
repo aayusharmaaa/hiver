@@ -1,0 +1,40 @@
+# Reviewer decisions for freezing the VirginTrains taxonomy.
+#
+# Fill this in AFTER reading reports/taxonomy_calibration_report.md (produced by scripts/compare_taxonomy.py
+# from the human-labelled data/processed/taxonomy_calibration.csv). scripts/finalize_taxonomy.py refuses to run
+# until `reviewed_by` and `reviewed_on` are set. Leaving every list empty means "keep the candidate taxonomy as is".
+#
+# The tool recommends, the reviewer decides. Nothing in here is pre-filled.
+
+reviewed_by: ""        # full name of the human reviewer (required)
+reviewed_on: ""        # YYYY-MM-DD (required)
+
+# Merge intents. `definition` must be written by the reviewer. Example:
+# merges:
+#   - into: service_status_delay_enquiry
+#     from: [journey_disruption_complaint]
+#     definition: "..."
+merges: []
+
+# Rename an intent: {old_name: new_name}
+renames: {}
+
+# Intents to dissolve into the fallback.
+drop_to_fallback: []
+
+# Brand-new intents proposed by the labeller. Each needs name, definition, inclusion_criteria, exclusion_criteria;
+# every other field defaults to NEEDS_REVIEW.
+# new_intents:
+#   - name: lost_property_request
+#     definition: "..."
+#     inclusion_criteria: ["..."]
+#     exclusion_criteria: ["..."]
+new_intents: []
+
+# Field overrides per intent. Allowed fields: definition, inclusion_criteria, exclusion_criteria, positive_examples,
+# negative_examples, common_resolution_patterns, resolution_types, required_information, known_confusable_intents,
+# escalation_triggers, safe_to_auto_handle, auto_handle_evidence. Example:
+# edits:
+#   seat_reservation_issue:
+#     exclusion_criteria: ["..."]
+edits: {}

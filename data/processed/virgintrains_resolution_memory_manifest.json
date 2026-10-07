@@ -1,0 +1,22 @@
+{
+  "file": "virgintrains_resolution_memory.parquet",
+  "file_sha256": "ce6b65eb31d0b73069319e71abaf617317da293309b754259f350f1fda67fc89",
+  "split": "train_retrieval",
+  "n_episodes": 14213,
+  "n_primary_corpus": 10380,
+  "evidence_quality": {
+    "strong": 10380,
+    "weak": 2623,
+    "no_brand_reply": 1210
+  },
+  "exclusion_reasons": {
+    "brand_never_replied": 1210,
+    "weak_resolution_type_other": 989,
+    "weak_resolution_type_clarification_requested": 526,
+    "weak_resolution_type_unresolved": 497,
+    "continuation_without_opening_problem": 376,
+    "fallback_intent_problem_unclear": 232,
+    "uninformative_customer_problem": 3
+  },
+  "intent_source": "candidate_taxonomy_not_ground_truth"
+}

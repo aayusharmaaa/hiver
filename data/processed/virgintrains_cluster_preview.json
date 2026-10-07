@@ -1,0 +1,1295 @@
+{
+  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "k": 12,
+  "n_fit": 15528,
+  "n_golden_pool_assigned": 1427,
+  "n_insufficient_or_continuation": 958,
+  "k_sweep": [
+    {
+      "k": 8,
+      "silhouette": 0.04416346922516823,
+      "inertia": 10664.4794921875,
+      "seed_agreement_ari": 0.9940438666461738,
+      "min_cluster_share": 0.0354198866563627
+    },
+    {
+      "k": 9,
+      "silhouette": 0.04711626470088959,
+      "inertia": 10567.736328125,
+      "seed_agreement_ari": 0.9665574963386747,
+      "min_cluster_share": 0.03438948995363215
+    },
+    {
+      "k": 10,
+      "silhouette": 0.049097735434770584,
+      "inertia": 10475.107421875,
+      "seed_agreement_ari": 0.978651052535028,
+      "min_cluster_share": 0.03355229263266358
+    },
+    {
+      "k": 11,
+      "silhouette": 0.0533682256937027,
+      "inertia": 10395.01171875,
+      "seed_agreement_ari": 0.9532353433318898,
+      "min_cluster_share": 0.033165893869139616
+    },
+    {
+      "k": 12,
+      "silhouette": 0.05384752154350281,
+      "inertia": 10335.451171875,
+      "seed_agreement_ari": 0.9213317021867499,
+      "min_cluster_share": 0.033423493044822256
+    },
+    {
+      "k": 13,
+      "silhouette": 0.04706766828894615,
+      "inertia": 10278.09375,
+      "seed_agreement_ari": 0.9935427789578164,
+      "min_cluster_share": 0.03355229263266358
+    },
+    {
+      "k": 14,
+      "silhouette": 0.043724946677684784,
+      "inertia": 10228.1259765625,
+      "seed_agreement_ari": 0.8419675256952146,
+      "min_cluster_share": 0.02820710973724884
+    },
+    {
+      "k": 15,
+      "silhouette": 0.046479638665914536,
+      "inertia": 10181.0712890625,
+      "seed_agreement_ari": 0.7295268123878882,
+      "min_cluster_share": 0.0333590932509016
+    }
+  ],
+  "tfidf_agreement": {
+    "nmi": 0.277179578989238,
+    "ari": 0.17062395772423386
+  },
+  "clusters": {
+    "0": {
+      "size": 2047,
+      "share": 0.1318,
+      "top_terms": [
+        "morning",
+        "good",
+        "just",
+        "ferrell",
+        "today",
+        "toilet",
+        "day",
+        "love",
+        "guys",
+        "like",
+        "did",
+        "toilets"
+      ],
+      "nearest_examples": [
+        {
+          "case_id": "case_2723805",
+          "text": "Hello @VirginTrains myself &amp; buddy's have been sitting on the floor for 4 hours now on the way back from Edinburgh.We spent over £680 on the tickets &amp; we are on your finest carpet next too a smelly,out of order toilet. I'm baffed. Please get back to us. Love a few restless lads x https://t.co/yZpi9EbQ2k"
+        },
+        {
+          "case_id": "case_2089364",
+          "text": "@120244 @VirginTrains @120576 @121428 @121516 @124107 @LondonMidland Morning everyone! BL"
+        },
+        {
+          "case_id": "case_685303",
+          "text": "@VirginTrains first class, west coast today for a change. Comfy, well fed, adorable old lady sat opposite who “has got 94% battery”. Shame about the toilet “entertainment”. Ditch it guys"
+        },
+        {
+          "case_id": "case_1420976",
+          "text": "@VirginTrains Morning lovely tweeps! Have a Maccalicious Thursday! X https://t.co/OkcK5lfgmJ"
+        },
+        {
+          "case_id": "case_2811553",
+          "text": "Toilet humour #WillFerrell @VirginTrains made my morning! 😂"
+        },
+        {
+          "case_id": "case_1397470",
+          "text": "Time for work hello @VirginTrains @120576 https://t.co/vz8grBlXFu"
+        },
+        {
+          "case_id": "case_2820919",
+          "text": "@VirginTrains goos morning hows u"
+        },
+        {
+          "case_id": "case_1868609",
+          "text": "@VirginTrains Morning PA, how r u?"
+        }
+      ],
+      "ambiguous_examples": [
+        {
+          "case_id": "case_2935606",
+          "text": "@VirginTrains you know that advert where the girl arrives calm collected? How about showing a more realistic one next time with people standing in the aisles from Crewe to London? I estimate at least 50 standing like me. #ripoff #virgin",
+          "second_cluster": 8,
+          "margin": 0.0
+        },
+        {
+          "case_id": "case_494597",
+          "text": "This rather busy and delayed @virgintrains trip would be fine if the wife would stop moaning #doghouse",
+          "second_cluster": 8,
+          "margin": 0.0002
+        },
+        {
+          "case_id": "case_2489573",
+          "text": "@VirginTrains @425482 Or when we’re likely to depart.",
+          "second_cluster": 2,
+          "margin": 0.0002
+        },
+        {
+          "case_id": "case_1609645",
+          "text": "@126035 @VirginTrains The Livery is to plain. https://t.co/A8iaYhpVF5",
+          "second_cluster": 8,
+          "margin": 0.0004
+        },
+        {
+          "case_id": "case_2689093",
+          "text": "Who goes to London to buy trainers? Me.\nWho goes to London to buy trainers and loses their wallet? Me.",
+          "second_cluster": 8,
+          "margin": 0.0005
+        },
+        {
+          "case_id": "case_875344",
+          "text": "@VirginTrains thank you to the guard who helped my daughter when she was penned in by a woman yelling at another. #knightinshiningarmour",
+          "second_cluster": 8,
+          "margin": 0.0005
+        },
+        {
+          "case_id": "case_913960",
+          "text": "@VirginTrains toilets are like a scene from Halloween on 9.08 train  from Edinburgh. Really grim.",
+          "second_cluster": 8,
+          "margin": 0.0005
+        },
+        {
+          "case_id": "case_2469308",
+          "text": "@120576  @VirginTrains \nAre you still upgrading Band of Brothers help for heros to first class on presentation of a Band of brother card?",
+          "second_cluster": 4,
+          "margin": 0.0008
+        }
+      ]
+    },
+    "1": {
+      "size": 1910,
+      "share": 0.123,
+      "top_terms": [
+        "train",
+        "place place",
+        "train place",
+        "time",
+        "trains",
+        "time train",
+        "place train",
+        "running",
+        "trains place",
+        "cancelled",
+        "time place",
+        "delayed"
+      ],
+      "nearest_examples": [
+        {
+          "case_id": "case_1637936",
+          "text": "@116961 trains Is the 20.55 from Manchester Piccadilly to Euston going anytime soon? Literally no info available at the station"
+        },
+        {
+          "case_id": "case_1353047",
+          "text": "@VirginTrains we are trying to get to manchester this evening from london euston - will trains be running later this evening?"
+        },
+        {
+          "case_id": "case_1614409",
+          "text": "@VirginTrains traveling to Preston from Euston at 1340, please can I have an update on my train??"
+        },
+        {
+          "case_id": "case_595414",
+          "text": "@VirginTrains will trains between euston and manchester be operating tomorrow at 7:30?"
+        },
+        {
+          "case_id": "case_755645",
+          "text": "@VirginTrains my train 19.15 from Bham New St to Lancaster is cancelled. I've been told to get the 19.36 to Crewe..what then?"
+        },
+        {
+          "case_id": "case_983186",
+          "text": "@VirginTrains I am booked on the 7:36 euston to mcr Piccadilly train this evening. Any chance I can come back on an earlier train."
+        },
+        {
+          "case_id": "case_1462303",
+          "text": "@VirginTrains the train to Manchester from Euston at 13:00 is cancelled how do i get there as soon as possible?"
+        },
+        {
+          "case_id": "case_1409497",
+          "text": "@VirginTrains what's happening with trains from London to Carlisle? Is the 7:30 going?"
+        }
+      ],
+      "ambiguous_examples": [
+        {
+          "case_id": "case_1329607",
+          "text": "@VirginTrains Do we get our ticket fare back???? I’m having to stay an extra night in London can’t even move in Euston let alone get a train if there was to be one!!!",
+          "second_cluster": 10,
+          "margin": 0.0004
+        },
+        {
+          "case_id": "case_2761567",
+          "text": "Well that makes sense @115793 putting a Freight train in front of our @VirginTrains service this morning. Having a rather slow trip to London via Northampton.",
+          "second_cluster": 5,
+          "margin": 0.0005
+        },
+        {
+          "case_id": "case_659091",
+          "text": "Missing my @VirginTrains train back north becuase the Northern Line locked us underground for 20 minutes &amp; having to pay 3 times price for a new ticket + an hours wait + 2am arrival is exactly what @22693 was made for.",
+          "second_cluster": 5,
+          "margin": 0.0008
+        },
+        {
+          "case_id": "case_875325",
+          "text": "@VirginTrains at this rate it will take you as long as the train was delayed to answer the phone! #hangingonthetelephone",
+          "second_cluster": 5,
+          "margin": 0.0008
+        },
+        {
+          "case_id": "case_1637278",
+          "text": "@VirginTrains I am extremely disappointed that I have been waiting for the 21:05 train due to the lateness of YOUR member of staff (1)",
+          "second_cluster": 5,
+          "margin": 0.0009
+        },
+        {
+          "case_id": "case_2773935",
+          "text": "@VirginTrains Return journey to Birm Int from Euston. TWO shops on board. Can't get to either...",
+          "second_cluster": 5,
+          "margin": 0.0009
+        },
+        {
+          "case_id": "case_1886485",
+          "text": "@120576 do you know of any engineer works btween Birmingham and London on 30 Nov as only slow trains available?",
+          "second_cluster": 5,
+          "margin": 0.001
+        },
+        {
+          "case_id": "case_1945721",
+          "text": "@VirginTrains Pnawn da. Any problems with any trains not running in North and Mid Wales pls due to Storm Ophelia or floods etc",
+          "second_cluster": 5,
+          "margin": 0.0011
+        }
+      ]
+    },
+    "2": {
+      "size": 1032,
+      "share": 0.0665,
+      "top_terms": [
+        "delayed",
+        "time",
+        "delays",
+        "delay",
+        "late",
+        "mins",
+        "waiting",
+        "hour",
+        "station",
+        "day",
+        "connection",
+        "service"
+      ],
+      "nearest_examples": [
+        {
+          "case_id": "case_539584",
+          "text": "@VirginTrains hello, any news on the 14:11 to London from Coventry? I have a ticket on this and its just saying delayed"
+        },
+        {
+          "case_id": "case_640910",
+          "text": "@VirginTrains delayed coming to London this am now delayed going home:-( any departure time expected for the 2007 to Liverpool please?"
+        },
+        {
+          "case_id": "case_1276546",
+          "text": "@VirginTrains 8.23 from Rugby is still at Rugby Station. We’re now over 20 minutes late. No announcement to help us. What’s happening?!"
+        },
+        {
+          "case_id": "case_1618183",
+          "text": "@VirginTrains any update on the delays at Preston? Still waiting for the 13:42 to Glasgow Central. Thanks."
+        },
+        {
+          "case_id": "case_507855",
+          "text": "@VirginTrains On the 1840 EUS to MAN. More delays, no announcements, miles from destination....what is going on?"
+        },
+        {
+          "case_id": "case_767219",
+          "text": "@VirginTrains Hello! Any news on what the delay is between Liverpool to Euston please? I’m waiting at Crewe for the 9.13. Thanks!"
+        },
+        {
+          "case_id": "case_1386210",
+          "text": "@VirginTrains 21.10 Eus to Pre last night delayed by 30 mins and No booked Mobility assistance at Preston. Not Happy"
+        },
+        {
+          "case_id": "case_2766028",
+          "text": "Usual excuses for delays on @VirginTrains due to signalling issues in north of England making what should have been a 3 hour journey to London a 4 plus hours with forced changes at Birmingham 😡"
+        }
+      ],
+      "ambiguous_examples": [
+        {
+          "case_id": "case_1481049",
+          "text": "@VirginTrains what time\nIs the 7-21 from peterborough to London due to arrive today with the delay?",
+          "second_cluster": 9,
+          "margin": 0.0005
+        },
+        {
+          "case_id": "case_2347185",
+          "text": "@VirginTrains what do you think about how slow it is from Stoke-on-Trent to liverpool and cost",
+          "second_cluster": 9,
+          "margin": 0.0006
+        },
+        {
+          "case_id": "case_1621802",
+          "text": "@VirginTrains When you say 'as close to your booked time as possible', would you mind clarifying what you mean? Thanks",
+          "second_cluster": 10,
+          "margin": 0.0006
+        },
+        {
+          "case_id": "case_489309",
+          "text": "@231530 @VirginTrains Oh no. I hope you reach your destination in time. Always happens at the wrong time. Cannot work it out who you are seeing though. Must be a confirmed old dog now if I cannnot bring him/her to mind.  Is it Steps?",
+          "second_cluster": 8,
+          "margin": 0.0006
+        },
+        {
+          "case_id": "case_2163858",
+          "text": "Due to a fault with the signalling system at #LiverpoolSt some lines are blocked. RS",
+          "second_cluster": 5,
+          "margin": 0.0008
+        },
+        {
+          "case_id": "case_589106",
+          "text": "@VirginTrains hi sorry if this has already been asked but is the 19:57 to Manchester running? If so, is it likely to be delayed? Thanks",
+          "second_cluster": 9,
+          "margin": 0.0011
+        },
+        {
+          "case_id": "case_878139",
+          "text": "@VirginTrains is it ok that I’m expected to stand on my 4+hr journey to Edinburgh from London because the service is so heavily booked?",
+          "second_cluster": 9,
+          "margin": 0.0013
+        },
+        {
+          "case_id": "case_176572",
+          "text": "How about an announcement @VirginTrains.\nTrain arrived at station 7 mins early. Should have left 10 mins ago. No announcements to explain why we didn’t leave on time or when we might get going.",
+          "second_cluster": 1,
+          "margin": 0.0015
+        }
+      ]
+    },
+    "3": {
+      "size": 884,
+      "share": 0.0569,
+      "top_terms": [
+        "refund",
+        "delay",
+        "repay",
+        "delay repay",
+        "claim",
+        "delayed",
+        "compensation",
+        "cancelled",
+        "train",
+        "ticket",
+        "ago",
+        "email"
+      ],
+      "nearest_examples": [
+        {
+          "case_id": "case_2073832",
+          "text": "@VirginTrains :shocked at poor service, two delayed trains over 2 wks: filled in delay repay forms and was told you would get back to me. This was weeks ago, you haven’t. I want my refunds!"
+        },
+        {
+          "case_id": "case_503112",
+          "text": ".@VirginTrains please can I get a refund for my 1 hr 8 min delayed train journey this evening?"
+        },
+        {
+          "case_id": "case_2422026",
+          "text": "@VirginTrains Hi, still no confirmation of refund or any payment made to me for delayed Euston-manchester train 5th Nov, 19:37 service"
+        },
+        {
+          "case_id": "case_129268",
+          "text": "@VirginTrains hi, it’s now been 28 days since my train was cancelled and I have yet to receive my money back through delay repay."
+        },
+        {
+          "case_id": "case_2404550",
+          "text": "@VirginTrains my train was delayed by 130 mins. I've done delay repay and was told it was 17 mins late so no refund. Who can sort this out for me?"
+        },
+        {
+          "case_id": "case_1753428",
+          "text": "@VirginTrains Hi, any chance you can look into my delay repay refund from another cancelled train on 27th October. I've not received it yet."
+        },
+        {
+          "case_id": "case_2771501",
+          "text": "@VirginTrains Hi! I'm still waiting on my refund for my delayed train. Already emailed weeks ago to no response. Can someone help?"
+        },
+        {
+          "case_id": "case_146005",
+          "text": "@VirginTrains i submitted a refund request online about 2 1/2 weeks ago because my MAN-EUS train on 5/11/17 was delayed by &gt;2 hours. i’ve not heard anything back from yourselves though, how long until i can expect the money?"
+        }
+      ],
+      "ambiguous_examples": [
+        {
+          "case_id": "case_2188795",
+          "text": "@VirginTrains do you accept PayPal?",
+          "second_cluster": 10,
+          "margin": 0.0011
+        },
+        {
+          "case_id": "case_496522",
+          "text": "Manchester to London train delayed by 30mins! Ridiculous @VirginTrains I expect a refund. Won't catch my connecting train now. Well done!!",
+          "second_cluster": 1,
+          "margin": 0.0012
+        },
+        {
+          "case_id": "case_1453445",
+          "text": "Met with students, set up a Law Soc, and paid @60265 @60266 Winter Ball deposit. Now back to London on @VirginTrains",
+          "second_cluster": 4,
+          "margin": 0.0014
+        },
+        {
+          "case_id": "case_2325653",
+          "text": "Hi @VirginTrains I haven’t received my compensation yet for a cancelled train home from Euston-Picc on 5 nov. Thought it was automatic?",
+          "second_cluster": 1,
+          "margin": 0.0017
+        },
+        {
+          "case_id": "case_1763301",
+          "text": "@VirginTrains what is wrong with you people. Book direct with virgin. Fill in delay replay form with booking ref. Get email saying can't help as don't have ref! Twice now. Online chat says need to fill form in !",
+          "second_cluster": 7,
+          "margin": 0.0018
+        },
+        {
+          "case_id": "case_541913",
+          "text": "@VirginTrains @244269 I've messaged and emailed about a journey weeks ago and still nothing back!",
+          "second_cluster": 2,
+          "margin": 0.0022
+        },
+        {
+          "case_id": "case_616248",
+          "text": "Still very upset re my stolen train tickets, despite @VirginTrains requesting a crime number, for some help, still to repurchase #appaling",
+          "second_cluster": 10,
+          "margin": 0.0028
+        },
+        {
+          "case_id": "case_1554821",
+          "text": "@VirginTrains 3 trains cancelled meaning I miss my connection and you charge £50 for a new ticket?",
+          "second_cluster": 5,
+          "margin": 0.0028
+        }
+      ]
+    },
+    "4": {
+      "size": 707,
+      "share": 0.0455,
+      "top_terms": [
+        "class",
+        "0st class",
+        "0st",
+        "upgrade",
+        "service",
+        "food",
+        "lounge",
+        "class lounge",
+        "class service",
+        "firstclass",
+        "class time",
+        "class place"
+      ],
+      "nearest_examples": [
+        {
+          "case_id": "case_496482",
+          "text": "@VirginTrains no food or drink in first class on the 17:40 Euston to Manchester. Any chance of a partial refund or a free upgrade on a future service?"
+        },
+        {
+          "case_id": "case_2417615",
+          "text": "@VirginTrains sitting in 1st class and there is no food to be offered just drinks... #firstclass #disappointed #paid for #service 😭😭😭"
+        },
+        {
+          "case_id": "case_2368122",
+          "text": "Hi @VirginTrains Can I ask why there is no food or drink at all in First Class on the 15.50 from Birmingham to Euston I am on? Everybody has paid quite a lot for their tickets and we haven't even had a coffee."
+        },
+        {
+          "case_id": "case_2732614",
+          "text": "@VirginTrains on14.00 from Glasgow coach J,the food and drink and service from the staff is First Class👍"
+        },
+        {
+          "case_id": "case_1333028",
+          "text": "@VirginTrains any seats in first class ‘spare’ there 8 ppl sat on the floor in coach A 12.58 train Preston to London https://t.co/6Z4lfM0y09"
+        },
+        {
+          "case_id": "case_1961868",
+          "text": "@VirginTrains First Class lounge in Euston closed at 8. Now no at seat service in first class on 20.25 to Wolverhampton. What did I pay for, exactly?"
+        },
+        {
+          "case_id": "case_1280264",
+          "text": "Absolutely waste of @VirginTrains first class when you can't get in the lounge at Euston until an hour before your train, hardly worth it. 😠"
+        },
+        {
+          "case_id": "case_2124690",
+          "text": "@VirginTrains first class to kings cross from Wakefield 753. No breakfast , really poor service #notgoodenough"
+        }
+      ],
+      "ambiguous_examples": [
+        {
+          "case_id": "case_2532082",
+          "text": "@VirginTrains service gets worse , so the choice is Soup or a left over Bacon roll? Oh wait there’s no soup at 11.35 .....",
+          "second_cluster": 0,
+          "margin": 0.0005
+        },
+        {
+          "case_id": "case_836604",
+          "text": "@VirginTrains no card payments on the 9:41 from Preston to Glasgow. 😱 People need coffee in the AM.",
+          "second_cluster": 2,
+          "margin": 0.0006
+        },
+        {
+          "case_id": "case_2694762",
+          "text": "Had to spend 10% of my monthly wage to sit on the floor  of @VirginTrains for 10 hours due to overselling &amp; overcrowding.",
+          "second_cluster": 7,
+          "margin": 0.0007
+        },
+        {
+          "case_id": "case_809820",
+          "text": "@VirginTrains @1685. No staff to help our group and wheelchair student apparently #virgintrains https://t.co/0GbmjmDgo1",
+          "second_cluster": 7,
+          "margin": 0.0015
+        },
+        {
+          "case_id": "case_1333028",
+          "text": "@VirginTrains any seats in first class ‘spare’ there 8 ppl sat on the floor in coach A 12.58 train Preston to London https://t.co/6Z4lfM0y09",
+          "second_cluster": 6,
+          "margin": 0.0017
+        },
+        {
+          "case_id": "case_2618608",
+          "text": "I’m sure @VirginTrains are running a drinks Sales campaign by turning the heating up to 30c - coach F should be renamed “the oven” 😢",
+          "second_cluster": 6,
+          "margin": 0.0018
+        },
+        {
+          "case_id": "case_1910506",
+          "text": "Be aware if you take a @VirginTrains as the staff who serve the coffee &amp; food,are the ones who check up on you if you don't look the part!",
+          "second_cluster": 7,
+          "margin": 0.002
+        },
+        {
+          "case_id": "case_1027919",
+          "text": "@VirginTrains a big tight with the snacks service in first today, 4.5 hour journey and only 1 pass at the snacks. https://t.co/PlV1cDgadv",
+          "second_cluster": 8,
+          "margin": 0.0032
+        }
+      ]
+    },
+    "5": {
+      "size": 2093,
+      "share": 0.1348,
+      "top_terms": [
+        "train",
+        "trains",
+        "virgin",
+        "manager",
+        "train manager",
+        "virgin trains",
+        "people",
+        "staff",
+        "carriages",
+        "place train",
+        "cancelled",
+        "train place"
+      ],
+      "nearest_examples": [
+        {
+          "case_id": "case_794832",
+          "text": "The man loves #Trains too much! @VirginTrains service from Wolves to London in 2 mins anyone?? https://t.co/SGHbuj0lCm"
+        },
+        {
+          "case_id": "case_2224699",
+          "text": "Welcome to this @virgintrains service to Euston. We only have half a train today as the other half decided it didn’t want to go to Wrexham. An unusual problem.."
+        },
+        {
+          "case_id": "case_98360",
+          "text": "@VirginTrains awful that you haven’t forewarned passengers of cancelled trains today! Additional changes and stops for the Liverpool train to get to Holyhead!!!"
+        },
+        {
+          "case_id": "case_2678744",
+          "text": "Not impressed with @VirginTrains  \nTrying to get home to Newcastle from London. Advised to get off our first train. Overbooked. Next train not even standing room. Ticket office man couldn't do anything. Not even apologise. 'Try the next one' #shambles"
+        },
+        {
+          "case_id": "case_506355",
+          "text": "@VirginTrains Seriously what the hell is happening with trains from #euston this evening. #virgintrains"
+        },
+        {
+          "case_id": "case_1125668",
+          "text": "@VirginTrains Train manager ‘Mark’ on Leeds-Kings Cross 13.45 just kicked me off empty carriage. Last time I’ll take a virgin train #thanks"
+        },
+        {
+          "case_id": "case_982606",
+          "text": "I would like to apologise to @VirginTrains: all UK trains are overcrowded and inefficient. Sorry for singling you out."
+        },
+        {
+          "case_id": "case_1126651",
+          "text": "Wtf is going on with trains?! @121516 @VirginTrains"
+        }
+      ],
+      "ambiguous_examples": [
+        {
+          "case_id": "case_2515069",
+          "text": "#GrandCentral train cancelled  - not allowed to go on empty @VirginTrains 8:02 but have to stand for two hours on packed 8:31.",
+          "second_cluster": 1,
+          "margin": 0.0001
+        },
+        {
+          "case_id": "case_1908639",
+          "text": "Have to say @VirginTrains Spotify ads may well have made me want to write 'cows on a train' on the way to #London today. Watch this space!",
+          "second_cluster": 8,
+          "margin": 0.0003
+        },
+        {
+          "case_id": "case_1723503",
+          "text": "@VirginTrains poor show today #FirstClass Cov to Brum machine unstocked in longe then REFUSED coffee on train #Whatamipayingfor",
+          "second_cluster": 4,
+          "margin": 0.0003
+        },
+        {
+          "case_id": "case_2639912",
+          "text": "@VirginTrains your guy John running the food trolly on the 19.00 lol kings x to Edinburgh is a legend! He makes train journeys better! Give that man a raise!",
+          "second_cluster": 8,
+          "margin": 0.0004
+        },
+        {
+          "case_id": "case_1271503",
+          "text": "@VirginTrains Sandra the train manager on the 10.50 new street- London was amazing",
+          "second_cluster": 8,
+          "margin": 0.0004
+        },
+        {
+          "case_id": "case_1091025",
+          "text": "@VirginTrains it’s well hot on your carriages, please can you turn the heating off. 17.40 Euston to Manchester Piccadilly. Thanks!",
+          "second_cluster": 8,
+          "margin": 0.0005
+        },
+        {
+          "case_id": "case_1451163",
+          "text": "Thanks to @VirginTrains I have 0 minutes to get from one train to another. 🤔🙃👏🏽",
+          "second_cluster": 1,
+          "margin": 0.0005
+        },
+        {
+          "case_id": "case_155413",
+          "text": "@VirginTrains I’m sat on one of your trains and I feel like I’m in Tenerife. Can you turn the heating off 1430 KGX - NCL",
+          "second_cluster": 1,
+          "margin": 0.0006
+        }
+      ]
+    },
+    "6": {
+      "size": 1096,
+      "share": 0.0706,
+      "top_terms": [
+        "seat",
+        "seats",
+        "reserved",
+        "reservations",
+        "time place",
+        "time",
+        "reservation",
+        "place place",
+        "seat reservations",
+        "unreserved",
+        "seat time",
+        "quiet"
+      ],
+      "nearest_examples": [
+        {
+          "case_id": "case_1205576",
+          "text": "@VirginTrains  - booked 8 seats months in advance - carriage missing - having to stand from Doncaster to London - not good enough!!!"
+        },
+        {
+          "case_id": "case_862994",
+          "text": "@VirginTrains Birmingham to Glasgow 15.15 reserved seat and no carriage available @127472 #Bad-Service #NotHappy!"
+        },
+        {
+          "case_id": "case_908730",
+          "text": "Seat reservation not loaded on to the seats on the @virgintrains 19.30 Euston to Glasgow Central... causing chaos!"
+        },
+        {
+          "case_id": "case_2437826",
+          "text": "@VirginTrains on 15:23 from Crewe to Euston. Not enough seats.Some seats double booked.Some reserved seats showing as available.Sort it out."
+        },
+        {
+          "case_id": "case_2249367",
+          "text": "Carriage F of the 1955 Man to Eus. It's the only unreserved seating coach on the service and there are 34 reservations in it. Could you explain please @VirginTrains ? @125861"
+        },
+        {
+          "case_id": "case_444045",
+          "text": "Standing up on the @VirginTrains  from Warrington to Birmingham despite having booked my seat due to a problem with all reservations! Seriously!! #joke https://t.co/2uHn6VCYXE"
+        },
+        {
+          "case_id": "case_846131",
+          "text": "@VirginTrains thanks for the delay to Manchester Airport, no reserved seats now on next service #disappointed"
+        },
+        {
+          "case_id": "case_598753",
+          "text": "@VirginTrains have seat reservations been switched off the 7.04 Stockport to London?"
+        }
+      ],
+      "ambiguous_examples": [
+        {
+          "case_id": "case_2428661",
+          "text": "@VirginTrains hi I’ll be on the delayed 17.51 train from Carlisle to London - is there unreserved seats somewhere? Thanks",
+          "second_cluster": 1,
+          "margin": 0.0004
+        },
+        {
+          "case_id": "case_2675024",
+          "text": "@VirginTrains what’s the point of reserving seats 2 months in advance, if you end up standing on your train journey from Edinburgh to London? #fail #virgintrains #badservice #complaint",
+          "second_cluster": 5,
+          "margin": 0.0008
+        },
+        {
+          "case_id": "case_1649219",
+          "text": "Worst train journey I've ever been on @VirginTrains #delayed #overcrowded #toiletsbroken + cancelled seat reservations - How do I complain? https://t.co/UnEdDFuEJN",
+          "second_cluster": 5,
+          "margin": 0.0009
+        },
+        {
+          "case_id": "case_1383591",
+          "text": "@VirginTrains £65 ticket to Manchester gets me squashed up against a door.     Sound.",
+          "second_cluster": 10,
+          "margin": 0.0009
+        },
+        {
+          "case_id": "case_1848478",
+          "text": "@VirginTrains Idea pitch: A noisy coach. Like the opposite of a quiet coach with straw on the floor where parents with crying kids can go?",
+          "second_cluster": 0,
+          "margin": 0.001
+        },
+        {
+          "case_id": "case_2891419",
+          "text": "@VirginTrains Please send the conductor to coach E on the 14.40 eus to Manc. There’s some kind of mix up with reservations.",
+          "second_cluster": 1,
+          "margin": 0.001
+        },
+        {
+          "case_id": "case_1035372",
+          "text": "@VirginTrains You need to hire better people! Jennie at platform 3 Euston 11am to Manchester- the rudest person in London today!! £80 to get treated like that!? No thanks",
+          "second_cluster": 7,
+          "margin": 0.0013
+        },
+        {
+          "case_id": "case_2271509",
+          "text": "@VirginTrains crazy full 10.35am York to Southampton! 😡 standing room only, ticket/seat issues, packed btwn coaches what is going on?",
+          "second_cluster": 5,
+          "margin": 0.0013
+        }
+      ]
+    },
+    "7": {
+      "size": 1090,
+      "share": 0.0702,
+      "top_terms": [
+        "service",
+        "customer",
+        "customer service",
+        "staff",
+        "complaint",
+        "customers",
+        "phone",
+        "services",
+        "don",
+        "rude",
+        "just",
+        "response"
+      ],
+      "nearest_examples": [
+        {
+          "case_id": "case_2120121",
+          "text": "@VirginTrains @624733 Got a reply from East Midlands from our trip to Sheffield on 21st. Better customer service obviously."
+        },
+        {
+          "case_id": "case_538290",
+          "text": "@VirginTrains went from great service on Thurs to terrible service today - delays cannot be helped but unhelpful, rude staff can be. Wrong information aswell shame really"
+        },
+        {
+          "case_id": "case_1617648",
+          "text": "Unbelievable poor customer service from virgin west coast at Euston today @virgintrains"
+        },
+        {
+          "case_id": "case_1317055",
+          "text": "@VirginTrains have been speaking to different people in your customer service for DAYS and no1 has been helpful. Such disappointing service"
+        },
+        {
+          "case_id": "case_621624",
+          "text": "Horrible customer service from @VirginTrains expected a lot better when you are trying to use their service but making it impossible! Poor service!"
+        },
+        {
+          "case_id": "case_1314951",
+          "text": "This is @virgintrains response to a customer complaint about lack of service in first class. Waste of time an money! https://t.co/keslKYMB2q"
+        },
+        {
+          "case_id": "case_1532415",
+          "text": "@VirginTrains what’s the problem with the London to Edinburgh service this evening pls? Customers had no announcement or explanation!"
+        },
+        {
+          "case_id": "case_1344918",
+          "text": "Furious with @VirginTrains for sending us via Leeds when my booked service ended up running! What a joke will be late now..."
+        }
+      ],
+      "ambiguous_examples": [
+        {
+          "case_id": "case_2116418",
+          "text": "Morning @VirginTrains any idea why you temporary Liverpool lounge isn’t open at South Parkway ? #PoorService https://t.co/4C7GSP1sPE",
+          "second_cluster": 2,
+          "margin": 0.0
+        },
+        {
+          "case_id": "case_2168611",
+          "text": "@VirginTrains how slow is there customer resolutions team!! 12th October I made a delay claim which was responded to on the 1st November. I then replied straight away as I was asked to explain a few details which I have done and they still haven't responded 😡😡😬",
+          "second_cluster": 3,
+          "margin": 0.0001
+        },
+        {
+          "case_id": "case_1205564",
+          "text": "Really glad I forked out 5 quid for the @VirginTrains onboard internet. If this tweet posts it will be a miracle. 😂 https://t.co/U16pfyIRUg",
+          "second_cluster": 0,
+          "margin": 0.0002
+        },
+        {
+          "case_id": "case_2419806",
+          "text": "Good god Dial up world be faster on @VirginTrains #internet #internetservice https://t.co/5TKYzqmtCv",
+          "second_cluster": 11,
+          "margin": 0.0003
+        },
+        {
+          "case_id": "case_2391698",
+          "text": "@120576 @VirginTrains @688700 And it's partly due to All The Stations as well, you won't forget them after you mentioned them in your vid about Azuma?",
+          "second_cluster": 2,
+          "margin": 0.0003
+        },
+        {
+          "case_id": "case_1696513",
+          "text": "rubbish first class service on the 1731 EDB - KGX tonight @VirginTrains. Short staffed so nobody to operate the microwave!!",
+          "second_cluster": 4,
+          "margin": 0.0003
+        },
+        {
+          "case_id": "case_1761431",
+          "text": "@VirginTrains @422836 Been watching this. Amazing kudos to those just trying to get on and home. Those complaining should just step back a bit and think",
+          "second_cluster": 0,
+          "margin": 0.0004
+        },
+        {
+          "case_id": "case_1308973",
+          "text": "@VirginTrains updated app not available on Windows phones? Only iPhone/Android?",
+          "second_cluster": 11,
+          "margin": 0.0004
+        }
+      ]
+    },
+    "8": {
+      "size": 1481,
+      "share": 0.0954,
+      "top_terms": [
+        "place place",
+        "thank",
+        "journey",
+        "great",
+        "time",
+        "time place",
+        "staff",
+        "thanks",
+        "lovely",
+        "day",
+        "today",
+        "way"
+      ],
+      "nearest_examples": [
+        {
+          "case_id": "case_701146",
+          "text": "Big thanks @VirginTrains for eventually getting us home to Glasgow in the early hours after the flooding in Lancashire last night, it was a bit touch &amp; go for a while, especially in Lancaster. Glasgow crew went above and beyond 👏👏👏👏"
+        },
+        {
+          "case_id": "case_1127597",
+          "text": "Another great @VirginTrains journey to #Peterborough for meeting @385847 -very handy for station 😀 https://t.co/q79A2pr8hz"
+        },
+        {
+          "case_id": "case_1722568",
+          "text": "@nationalrailenq a big thank you to all the staff at #WBQ Station yesterday who were so helpful with travel advice 👏🏼 Got to London on time!"
+        },
+        {
+          "case_id": "case_557576",
+          "text": "Visited #London today and had a fantastic day at @25429 🎅🏼🎄❄️☃️⭐️ Just wanted to give a shout out to @VirginTrains staff at Euston who (despite the chaos...overhead lines...delays) were fantastic and so helpful 👍🏼thank you!"
+        },
+        {
+          "case_id": "case_2614744",
+          "text": "Great journey on @VirginTrains 12.43 from Euston to Wolverhampton. Great service love the 1st class travel ☺"
+        },
+        {
+          "case_id": "case_1154335",
+          "text": "@VirginTrains just a shout out to the very professional and friendly staff on the 17:30 from Euston to Glasgow 👏👏👏😀"
+        },
+        {
+          "case_id": "case_162262",
+          "text": "We have had a fab journey on the 16.37 from Wolves to Edinburgh! Thank you to all of the staff who have looked after us ❤️ @VirginTrains you are amazing!! Xx"
+        },
+        {
+          "case_id": "case_1103109",
+          "text": "Great service from @VirginTrains staff at Birmingham tonight. Thank you for not making me stranded home. #london"
+        }
+      ],
+      "ambiguous_examples": [
+        {
+          "case_id": "case_537157",
+          "text": "@VirginTrains @244506 I'm sure hearing your cut and paste apology makes the gentlemans journey so much better - odd that you wouldn't accept my apology though for not having the technically correct ticket for my journey. Quite keen to enforce your side of the bargain on that occasion.",
+          "second_cluster": 7,
+          "margin": 0.0002
+        },
+        {
+          "case_id": "case_2764863",
+          "text": "When you've been up since stupid o'clock without time to grab a brew or get cash out &amp; @virgintrains announce a cash only trolley service. https://t.co/f132XQah1B",
+          "second_cluster": 5,
+          "margin": 0.0002
+        },
+        {
+          "case_id": "case_893251",
+          "text": "@VirginTrains WE NEED YOUR HELP! My boyfriend has just left his suit on the train and we have a wedding tomorrow morning. Can you help us?",
+          "second_cluster": 0,
+          "margin": 0.0004
+        },
+        {
+          "case_id": "case_1327273",
+          "text": "@VirginTrains I'm due to get 20:07 Euston to Liv Lime St.\nWhat are the chances that'll be affected by today's events? Thanks",
+          "second_cluster": 2,
+          "margin": 0.0007
+        },
+        {
+          "case_id": "case_741324",
+          "text": "Thanks for kicking me off a nice warm @VirginTrains. 12.10 from Euston cancelled due to crew shortage 20 mins from final dest #pisstake",
+          "second_cluster": 2,
+          "margin": 0.0008
+        },
+        {
+          "case_id": "case_2763159",
+          "text": "@VirginTrains Kings Cross 8:00 to York. Train manager's announcements good fun.... particularly given the time of day. He should have a fan club",
+          "second_cluster": 5,
+          "margin": 0.0008
+        },
+        {
+          "case_id": "case_552995",
+          "text": "@VirginTrains do you think travel tomorrow will be affected?",
+          "second_cluster": 2,
+          "margin": 0.0008
+        },
+        {
+          "case_id": "case_1647918",
+          "text": "@VirginTrains if you know there's a queue at Euston, maybe warn passengers at the previous stop. I'd be home already if I'd got off there 😡",
+          "second_cluster": 6,
+          "margin": 0.0009
+        }
+      ]
+    },
+    "9": {
+      "size": 1309,
+      "share": 0.0843,
+      "top_terms": [
+        "place place",
+        "time",
+        "time place",
+        "running",
+        "place running",
+        "place time",
+        "going",
+        "place cancelled",
+        "hi",
+        "cancelled",
+        "idea",
+        "delayed"
+      ],
+      "nearest_examples": [
+        {
+          "case_id": "case_1635365",
+          "text": "@VirginTrains what’s happening with the 19:37 Euston to Manchester ?"
+        },
+        {
+          "case_id": "case_895348",
+          "text": "@VirginTrains what's happening with the 7pm London to manchester?"
+        },
+        {
+          "case_id": "case_544878",
+          "text": "@VirginTrains where's the 16:47 from lime street to Euston?"
+        },
+        {
+          "case_id": "case_494603",
+          "text": "@VirginTrains any update on the 17.40 from Euston to Manchester Piccadilly?"
+        },
+        {
+          "case_id": "case_1327285",
+          "text": "Is the 14:07 still going to Liverpool lime street ? @VirginTrains @213768"
+        },
+        {
+          "case_id": "case_1611326",
+          "text": "@VirginTrains 10.38 from Liverpool to Euston not going anywhere. Could you give me an update please?"
+        },
+        {
+          "case_id": "case_1662321",
+          "text": "@VirginTrains what’s going on with 9:28 Darlington to kings cross?"
+        },
+        {
+          "case_id": "case_1626420",
+          "text": "@VirginTrains any chance of an update on the 18.37 to Manchester Piccadilly"
+        }
+      ],
+      "ambiguous_examples": [
+        {
+          "case_id": "case_2561274",
+          "text": "@VirginTrains sat on the 17.43 from Euston... when will it depart? Why are there never any announcements?",
+          "second_cluster": 2,
+          "margin": 0.0002
+        },
+        {
+          "case_id": "case_749145",
+          "text": "@VirginTrains Any news on the 18:52 from Edinburgh? My daughter waiting to come home to Wigan.",
+          "second_cluster": 2,
+          "margin": 0.0002
+        },
+        {
+          "case_id": "case_532900",
+          "text": "Finally arrived in Manchester... Almost an hour later than I should have. @VirginTrains 😡😡😡",
+          "second_cluster": 2,
+          "margin": 0.0007
+        },
+        {
+          "case_id": "case_1332127",
+          "text": "@virgintrains is the 13:25 Wigan North Western to Glasgow Central likely to get there? No helpful information at the station.",
+          "second_cluster": 1,
+          "margin": 0.0008
+        },
+        {
+          "case_id": "case_1226147",
+          "text": "@VirginTrains when is the next expected departure from London Euston to Manchester? My 1940 services delayed.",
+          "second_cluster": 2,
+          "margin": 0.0008
+        },
+        {
+          "case_id": "case_984608",
+          "text": "@VirginTrains  looking forward to spending my ‘big’ birthday 🎂 on route to #London. 11:35 from Chester. I wonder if I could upgrade to 1st?",
+          "second_cluster": 4,
+          "margin": 0.0008
+        },
+        {
+          "case_id": "case_2228246",
+          "text": "Steve on the 10.31 @VirginTrains to Milton Keynes...you're a jem!",
+          "second_cluster": 8,
+          "margin": 0.0012
+        },
+        {
+          "case_id": "case_540545",
+          "text": "@VirginTrains despite the disruption craziness today, thanks for getting me to Birmingham!!",
+          "second_cluster": 8,
+          "margin": 0.0013
+        }
+      ]
+    },
+    "10": {
+      "size": 1360,
+      "share": 0.0876,
+      "top_terms": [
+        "ticket",
+        "tickets",
+        "hi",
+        "app",
+        "advance",
+        "use",
+        "travel",
+        "return",
+        "tomorrow",
+        "valid",
+        "booked",
+        "book"
+      ],
+      "nearest_examples": [
+        {
+          "case_id": "case_1759491",
+          "text": "@VirginTrains Are advance tickets available for 25 Jan Liverpool to London Euston return?"
+        },
+        {
+          "case_id": "case_2533670",
+          "text": "@VirginTrains  this ticket can you got via Birmingham ? https://t.co/9nMtxz4rVD"
+        },
+        {
+          "case_id": "case_1328100",
+          "text": "@VirginTrains Hi, I need help regarding a ticket booking."
+        },
+        {
+          "case_id": "case_1087998",
+          "text": "@VirginTrains FYI your advance ticket calendar needs updating. Says tickets for 28/12 aren’t avail but when I go to book they are"
+        },
+        {
+          "case_id": "case_580361",
+          "text": "@VirginTrains Sorry to bother you on such a hectic day.  I have ADVANCE SINGLE tickets for 14.45 from Wolverhampton to Euston today.  Will they be accepted in the morning?"
+        },
+        {
+          "case_id": "case_1215895",
+          "text": "@VirginTrains am I able to exchange my ticket for a journey tomorrow morning as I have already missed why I was going to Liverpool tonight"
+        },
+        {
+          "case_id": "case_1184898",
+          "text": "@VirginTrains Hi @VirginTrains I'm in Manchester hoping to get back to London. Can I use my ticket tomorrow instead?"
+        },
+        {
+          "case_id": "case_1295503",
+          "text": "@VirginTrains I had ticket for 6.13 to Glasgow from milton keynes any advice"
+        }
+      ],
+      "ambiguous_examples": [
+        {
+          "case_id": "case_2669898",
+          "text": "Thanks a lot @VirginTrains! Mislead advise has meant I’ve checked out of my hotel room early, but now I’m stuck at Euston for 4 hours! Disgusting! Apparently Advance Off-Peak is not the same as an Advance ticket during Off-Peak! @306277 @418 #TrainYourStaff",
+          "second_cluster": 1,
+          "margin": 0.0003
+        },
+        {
+          "case_id": "case_679447",
+          "text": "@VirginTrains Any chance of extending the available dates of sale trains beyond 14th January please?",
+          "second_cluster": 1,
+          "margin": 0.0006
+        },
+        {
+          "case_id": "case_1329593",
+          "text": "@VirginTrains What if you have an off peak return and are trying to travel tonight?",
+          "second_cluster": 2,
+          "margin": 0.0011
+        },
+        {
+          "case_id": "case_590467",
+          "text": "@VirginTrains hi just wondered if my train ticket will be valid to travel tomorrow instead of today due to overcrowding? Really don't fancy standing for 3 hours from oxenholme to London",
+          "second_cluster": 1,
+          "margin": 0.0012
+        },
+        {
+          "case_id": "case_81145",
+          "text": "@VirginTrains Going to London ex Preston Sunday. Website says plenty parking avail. At Preston but none avail for prebook. Can you pls advise?",
+          "second_cluster": 6,
+          "margin": 0.0012
+        },
+        {
+          "case_id": "case_677942",
+          "text": "Super happy ticket seller at Rugby station today. Made me smile! Thank you :-D @VirginTrains",
+          "second_cluster": 8,
+          "margin": 0.0013
+        },
+        {
+          "case_id": "case_621660",
+          "text": "@VirginTrains @28792 @28793 booking been cancelled 2339834620, can't get answer. I need to book, train is available! #help",
+          "second_cluster": 3,
+          "margin": 0.0013
+        },
+        {
+          "case_id": "case_2986179",
+          "text": "@126035 once again a ridiculously long queue for tickets inside of the barrier.",
+          "second_cluster": 5,
+          "margin": 0.0014
+        }
+      ]
+    },
+    "11": {
+      "size": 519,
+      "share": 0.0334,
+      "top_terms": [
+        "wifi",
+        "free",
+        "wi",
+        "wi fi",
+        "fi",
+        "free wifi",
+        "work",
+        "money",
+        "paid",
+        "code",
+        "working",
+        "connect"
+      ],
+      "nearest_examples": [
+        {
+          "case_id": "case_2113438",
+          "text": "Paid for wifi on @VirginTrains for my 2 hour trip from London and it doesn't even work when I really need it, that's cool 🙃🙄"
+        },
+        {
+          "case_id": "case_1421608",
+          "text": "The WiFI on this @VirginTrains service to Birmingham is shocking, thank god I didn't pay for it."
+        },
+        {
+          "case_id": "case_638720",
+          "text": "@VirginTrains I've paid for Wi-Fi on the train to London from Glasgow but it isn't working."
+        },
+        {
+          "case_id": "case_2452631",
+          "text": "Wifi on @VirginTrains is awful and not even free"
+        },
+        {
+          "case_id": "case_1741866",
+          "text": "@VirginTrains struggling to buy WiFi? Manchester- Euston train departed 17:15"
+        },
+        {
+          "case_id": "case_1606863",
+          "text": "@493593 @VirginTrains Poor wifi is inexcusable in 2017, but poor wifi when you have paid for it....."
+        },
+        {
+          "case_id": "case_1393064",
+          "text": "Disappointing WiFi service @VirginTrains Paid £5 &amp; barely any internet, on 1252 Edinburgh London https://t.co/c3FY4Fd4kf"
+        },
+        {
+          "case_id": "case_1393084",
+          "text": "Just paid £5 for WiFi on @VirginTrains and it doesn’t even work, sort it out mate"
+        }
+      ],
+      "ambiguous_examples": [
+        {
+          "case_id": "case_1609650",
+          "text": "@VirginTrains why is the wifi on the 1200 glasgow to London Euston not working?",
+          "second_cluster": 9,
+          "margin": 0.0011
+        },
+        {
+          "case_id": "case_2937967",
+          "text": "Oh dear @VirginTrains, what a journey. Train to London: no working plug socket, captcha not working so can’t purchase WiFi pass, card machines not working for purchasing food/drink. Not the usual standard for a £300 ticket...",
+          "second_cluster": 10,
+          "margin": 0.0011
+        },
+        {
+          "case_id": "case_443999",
+          "text": "@220186 @VirginTrains I've given up on the hopeless app completely since the \"upgrade\" - now using website, Trainline or station machines. Shame - it used to be good",
+          "second_cluster": 5,
+          "margin": 0.0013
+        },
+        {
+          "case_id": "case_2201996",
+          "text": "@VirginTrains Why is your free Internet and free Beam app not available when the train manager has just announced how good it is? Man 2 Lon",
+          "second_cluster": 5,
+          "margin": 0.0023
+        },
+        {
+          "case_id": "case_1690932",
+          "text": "@VirginTrains “Rock Star Treatment” 19.50pm is classed as Late Evening so  Dinner Service is finished. WiFi &amp; 240v  socket both broken https://t.co/ZKDIWtdF4I",
+          "second_cluster": 2,
+          "margin": 0.0031
+        },
+        {
+          "case_id": "case_2894111",
+          "text": "YOU CAN’T STREAM ANYTHING ON @VirginTrains",
+          "second_cluster": 0,
+          "margin": 0.0037
+        },
+        {
+          "case_id": "case_1506023",
+          "text": "@VirginTrains Are you using Opera as your web browser?!",
+          "second_cluster": 7,
+          "margin": 0.0037
+        },
+        {
+          "case_id": "case_605806",
+          "text": "Not great start to our Family journey to London with @virgintrains today. All eight of us download Beam for train, no wifi and no card services on board for drinks.",
+          "second_cluster": 8,
+          "margin": 0.0039
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "config": {
+    "seed": 42,
+    "golden_pool_fraction": 0.1,
+    "dev_fraction": 0.15,
+    "golden_size": 250,
+    "min_opening_tokens": 3
+  },
+  "counts": {
+    "train_retrieval": 14213,
+    "dev_calibration": 2210,
+    "golden_pool_reserve": 1240,
+    "golden_eval": 250
+  },
+  "golden_cluster_counts": {
+    "-1": 2,
+    "0": 21,
+    "1": 25,
+    "2": 18,
+    "3": 20,
+    "4": 15,
+    "5": 28,
+    "6": 21,
+    "7": 20,
+    "8": 25,
+    "9": 19,
+    "10": 21,
+    "11": 15
+  },
+  "leakage_checks_all_zero": {
+    "case_ids": 0,
+    "customers": 0,
+    "conversations": 0,
+    "groups": 0,
+    "source_tweets": 0,
+    "context_tweets": 0,
+    "opening_texts": 0,
+    "train_dev_customers": 0
+  },
+  "usage_rules": {
+    "train_retrieval": "Retrieval corpus, prompt/few-shot examples, taxonomy examples.",
+    "dev_calibration": "Threshold tuning, calibration, prompt selection. Never used as retrieval corpus for golden evaluation.",
+    "golden_eval": "Final reporting only. Never used for retrieval, prompt examples, or threshold tuning.",
+    "golden_pool_reserve": "Held back with the golden pool. Not used for retrieval, prompts, or inspection.",
+    "excluded_leakage_guard": "Removed from train/dev because it duplicates or shares context with a golden case."
+  },
+  "file_sha256": {
+    "train_retrieval": "be2dfb715d7989c4e81ffae4c95ae6d53ce671f5c2841d57b28cd4e7176d3b80",
+    "dev_calibration": "8f553a570f8ca3b95acf15938577fa42cddaa0866452d9108b097cc6c22600bd",
+    "golden_candidates": "8a28d60fb51e8fb4a58f7c09b7014fbd687e085d12d7b4d65655bdc44af6ba54"
+  },
+  "notes": [
+    "Groups = cases linked by shared customer or conversation; groups are hashed to splits.",
+    "Intent clusters were fit on train+dev openers only; golden-pool cases were assigned by nearest centroid.",
+    "Golden cases are stratified (not natural prevalence); use golden_stratum_weight for prevalence-weighted metrics.",
+    "Golden candidates are unlabelled; fill the human_* columns in the CSV."
+  ]
+}
