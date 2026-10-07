@@ -52,7 +52,11 @@ src/
   ingestion/resolution_memory.py  support cases -> resolution episodes (problem, response, summary, provenance)
   retrieval.py                  BM25 + sentence-embedding + hybrid retriever with a soft candidate-intent signal
   evaluation/retrieval.py       proxy retrieval evaluation (Recall@k, MRR, stress test, examples)
+  -- support agent --
+  agent/                        schemas, classifier, risk policy, generator, grounding check, orchestration (support_agent.py)
+  models/                       LanguageModel interface + the single Gemini REST client
 configs/
+  support_agent.yaml                 model settings and ALL risk-policy thresholds
   virgintrains_cluster_labels.yaml   hand-curated names for the clusters (matched by anchor terms)
   virgintrains_intents.yaml          GENERATED candidate taxonomy (everything uncertain = NEEDS_REVIEW)
 scripts/
@@ -314,6 +318,25 @@ Design notes:
 - **Safety:** only `train_retrieval` cases are written to the memory and the retriever refuses any other split or any golden/reserve/dev id. Retrieval is deterministic (ties break on corpus order), uses no LLM, and has configurable `top_k`, `sem_weight` and `intent_weight`. Embeddings (all-MiniLM-L6-v2) are cached under `data/processed/cache/`.
 - **Intent-aware retrieval** adds a small bonus to the normalised hybrid score when the candidate intent matches. It is not a filter, so strong cross-intent evidence can still win, and an unknown or missing intent simply means query-only retrieval.
 - **Evaluation is a proxy**, not human relevance ground truth. Queries are non-golden `dev_calibration` cases; a historical case is "relevant" when it has the same *candidate* intent and the same rule-derived resolution type. Weights are tuned on one half of the queries and every reported number is on the other half. Golden cases are never used. See `reports/virgintrains_retrieval_evaluation.md` for the numbers, the wrong-intent stress test, and failure modes.
+
+## Evidence-grounded support agent with risk-aware abstention
+
+```text
+message -> intent (Gemini, candidate taxonomy) -> retrieve similar past cases -> risk policy (deterministic)
+        -> AUTO_HANDLE: Gemini reply from the evidence -> grounding check -> reply        (any failure -> ESCALATE, no reply)
+        -> ESCALATE:    no reply, evidence and reasons handed to a human
+```
+
+```bash
+export GEMINI_API_KEY=...        # PowerShell: $env:GEMINI_API_KEY="..."   (GEMINI_MODEL optionally overrides the model name)
+python scripts/run_support_agent.py --message "The wifi on my train keeps dropping" [--context "earlier conversation"]
+```
+
+- The **historical resolution memory is the only evidence source**; retrieval happens before generation, and every returned case keeps its `case_id`, source tweet ids, resolution type and scores.
+- The **candidate intent taxonomy is not human-validated ground truth**, so the classifier is a prediction of a candidate intent. Its confidence is the model's own, uncalibrated, estimate.
+- The system **prefers escalation to unsupported automation**. `src/agent/policy.py` is deterministic and separate from Gemini: it auto-handles only when classifier confidence, retrieval similarity, the number of usable cases and their agreement all pass, and no trigger fires (multi-intent, low-information message, a never-auto intent, sensitive wording). Each decision lists its reasons. Gemini's grounding verifier can only turn AUTO_HANDLE into ESCALATE.
+- All thresholds and the never-auto intents are in `configs/support_agent.yaml`. They are conservative starting values, not tuned or validated. Policy uses raw cosine similarity because the normalised hybrid score is always about 1.0 for the top result.
+- The **golden evaluation set has not been used** for development. There is no evaluation of reply quality or escalation accuracy yet, and the Gemini calls have not been exercised against a live key. Tests use fakes (`pytest -q`).
 
 ## Assumptions and known limitations
 

@@ -1,0 +1,57 @@
+# Support agent configuration: model settings and ALL risk-policy thresholds live here.
+#
+# STATUS: conservative STARTING values, not tuned to a validated target.
+#  * The intent taxonomy is CANDIDATE_NOT_GROUND_TRUTH (not human validated).
+#  * Similarity thresholds were set by looking at raw cosine similarity vs. a proxy relevance label on non-golden dev cases
+#    (the signal is weak: hit@5 rises from 0.64 to 0.78 as top-1 cosine goes from 0.3 to 0.7). The golden set was not used.
+#  * Changing a value here changes behaviour; no code change is needed.
+
+model:
+  name: gemini-2.5-flash        # overridden by the GEMINI_MODEL environment variable
+  timeout_seconds: 30
+  max_retries: 2
+  max_output_tokens: 2048       # Gemini 2.5 "thinking" tokens count toward this limit
+  response_schema: false        # also send a responseSchema (JSON mode is always requested); off until verified on a live key
+  classifier_temperature: 0.0
+  generator_temperature: 0.2
+  verifier_temperature: 0.0
+
+retrieval:
+  top_k: 5
+
+classifier:
+  examples_per_intent: 2        # few-shot examples shown per intent (taken from the registry, train split only)
+
+policy:
+  # --- classification ---
+  min_classifier_confidence: 0.75       # self-reported by the LLM, uncalibrated
+  # --- retrieval strength: raw cosine similarity between the message and each historical customer problem ---
+  min_top_similarity: 0.60              # best case must be at least this similar
+  min_usable_similarity: 0.55           # a case counts as "usable evidence" if it is at least this similar ...
+  min_usable_evidence: 3                # ... and we need at least this many usable cases
+  min_response_words: 4                 # ... and its historical response has at least this many words
+  # --- evidence consistency ---
+  min_intent_agreement: 0.6             # share of usable cases whose candidate intent equals the predicted intent
+  min_resolution_consistency: 0.4       # share of usable cases sharing the most common resolution type
+  # Historical agents often needed account access or a formal route; this system has neither, so escalate when that was common.
+  human_required_signals: [dm_for_account_lookup, customer_relations_or_formal_route]
+  escalate_human_signal_share: 0.4      # escalate when at least this share of usable cases carried one of those signals
+  # --- low-information messages ---
+  min_message_words: 3
+  # --- intents that are never auto-handled (each needs a human or live/account data) ---
+  escalate_intents:
+    unclear_or_media_only: "message is unclear or media-only"
+    service_status_delay_enquiry: "answer depends on live service data that historical cases cannot provide"
+    journey_disruption_complaint: "disruption complaints may involve compensation or live circumstances"
+    delay_repay_refund_claim: "claims involve money and need account/ticket checks"
+    customer_service_complaint: "complaints about staff/service need human handling"
+  # --- potentially sensitive or exceptional situations: one list of regex patterns, case-insensitive ---
+  sensitive_patterns:
+    - "\\b(ombudsman|solicitor|lawyer|legal action|sue|court|trading standards|gdpr|data protection|journalist)\\b"
+    - "\\b(assault\\w*|harass\\w*|abus\\w*|threat\\w*|unsafe|injur\\w*|accident|emergency|police|ambulance|fainted|collapsed|stabb\\w*|attack\\w*)\\b"
+    - "\\b(wheelchair|disabled|disability|accessib\\w*|mobility assistance|vulnerable|pregnant|allerg\\w*)\\b"
+    - "\\b(discriminat\\w*|racis\\w*|sexis\\w*|lost property|stolen|theft)\\b"
+    - "\\b(complain\\w*|compensat\\w*|refund\\w*|chargeback|fraud|scam)\\b"
+
+grounding:
+  min_confidence: 0.7                   # verifier must say grounded with at least this confidence
