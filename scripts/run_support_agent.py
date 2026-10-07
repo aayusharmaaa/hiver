@@ -3,7 +3,8 @@
     python scripts/run_support_agent.py --message "Is there wifi on the 09:00 to Glasgow?"
     python scripts/run_support_agent.py --message "yes please" --context "Customer: Can I take a bike on the train?"
 
-Needs a Gemini API key in the GEMINI_API_KEY environment variable (GEMINI_MODEL optionally overrides the model name).
+Needs a Gemini API key: GEMINI_API_KEY in the environment or in the git-ignored .env file (see .env.example).
+GEMINI_MODEL optionally overrides the model name.
 Intents come from the CANDIDATE taxonomy (not human validated); evidence comes from the train-split resolution memory.
 """
 
@@ -66,9 +67,11 @@ def main() -> int:
     parser.add_argument("--config", type=Path, default=None, help="Config YAML (default: configs/support_agent.yaml).")
     parser.add_argument("--processed-dir", type=Path, default=None)
     parser.add_argument("--json", action="store_true", help="Print the full AgentResult as JSON instead.")
+    parser.add_argument("--env-file", type=Path, default=_bootstrap.DEFAULT_ENV_FILE, help="Git-ignored file with GEMINI_API_KEY=... (default: .env).")
     parser.add_argument("--log-level", default="WARNING")
     args = parser.parse_args()
     configure_logging(args.log_level)
+    _bootstrap.load_env_file(args.env_file)
     try:
         agent = SupportAgent.from_config(args.config, processed_dir=args.processed_dir)
         result = agent.handle(args.message, args.context)

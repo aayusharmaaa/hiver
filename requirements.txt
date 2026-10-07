@@ -9,5 +9,6 @@ sentence-transformers>=3.0
 # Support agent: typed schemas/config, and the Gemini REST client (no Gemini SDK needed; the key comes from GEMINI_API_KEY)
 pydantic>=2.5
 requests>=2.31
+python-dotenv>=1.0
 pytest>=7.4
 kagglehub>=0.3

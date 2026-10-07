@@ -377,8 +377,9 @@ class TestNoSideEffects:
         assert R.changed_files(before, R.fingerprint_files([f])) == [str(f)]
 
 
-def test_script_without_api_key_is_a_setup_failure_and_not_a_pass():
+def test_script_without_api_key_is_a_setup_failure_and_not_a_pass(tmp_path):
     env = {k: v for k, v in os.environ.items() if k not in ("GEMINI_API_KEY", "GOOGLE_API_KEY")}
-    proc = subprocess.run([sys.executable, str(REPO / "scripts" / "smoke_test_agent.py"), "--limit", "3"], capture_output=True, text=True, env=env, timeout=60)
+    cmd = [sys.executable, str(REPO / "scripts" / "smoke_test_agent.py"), "--limit", "3", "--env-file", str(tmp_path / "absent.env")]
+    proc = subprocess.run(cmd, capture_output=True, text=True, env=env, timeout=60)
     assert proc.returncode == 2 and "SETUP FAILURE" in proc.stderr and "GEMINI_API_KEY" in proc.stderr
     assert "PASS" not in proc.stdout and "SMOKE TEST SUMMARY" not in proc.stdout

@@ -327,8 +327,10 @@ message -> intent (Gemini, candidate taxonomy) -> retrieve similar past cases ->
         -> ESCALATE:    no reply, evidence and reasons handed to a human
 ```
 
+The key goes in a git-ignored `.env` file at the repo root (copy `.env.example`), or in the shell environment, which takes precedence. `GEMINI_MODEL` optionally overrides the model name.
+
 ```bash
-export GEMINI_API_KEY=...        # PowerShell: $env:GEMINI_API_KEY="..."   (GEMINI_MODEL optionally overrides the model name)
+cp .env.example .env             # then set GEMINI_API_KEY=... in .env
 python scripts/run_support_agent.py --message "The wifi on my train keeps dropping" [--context "earlier conversation"]
 ```
 
@@ -343,7 +345,7 @@ python scripts/run_support_agent.py --message "The wifi on my train keeps droppi
 A diagnostic that runs the **complete agent against the real Gemini API** on about 12 representative VirginTrains openers (status, booking, seat, Delay Repay, wifi, catering, complaint, praise, short message, multi-intent, boundary case, likely escalation). It checks that the pipeline works end to end and prints every decision for a human to read. It is **not the benchmark**: no accuracy or score is computed, and the historical resolution type and candidate intent it prints are weak metadata, not human ground truth.
 
 ```bash
-export GEMINI_API_KEY=...      # PowerShell: $env:GEMINI_API_KEY="..."
+# needs GEMINI_API_KEY in .env or the environment (see above)
 python scripts/smoke_test_agent.py --limit 12 --seed 42     # --select-only lists the cases without calling Gemini
 ```
 

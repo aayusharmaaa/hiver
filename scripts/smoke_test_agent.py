@@ -44,7 +44,8 @@ from models.gemini import api_key_from_env
 ROOT = _bootstrap.REPO_ROOT
 KEY_HELP = (
     "SETUP FAILURE: GEMINI_API_KEY is not set, so the live smoke test cannot run (nothing was sent anywhere and no mock was used).\n"
-    "  Create a key at https://aistudio.google.com/apikey, then set it for this shell:\n"
+    "  Create a key at https://aistudio.google.com/apikey, then either put it in the git-ignored .env file\n"
+    "  (copy .env.example to .env and fill in GEMINI_API_KEY=...) or set it for this shell:\n"
     "    PowerShell:  $env:GEMINI_API_KEY = \"your-key\"\n"
     "    bash/zsh:    export GEMINI_API_KEY=\"your-key\"\n"
     "  and re-run:  python scripts/smoke_test_agent.py --limit 12 --seed 42\n"
@@ -70,11 +71,13 @@ def main() -> int:
     parser.add_argument("--select-only", action="store_true", help="Print the selected cases and safety checks; make no model calls.")
     parser.add_argument("--processed-dir", type=Path, default=_bootstrap.DEFAULT_PROCESSED)
     parser.add_argument("--config", type=Path, default=None, help="Support-agent config (default: configs/support_agent.yaml).")
+    parser.add_argument("--env-file", type=Path, default=_bootstrap.DEFAULT_ENV_FILE, help="Git-ignored file with GEMINI_API_KEY=... (default: .env).")
     parser.add_argument("--log-level", default="WARNING")
     args = parser.parse_args()
     configure_logging(args.log_level)
     if args.limit < 1:
         parser.error("--limit must be >= 1")
+    _bootstrap.load_env_file(args.env_file)
 
     key = api_key_from_env()
     if key is None and not args.select_only:

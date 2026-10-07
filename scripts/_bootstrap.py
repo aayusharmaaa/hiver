@@ -17,3 +17,13 @@ for _stream in (sys.stdout, sys.stderr):
 
 DEFAULT_RAW = REPO_ROOT / "data" / "raw" / "twcs.csv"
 DEFAULT_PROCESSED = REPO_ROOT / "data" / "processed"
+DEFAULT_ENV_FILE = REPO_ROOT / ".env"
+
+
+def load_env_file(path: Path = DEFAULT_ENV_FILE) -> bool:
+    """Load KEY=value lines from a git-ignored .env file. Variables already set in the environment win."""
+    if not Path(path).is_file():
+        return False
+    from dotenv import load_dotenv
+
+    return load_dotenv(path, override=False)
