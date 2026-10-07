@@ -338,6 +338,17 @@ python scripts/run_support_agent.py --message "The wifi on my train keeps droppi
 - All thresholds and the never-auto intents are in `configs/support_agent.yaml`. They are conservative starting values, not tuned or validated. Policy uses raw cosine similarity because the normalised hybrid score is always about 1.0 for the top result.
 - The **golden evaluation set has not been used** for development. There is no evaluation of reply quality or escalation accuracy yet, and the Gemini calls have not been exercised against a live key. Tests use fakes (`pytest -q`).
 
+## Live smoke test
+
+A diagnostic that runs the **complete agent against the real Gemini API** on about 12 representative VirginTrains openers (status, booking, seat, Delay Repay, wifi, catering, complaint, praise, short message, multi-intent, boundary case, likely escalation). It checks that the pipeline works end to end and prints every decision for a human to read. It is **not the benchmark**: no accuracy or score is computed, and the historical resolution type and candidate intent it prints are weak metadata, not human ground truth.
+
+```bash
+export GEMINI_API_KEY=...      # PowerShell: $env:GEMINI_API_KEY="..."
+python scripts/smoke_test_agent.py --limit 12 --seed 42     # --select-only lists the cases without calling Gemini
+```
+
+Cases come from `dev_calibration` only and are checked before any model call; golden, reserve and excluded cases are never used. Selection is rule-based and deterministic. Only the opening customer message is sent to the agent. Output goes to the terminal only; live outputs are deliberately not committed because they are model-dependent and are not evaluation ground truth.
+
 ## Assumptions and known limitations
 
 - **VirginTrains specifics.** Taxonomy clusters are weak (silhouette about 0.05) and only loosely agree with a TF-IDF clustering; read `reports/virgintrains_eda.md` section 4 before relying on them. Resolution labels are English-only heuristics; `refund` means a refund was discussed (including refusals). The largest group of linked cases holds about 16% of all cases and therefore lands in a single split. `golden_pool_reserve` cases are held back and must not be used for retrieval or prompts.
