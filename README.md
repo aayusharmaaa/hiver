@@ -43,10 +43,15 @@ policy has checked the risk. Anything it can't support goes to a human, with its
 The end-to-end run and the judge-vs-human check are blocked only by the Groq free-tier daily token limit. The harnesses are
 built, tested and resumable; [Reproducing the results](#reproducing-the-results) gives the exact commands.
 
-![Support Copilot UI: ticket list, conversation with a grounded suggested reply, AI analysis with risk checks and historical evidence, and the execution trace](docs/copilot.png)
+![Support Copilot UI: ticket list, conversation with a grounded suggested reply, AI analysis with risk checks and historical evidence, and the execution trace](docs/screenshots/copilot-auto-handled.png)
 
 *The local Support Copilot UI (`python scripts/run_copilot_ui.py`). It shows real cached agent runs: decision, intent,
-risk checks, the historical VirginTrains replies used as evidence, and the execution trace. It shows no chain-of-thought.*
+risk checks, the historical VirginTrains replies used as evidence, and the execution trace. It shows no chain-of-thought.
+Above is an AUTO_HANDLE case whose reply passed grounding. Below are two escalations from the same run.*
+
+| Escalated: staff complaint, no usable evidence (`case_756996`) | Escalated: praise mentioning a wheelchair, an over-escalation (`case_2396788`) |
+|---|---|
+| ![Escalated ticket: blocked intent, weak retrieval and no usable evidence; no reply drafted](docs/screenshots/copilot-escalated-no-evidence.png) | ![Escalated praise ticket: the sensitive-word rule fired on "wheelchair" although all 5 evidence cases were strong matches](docs/screenshots/copilot-escalated-sensitive-wording.png) |
 
 ---
 
@@ -456,7 +461,7 @@ configs/         support_agent.yaml (all thresholds), virgintrains_intents.yaml 
 scripts/         one entry point per step (index in docs/reference.md)
 reports/         EDA, clusters, retrieval, intent eval, taxonomy review, failure analysis
 data/            raw/ (twcs.csv, not committed) · processed/ · golden/ (frozen labels, drafts, audit log)
-docs/            reference.md (data contracts, pipeline details, script index), copilot.png
+docs/            reference.md (data contracts, pipeline details, script index), screenshots/ (Support Copilot UI)
 tests/           pytest suite; no network or API key needed
 ```
 
