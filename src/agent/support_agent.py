@@ -129,12 +129,14 @@ class SupportAgent:
 
         # 4. generate, then 5. verify grounding; any failure -> escalate with no reply
         try:
-            draft = self.generator.generate(message, conversation_context, classification, evidence, decision)
+            outcome = self.generator.generate_with_diagnostics(message, conversation_context, classification, evidence, decision)
         except _RECOVERABLE as exc:
             logger.warning("Generation failed: %s", exc)
             return self._escalate(classification, evidence, decision, f"reply generation failed: {exc}"[:300])
+        draft = outcome.reply
         if not draft:
-            return self._escalate(classification, evidence, decision, "the generator could not produce a reply supported by the evidence")
+            logger.info("Generator returned no reply: %s", outcome.no_reply_reason)
+            return self._escalate(classification, evidence, decision, f"the generator returned no reply: {outcome.no_reply_reason}"[:400])
 
         try:
             grounding = self.verifier.verify(draft, message, evidence)

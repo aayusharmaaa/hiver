@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
+import json
 import logging
 import re
+from dataclasses import dataclass
 
 from agent.schemas import AUTO_HANDLE, Classification, Decision, Evidence
 from models.base import LanguageModel, ModelOutputError
@@ -65,8 +67,12 @@ class ReplyGenerator:
         )
 
     def generate(self, message: str, conversation_context: str | None, classification: Classification, evidence: list[Evidence], decision: Decision) -> str | None:
+        return self.generate_with_diagnostics(message, conversation_context, classification, evidence, decision).reply
+
+    def generate_with_diagnostics(self, message: str, conversation_context: str | None, classification: Classification, evidence: list[Evidence], decision: Decision) -> GenerationOutcome:
+        """Same behaviour as `generate`, plus why no reply was produced (for logs and escalation reasons)."""
         if decision.action != AUTO_HANDLE:
-            return None
+            return GenerationOutcome(None, "not called: the policy decision is ESCALATE")
         raw = self.model.generate_json(
             self.build_prompt(message, conversation_context, classification, evidence),
             system=SYSTEM_PROMPT,
@@ -74,10 +80,24 @@ class ReplyGenerator:
             max_output_tokens=self.max_output_tokens,
             schema=RESPONSE_SCHEMA if self.use_schema else None,
         )
-        reply = raw.get("reply")
+        if "reply" not in raw:
+            return GenerationOutcome(None, f"model output has no 'reply' key (got keys {sorted(raw)[:5]}; output {_preview(raw)})")
+        reply = raw["reply"]
         if reply is None:
-            return None
+            others = {k: v for k, v in raw.items() if k != "reply"}
+            return GenerationOutcome(None, "model declined: returned reply=null" + (f" with {_preview(others)}" if others else " (no explanation given)"))
         if not isinstance(reply, str):
             raise ModelOutputError(f"generator 'reply' must be a string or null, got {type(reply).__name__}")
         reply = " ".join(reply.split())
-        return reply or None
+        return GenerationOutcome(reply, None) if reply else GenerationOutcome(None, "model returned an empty reply string")
+
+
+@dataclass(frozen=True)
+class GenerationOutcome:
+    reply: str | None
+    no_reply_reason: str | None  # set exactly when reply is None
+
+
+def _preview(value: object, limit: int = 200) -> str:
+    text = json.dumps(value, ensure_ascii=False, default=str)
+    return text if len(text) <= limit else text[: limit - 3] + "..."

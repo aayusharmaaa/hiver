@@ -236,6 +236,23 @@ class TestGenerator:
         for payload in ({"reply": None}, {"reply": "   "}):
             assert ReplyGenerator(ScriptedModel(generator=payload)).generate(MESSAGE, None, cls(), evidence(), Decision(action=AUTO_HANDLE, confidence=0.8)) is None
 
+    @pytest.mark.parametrize("payload, expected", [
+        ({"reply": None}, "reply=null (no explanation given)"),
+        ({"reply": None, "reason": "evidence is about a different route"}, '"reason": "evidence is about a different route"'),
+        ({"reply": "  "}, "empty reply string"),
+        ({"response": "Hi there"}, "no 'reply' key (got keys ['response']"),
+    ])
+    def test_no_reply_reason_is_reported_without_changing_the_reply(self, payload, expected):
+        gen = ReplyGenerator(ScriptedModel(generator=[dict(payload), dict(payload)]))
+        args = (MESSAGE, None, cls(), evidence(), Decision(action=AUTO_HANDLE, confidence=0.8))
+        outcome = gen.generate_with_diagnostics(*args)
+        assert outcome.reply is None and expected in outcome.no_reply_reason
+        assert gen.generate(*args) is None
+
+    def test_successful_generation_has_no_reason(self):
+        outcome = ReplyGenerator(ScriptedModel()).generate_with_diagnostics(MESSAGE, None, cls(), evidence(), Decision(action=AUTO_HANDLE, confidence=0.8))
+        assert outcome.reply == GOOD_REPLY["reply"] and outcome.no_reply_reason is None
+
     def test_non_string_reply_is_an_output_error(self):
         with pytest.raises(ModelOutputError):
             ReplyGenerator(ScriptedModel(generator={"reply": 5})).generate(MESSAGE, None, cls(), evidence(), Decision(action=AUTO_HANDLE, confidence=0.8))
@@ -361,9 +378,10 @@ class TestSupportAgent:
         r = build_agent(ScriptedModel(generator=ModelRuntimeError("boom")))[0].handle(MESSAGE)
         assert r.decision.action == ESCALATE and any("reply generation failed" in x for x in r.decision.reasons)
 
-    def test_generator_declining_to_answer_escalates(self):
-        r = build_agent(ScriptedModel(generator={"reply": None}))[0].handle(MESSAGE)
-        assert r.decision.action == ESCALATE and r.reply is None
+    def test_generator_declining_to_answer_escalates_and_says_why(self):
+        r = build_agent(ScriptedModel(generator={"reply": None, "reason": "no matching policy"}))[0].handle(MESSAGE)
+        assert r.decision.action == ESCALATE and r.reply is None and r.grounding is None
+        assert any(x.startswith("the generator returned no reply: model declined") and "no matching policy" in x for x in r.decision.reasons)
 
     def test_classifier_runtime_failure_escalates_with_a_reason(self):
         r = build_agent(ScriptedModel(classifier=ModelRuntimeError("timeout")))[0].handle(MESSAGE)

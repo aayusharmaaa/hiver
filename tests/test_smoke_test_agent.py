@@ -272,6 +272,15 @@ class TestRunAndFormat:
         assert "GROUNDING:\nFAIL" in text and "- promises a refund" in text and "INTERNAL DRAFT" in text and "DRAFT REPLY:\n<none>" in text
         assert "grounding failed" in outcome.flags and not outcome.failed
 
+    def test_generator_no_reply_is_flagged_and_summarised(self):
+        reason = "the generator returned no reply: model declined: returned reply=null (no explanation given)"
+        result = escalate_result(classification=Classification(intent="onboard_wifi_issue", confidence=0.9), decision=Decision(action=ESCALATE, confidence=0.5, reasons=["policy check passed: ok", reason]))
+        outcome = run(FakeAgent(result))
+        assert any(f.startswith("generator returned no reply (model declined") for f in outcome.flags) and not outcome.failed
+        summary = R.summarize_results([outcome], S.Selection(cases=[outcome.case], unavailable=[], requested=1))
+        assert summary.generator_no_reply == ["case_q"]
+        assert "Cases where the generator returned no reply:\n1  (case_q)" in R.format_summary(summary)
+
     def test_extra_cases_are_labelled(self):
         assert "SCENARIO:\nEXTRA\n" in R.format_case_result(13, 14, run(FakeAgent(auto_result()), smoke_case(scenario=S.EXTRA)))
 

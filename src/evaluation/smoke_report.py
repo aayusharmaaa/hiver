@@ -22,6 +22,7 @@ from taxonomy.registry import FALLBACK_INTENT
 
 SETUP, LIVE_MODEL, AGENT_LOGIC = "SETUP FAILURE", "LIVE MODEL FAILURE", "AGENT LOGIC FAILURE"
 WIDTH = 100
+NO_REPLY_PREFIX = "the generator returned no reply"
 WEAK_NOTE = "Historical metadata is weak/candidate reference only and is NOT human ground truth."
 
 RETRIEVAL_FLAGS = ("no evidence retrieved", "retrieved cases have mixed resolution types", "retrieved cases mostly have a different candidate intent", "query case retrieved itself")
@@ -116,6 +117,7 @@ def observation_flags(case: SmokeCase, result: AgentResult, low_information: boo
         flags.append("multi-intent escalation" if d.action == ESCALATE else "multi-intent flagged")
     if c.intent == FALLBACK_INTENT:
         flags.append("classified as unclear_or_media_only")
+    flags += [f"generator returned no reply ({r.split(': ', 1)[-1][:160]})" for r in d.reasons if r.startswith(NO_REPLY_PREFIX)]
     if result.grounding is not None and not result.grounding.grounded:
         flags.append("grounding failed")
     auto = d.action == AUTO_HANDLE
@@ -261,6 +263,7 @@ class Summary:
     escalate: int
     grounding_pass: int
     grounding_fail: int
+    generator_no_reply: list[str]
     retrieval_concerns: list[str]
     policy_concerns: list[str]
     model_failures: list[str]
@@ -289,6 +292,7 @@ def summarize_results(outcomes: list[CaseOutcome], selection: Selection) -> Summ
     else:
         status = "PASS"
     grounding_fail = [o.case.case_id for o in outcomes if o.result is not None and o.result.grounding is not None and not o.result.grounding.grounded]
+    no_reply = [o.case.case_id for o in outcomes if any(f.startswith("generator returned no reply") for f in o.flags)]
     actions = []
     if failed:
         actions.append(f"Look at the failed case(s) first: {', '.join(o.case.case_id for o in failed)} (categories: {', '.join(sorted({o.failure or AGENT_LOGIC for o in failed}))}).")
@@ -296,6 +300,8 @@ def summarize_results(outcomes: list[CaseOutcome], selection: Selection) -> Summ
         actions.append(f"Read the retrieved evidence for the {len(retrieval)} case(s) with retrieval flags: {', '.join(retrieval)}.")
     if policy_c:
         actions.append(f"Read the replies of AUTO_HANDLE cases flagged for policy review: {', '.join(policy_c)}.")
+    if no_reply:
+        actions.append(f"Read why the generator returned no reply (DECISION REASONS) for: {', '.join(no_reply)}.")
     if grounding_fail:
         actions.append(f"Compare the internal drafts with their evidence for grounding failures: {', '.join(grounding_fail)}.")
     if selection.unavailable:
@@ -308,7 +314,7 @@ def summarize_results(outcomes: list[CaseOutcome], selection: Selection) -> Summ
         scenarios_unavailable=list(selection.unavailable), live_status=live, end_to_end_ok=len(ok),
         auto_handle=sum(r.decision.action == AUTO_HANDLE for r in results), escalate=sum(r.decision.action == ESCALATE for r in results),
         grounding_pass=sum(r.grounding is not None and r.grounding.grounded for r in results),
-        grounding_fail=len(grounding_fail), retrieval_concerns=retrieval, policy_concerns=policy_c, model_failures=model_f, logic_failures=logic_f,
+        grounding_fail=len(grounding_fail), generator_no_reply=no_reply, retrieval_concerns=retrieval, policy_concerns=policy_c, model_failures=model_f, logic_failures=logic_f,
         status=status, next_actions=actions,
     )
 
@@ -323,6 +329,7 @@ def format_summary(s: Summary) -> str:
         f"Live Gemini requests:\n{s.live_status}", f"Cases with successful end-to-end AgentResult:\n{s.end_to_end_ok}",
         f"Cases with AUTO_HANDLE:\n{s.auto_handle}", f"Cases with ESCALATE:\n{s.escalate}",
         f"Grounding passes:\n{s.grounding_pass}", f"Grounding failures:\n{s.grounding_fail}",
+        f"Cases where the generator returned no reply:\n{len(s.generator_no_reply)}" + (f"  ({', '.join(s.generator_no_reply)})" if s.generator_no_reply else ""),
         f"Cases with retrieval concerns:\n{len(s.retrieval_concerns)}" + (f"  ({', '.join(s.retrieval_concerns)})" if s.retrieval_concerns else ""),
         f"Cases with policy concerns:\n{len(s.policy_concerns)}" + (f"  ({', '.join(s.policy_concerns)})" if s.policy_concerns else ""),
         f"Cases with model/schema failures:\n{len(s.model_failures)}" + (f"  ({', '.join(s.model_failures)})" if s.model_failures else ""),
