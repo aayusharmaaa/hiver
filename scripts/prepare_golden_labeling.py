@@ -1,5 +1,8 @@
 """Prepare the 250 existing golden candidates for human labelling. Runs ONLY after the taxonomy is frozen.
 
+Superseded by scripts/prepare_golden_eval.py (labels against the candidate taxonomy as a reference, no freeze required); this
+script refuses to run once that pack exists, so it can never overwrite it.
+
 Output:
     data/golden/virgintrains_golden_v1.csv        case_id, first_customer_message, conversation, gold_* (blank), labeling_notes
                                                   (+ provenance columns: source_tweet_ids, conversation_id, golden_stratum_weight)
@@ -25,6 +28,7 @@ import pandas as pd
 import yaml
 
 from common.logging_utils import configure_logging
+from evaluation.golden_eval import PACK_MANIFEST
 from evaluation.inspection import conversation_text
 from evaluation.taxonomy_calibration import ESCALATION_SIGNALS, HUMAN_RESOLUTION_TYPES, HUMAN_RESOLVED_VALUES
 from taxonomy.finalize import verify_frozen
@@ -48,6 +52,8 @@ def main() -> None:
     args = parser.parse_args()
     configure_logging(args.log_level)
 
+    if (args.golden_dir / PACK_MANIFEST).exists():
+        fail(f"{args.golden_dir / PACK_MANIFEST} exists: the golden set is prepared by scripts/prepare_golden_eval.py; refusing to overwrite it.")
     if not args.frozen.exists():
         fail(f"{args.frozen} does not exist. The taxonomy must be human-calibrated and frozen (scripts/finalize_taxonomy.py) before the golden set is prepared for labelling.")
     frozen = yaml.safe_load(args.frozen.read_text(encoding="utf-8"))

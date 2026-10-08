@@ -40,6 +40,7 @@ data/processed/_*.log
 # The labeling tool's rolling backup and atomic-write temp files are local safety nets, not artifacts.
 *.csv.bak
 data/processed/.*.tmp
+data/golden/.*.tmp
 !data/processed/virgintrains_resolution_memory_manifest.json
 
 # Raw Kaggle dump (492 MB) is downloaded by the pipeline, never committed.
