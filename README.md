@@ -1,379 +1,454 @@
-# Hiver SDE Intern take-home: data foundation
+# An evidence-grounded support agent for VirginTrains
 
-This repo is the data foundation of an AI customer-support agent built on the
-[Customer Support on Twitter](https://www.kaggle.com/datasets/thoughtvector/customer-support-on-twitter)
-dataset. Phase 1 turns raw tweets into cleaned tweets, reconstructs conversations, normalizes them into support cases, and ranks brands. Phase 2 (the section [VirginTrains pipeline](#virgintrains-pipeline-phase-2)) narrows to the chosen brand, builds episode-level support cases, discovers a *candidate* intent taxonomy, and prepares leakage-safe evaluation splits.
+This is my take-home for the Hiver SDE Intern role. The brief asks for an AI support agent for one brand from the
+[Customer Support on Twitter](https://www.kaggle.com/datasets/thoughtvector/customer-support-on-twitter) dataset. The agent should:
 
-There is no LLM, agent, or UI yet. Extraction and resolution labels are deterministic and rule-based; intent discovery uses sentence embeddings + clustering only to propose candidates.
+1. classify incoming messages into intents defined from the data;
+2. draft replies grounded in how the brand actually resolved similar issues;
+3. decide whether to auto-handle or escalate, with a reason.
 
-```
-data/raw/twcs.csv
-   │  ingestion.loader          validate schema, type-convert, dedupe, keep raw text + source_row
-   ▼
-tweets (cleaned)
-   │  ingestion.reconstruction  connected components over reply links, ordered by timestamp
-   ▼
-data/processed/tweets_clean.parquet   (every tweet + conversation_id / parent / turn_index)
-   │  ingestion.cases           one case per conversation, rule-based resolution labels
-   ▼
-data/processed/cases.parquet          (nested full_turns with full provenance)
-   │  evaluation.brand_ranking  per-brand metrics -> percentile-weighted score
-   ▼
-data/processed/brand_ranking.{csv,json}
-```
+The brief also asks me to prove the agent can be trusted.
 
-## Project layout
+I picked **VirginTrains**. The system is built as an *evidence-grounded support agent with risk-aware abstention*: it only
+replies when it has strong historical evidence, and otherwise it hands the case to a human with its reasons.
 
-```
-src/
-  common/logging_utils.py       logging setup
-  ingestion/schema.py           observed column contract + validation
-  ingestion/loader.py           read CSV/Parquet, clean, summarize
-  ingestion/reconstruction.py   thread reconstruction
-  ingestion/resolution.py       rule-based resolution labels
-  ingestion/cases.py            support-case builder (streams to Parquet/JSONL)
-  ingestion/text.py             normalization helpers (never applied to stored raw text)
-  taxonomy/keyword_intents.py   seed keyword intents (used only as a diversity proxy)
-  evaluation/brand_ranking.py   brand metrics + scoring
-  -- phase 2 (VirginTrains) --
-  ingestion/roles.py            customer / brand_agent / other_agent roles (+ hidden-agent detection)
-  ingestion/brand_filter.py     keep conversations the brand took part in
-  ingestion/episodes.py         owner attribution + time-gap splitting -> one episode per customer
-  ingestion/resolution_signals.py  regex signals with quoted evidence -> resolution_type
-  ingestion/episode_cases.py    case records (schema, related cases, parquet/jsonl writers)
-  ingestion/brand_pipeline.py   filter -> roles -> episodes -> cases -> output tables
-  taxonomy/entity_masking.py    mask places/times/seats before embedding
-  taxonomy/discovery.py         normalization, TF-IDF, embeddings, k sweep, KMeans
-  taxonomy/taxonomy_builder.py  cluster report + draft taxonomy from curated labels
-  evaluation/splits.py          leakage-safe train / dev / golden splits
-  evaluation/sampling.py        deterministic coverage sampling
-  evaluation/inspection.py      markdown rendering of cases
-  -- retrieval prototype --
-  ingestion/resolution_memory.py  support cases -> resolution episodes (problem, response, summary, provenance)
-  retrieval.py                  BM25 + sentence-embedding + hybrid retriever with a soft candidate-intent signal
-  evaluation/retrieval.py       proxy retrieval evaluation (Recall@k, MRR, stress test, examples)
-  -- support agent --
-  agent/                        schemas, classifier, risk policy, generator, grounding check, orchestration (support_agent.py)
-  models/                       LanguageModel interface + the single Gemini REST client
-configs/
-  support_agent.yaml                 model settings and ALL risk-policy thresholds
-  virgintrains_cluster_labels.yaml   hand-curated names for the clusters (matched by anchor terms)
-  virgintrains_intents.yaml          GENERATED candidate taxonomy (everything uncertain = NEEDS_REVIEW)
-scripts/
-  profile_dataset.py            dataset profile -> stdout + data/processed/profile.json
-  build_cases.py                reconstruction + cases -> data/processed/
-  rank_brands.py                brand report -> data/processed/brand_ranking.{csv,json}
-  build_virgintrains.py  discover_intents.py  prepare_splits.py  generate_taxonomy.py  virgintrains_report.py
-  run_virgintrains_pipeline.py  runs the five phase-2 steps in order
-tests/                          pytest unit tests (87)
-data/raw/  data/processed/  data/golden/  reports/
-```
+> **Where things stand (honestly).** The data pipeline, the intent taxonomy, retrieval, the agent and a blind labeling tool for
+> the golden set are built and tested (`pytest -q`: 489 passed). Retrieval has a proxy evaluation with baselines. The 250-case
+> golden set is sampled, frozen and leakage-checked, but **not yet hand-labelled**. Because of that, the end-to-end evaluation
+> harness and the LLM-as-judge are **not built yet**. I deliberately did not build them against labels that don't exist. The
+> [deliverables table](#deliverables-vs-the-brief) shows exactly what is done and what isn't.
 
-## Setup
+**Contents**
 
-You need Python 3.10 or newer. These steps were tested on Python 3.11 on Windows.
+- [Quick start](#quick-start)
+- [Deliverables vs the brief](#deliverables-vs-the-brief)
+- [Problem framing: what "good" means here](#problem-framing-what-good-means-here)
+- [Architecture](#architecture)
+- [Results so far](#results-so-far)
+- [What is misleading about my headline number?](#what-is-misleading-about-my-headline-number)
+- [Failure modes I already know about](#failure-modes-i-already-know-about)
+- [Golden evaluation set](#golden-evaluation-set)
+- [Decision log](#decision-log)
+- [What I'd do next with one more week](#what-id-do-next-with-one-more-week)
+- [Repo map](#repo-map)
+- [Reference: data contracts and pipeline details](#reference-data-contracts-and-pipeline-details)
+- [Assumptions, limitations and credits](#assumptions-limitations-and-credits)
+
+---
+
+## Quick start
+
+You need Python 3.10+. I tested on 3.11 on Windows.
 
 ```bash
-python -m venv .venv
-# Windows: .venv\Scripts\activate    macOS/Linux: source .venv/bin/activate
+python -m venv .venv && .venv\Scripts\activate          # macOS/Linux: source .venv/bin/activate
 pip install -r requirements.txt
+python -m pytest -q                                      # no data or API key needed; about 1 minute
 ```
 
-To get the data, download `twcs.csv` from Kaggle into `data/raw/`. Either do it manually, or use `kagglehub`:
+**Reproduce the headline retrieval numbers.** You need `twcs.csv` (2.8M tweets) in `data/raw/`.
 
 ```bash
 python -c "import kagglehub, shutil; p = kagglehub.dataset_download('thoughtvector/customer-support-on-twitter'); shutil.copy(p + '/twcs/twcs.csv', 'data/raw/twcs.csv')"
+python scripts/run_virgintrains_pipeline.py --input data/raw/twcs.csv   # cases, intents, splits, EDA (about 5 min on a GPU, longer on CPU)
+python scripts/build_resolution_memory.py                                # historical resolution memory (train split only)
+python scripts/evaluate_retrieval.py                                     # -> reports/virgintrains_retrieval_evaluation.md
 ```
 
-The scripts add `src/` to `sys.path` themselves, so `pip install -e .` is optional.
+Every step is seeded (42), so a re-run reproduces the split files byte for byte. Embeddings are cached in `data/processed/cache/`.
 
-## Expected input format
+**Talk to the agent.** This needs a Gemini key. Copy `.env.example` to `.env` and set `GEMINI_API_KEY`. The `.env` file is git-ignored.
 
-The input is a CSV (optionally `.csv.gz`) or a Parquet file with these columns. They come from the real `twcs.csv` header.
+```bash
+python scripts/run_support_agent.py --message "The wifi on my train keeps dropping"
+python scripts/smoke_test_agent.py --limit 12 --seed 42        # 12 representative dev cases end to end; --select-only skips Gemini
+```
 
-| column | observed type | notes |
+**Label the golden set.** This is local and blind, and opens http://127.0.0.1:8766/.
+
+```bash
+python scripts/label_golden_eval.py            # --check verifies the files and prints progress
+```
+
+---
+
+## Deliverables vs the brief
+
+| brief asks for | status | where |
 |---|---|---|
-| `tweet_id` | integer | unique in the full file |
-| `author_id` | string | brand handle for outbound tweets, anonymized number for customers |
-| `inbound` | `"True"`/`"False"` | True means customer, False means brand |
-| `created_at` | `Tue Oct 31 22:10:47 +0000 2017` | parsed to UTC |
-| `text` | string | stored untouched |
-| `response_tweet_id` | nullable, comma-separated ids | e.g. `"9,6,10"` |
-| `in_response_to_tweet_id` | nullable integer | |
+| Runnable pipeline, reproducible in under 15 min | ✅ built (raw tweets → cases → taxonomy → splits → memory → agent); the main pipeline took about 5 min on my GPU, CPU is slower | [Quick start](#quick-start), [`scripts/run_virgintrains_pipeline.py`](scripts/run_virgintrains_pipeline.py) |
+| Intents defined from the data | ✅ 10 candidate intents plus a fallback, still marked *candidate* (not human-validated) | [`configs/virgintrains_intents.yaml`](configs/virgintrains_intents.yaml), [`reports/virgintrains_eda.md`](reports/virgintrains_eda.md) §4 and §8 |
+| Grounded reply drafting | ✅ built and unit-tested; the live run was cut short by the Gemini free-tier quota | [`src/agent/generator.py`](src/agent/generator.py), [`src/agent/grounding.py`](src/agent/grounding.py) |
+| Auto-handle vs escalate, with a reason | ✅ deterministic policy; every decision lists its reasons | [`src/agent/policy.py`](src/agent/policy.py), [`configs/support_agent.yaml`](configs/support_agent.yaml) |
+| Golden set of 150–250 hand-labelled examples | ⚠️ 250 cases sampled, frozen and leakage-checked; labeling tool built; **labels pending** | [Golden evaluation set](#golden-evaluation-set) |
+| Evaluation harness: metrics, LLM judge, judge-vs-human agreement | ⚠️ retrieval harness done; **agent harness and LLM judge not built yet** (they need the golden labels) | [`src/evaluation/retrieval.py`](src/evaluation/retrieval.py) |
+| Results vs a trivial and a simple baseline | ⚠️ done for retrieval (random, BM25, embeddings, hybrid); agent-level baselines pending | [Results so far](#results-so-far) |
+| Top 5 failure modes | ⚠️ retrieval and data failure modes documented below; agent failure modes need the golden run | [Failure modes](#failure-modes-i-already-know-about) |
+| "What is misleading about my headline number?" | ✅ | [below](#what-is-misleading-about-my-headline-number) |
+| Decision log (10–15 items) | ✅ | [Decision log](#decision-log) |
 
-A missing required column raises `SchemaError`. Extra columns trigger a warning and are then ignored. Rows that are invalid at the value level (a non-numeric id, or an `inbound` value other than True/False) are dropped and counted in the cleaning report. A timestamp that can't be parsed is kept as NaT, and that tweet sorts last within its thread.
+---
 
-## Commands
+## Problem framing: what "good" means here
 
-```bash
-# 1. Profile the dataset (about 2.5 min on the full 2.8M rows)
-python scripts/profile_dataset.py --input data/raw/twcs.csv
+VirginTrains customers tweet about a few recurring things: is my train running, the train is late or packed, Delay Repay,
+booking and seats, the wifi, first-class catering, and a lot of praise and banter.
+**Many of those cannot be answered safely from history alone.** "Is the 17:30 to Euston cancelled?" needs live data, and a
+refund needs an account lookup. A reply that sounds confident but is wrong is worse than no reply at all.
 
-# 2. Reconstruct conversations and build support cases (about 2 min)
-python scripts/build_cases.py --input data/raw/twcs.csv
-#    only one brand's cases, plus JSONL for reading or labelling:
-python scripts/build_cases.py --input data/raw/twcs.csv --brands AmazonHelp --jsonl
+So for this brand I define **good** as:
 
-# 3. Rank brands (about 30 s; needs the outputs of step 2)
-python scripts/rank_brands.py --top 15
-#    tweak gates and weights:
-python scripts/rank_brands.py --min-conversations 5000 --weights '{"multi_turn_density": 0.3}'
+1. **Never be confidently wrong.** If the agent auto-handles a message, the reply must be supported by what VirginTrains
+   actually said in similar past cases: no invented links, amounts, policies or "I've refunded you".
+2. **Escalate the right things.** Live status, money, complaints about staff, safety and accessibility go to a human, with
+   a reason a human can act on.
+3. **Automate only the boring, safe part.** That means general information, self-service links, wifi steps and thanking
+   people. That's where the historical replies are repetitive and safe to reuse.
 
-# Tests
-python -m pytest -q
-```
+On this dataset, precision on auto-handled messages matters far more than coverage. I would rather escalate 70% of traffic
+and be right on the other 30% than the reverse.
 
-`--nrows N` (on the profile and build scripts) gives a fast debug run. It truncates the file, so some threads lose turns. For a quick smoke test, Kaggle also ships a 93-row `sample.csv`.
+**What I chose not to build.** There is no frontend beyond the local labeling tool, and no Hiver API integration, database,
+Docker or multi-agent setup. There is no reranker or fine-tuning, and the agent has no live train data or account access.
+That missing access is exactly why the policy escalates those intents.
 
-## Outputs
+---
 
-### `cases.parquet`: one row per conversation
-
-| field | meaning |
-|---|---|
-| `case_id`, `conversation_id` | `case_<root_tweet_id>` and `conv_<root_tweet_id>` |
-| `brand`, `brand_source` | brand handle; `agent_reply` (it replied), `mention` (customer @-mentioned it, no reply) or `unknown` |
-| `brands_involved`, `customer_ids`, `customer_count`, `is_multi_party` | multi-party means more than one customer or more than one brand |
-| `customer_messages`, `agent_messages` | raw texts in turn order |
-| `full_turns` | list of turns with `tweet_id, author_id, role, inbound, created_at, created_at_raw, text, in_response_to_tweet_id, parent_tweet_id, response_tweet_id_raw, source_row` |
-| `tweet_ids`, `turn_count`, `customer_turn_count`, `agent_turn_count`, `speaker_switches` | |
-| `first_timestamp`, `last_timestamp`, `first_response_minutes` | |
-| `is_reconstructable`, `is_multi_turn`, `has_missing_parent`, `starts_with_customer` | quality flags |
-| `resolved`, `resolution_type`, `resolution_summary` | rule-based; see below |
-
-Provenance is preserved at every stage. Each turn carries its original `tweet_id`, its raw text and timestamp string, the raw `response_tweet_id` string, and `source_row` (its 0-based row in the input file).
-
-### Resolution labels (`ingestion/resolution.py`)
-
-The labels describe how the public thread ended. They are weak labels, not ground truth.
-
-| type | rule | resolved |
-|---|---|---|
-| `no_response` | no brand turn | no |
-| `customer_confirmed` | the customer speaks last and thanks/confirms with no negation (e.g. "thanks for nothing" doesn't count) | yes |
-| `customer_followup_unanswered` | the customer speaks last, with anything else | no |
-| `agent_closed` | the agent speaks last with a closing phrase and no question | yes |
-| `redirected_to_dm` | the agent's last turn asks the customer to DM | no |
-| `redirected_to_channel` | the agent's last turn gives a URL, phone, email, or help-center pointer | no |
-| `agent_awaiting_customer` | the agent asked a question and got no public reply | no |
-| `agent_answered_unconfirmed` | the agent replied last, matching none of the above | no |
-
-### Brand ranking (`evaluation/brand_ranking.py`)
-
-Metrics are computed per brand. "Reconstructable" means one customer and one brand, with at least one turn from each.
-
-| metric | default weight |
-|---|---|
-| `conversations` (volume) | 0.10 |
-| `reconstructable_conversations` | 0.15 |
-| `reconstructable_rate` | 0.05 |
-| `multi_turn_density`: share of reconstructable cases with 3+ turns | 0.20 |
-| `template_repeat_rate`: share of agent replies whose normalized 8-token prefix appears 5+ times (repeated resolution playbook) | 0.15 |
-| `intent_diversity`: normalized entropy of seed-keyword intents of the first customer message | 0.15 |
-| `resolved_rate` | 0.10 |
-| `non_dm_rate` (1 − DM-redirect rate; DM'd cases hide the actual resolution) | 0.10 |
-
-The score is the weighted mean of each metric's percentile rank among eligible brands. To be eligible, a brand needs at least 1,000 conversations and at least 85% of customer openers in Latin script. The text metrics use a fixed random sample of 5,000 per brand (seed 42), so big brands don't win just by having more text. The JSON report also includes `resolution_mix`, `top_intents`, and `top_agent_templates` for each brand, to help with the manual review.
-
-## Example output (full dataset)
-
-Here's the output of `profile_dataset.py`, abridged:
-
-```
-Total tweets:            2,811,774
-Date range:              2008-05-08 -> 2017-12-03 (99.3% on or after 2017-10-01)
-Unique authors / brands: 702,777 / 108
-Inbound / outbound:      1,537,843 / 1,273,931  (ratio 1.2072)
-Missing values:          response_tweet_id=1,040,629  in_response_to_tweet_id=794,335  (others 0)
-% with in_response_to:   71.75%
-% with response ids:     62.99%
-% with any relationship: 100.0%
-Refs to missing tweets:  parent=3,862  response=172,500
-Conversations:           798,197   (single-tweet: 0)
-Size mean/median/p90/max 3.52 / 2 / 6 / 1390
-```
-
-Here's the output of `build_cases.py`:
-
-```
-cases 798,197 | reconstructable 798,110 | multi-turn (3+ turns) 362,787
-resolution_types: redirected_to_dm 248,585 | agent_answered_unconfirmed 197,811 |
-  redirected_to_channel 140,668 | customer_followup_unanswered 102,998 |
-  agent_awaiting_customer 39,838 | agent_closed 38,741 | customer_confirmed 29,556
-```
-
-Here's the output of `rank_brands.py --top 10` (78 of 108 brands are eligible):
-
-```
-rank brand            score  convs   recon  multi_turn  avg_turns resolved dm_rate template_rep intent_div
- 1   AskAmex          0.718   4,286   4,084  0.776      4.57      0.280    0.023   0.308        0.736
- 2   Tesco            0.695  16,659  15,564  0.673      4.01      0.105    0.315   0.049        0.774
- 3   VirginTrains     0.688  14,813  12,984  0.564      3.74      0.185    0.033   0.036        0.784
- 4   Uber_Support     0.686  41,891  40,157  0.332      2.86      0.043    0.593   0.574        0.871
- 5   AmazonHelp       0.674  82,477  78,763  0.603      4.29      0.061    0.010   0.043        0.689
- 6   XboxSupport      0.667  13,399  11,612  0.566      3.49      0.098    0.238   0.230        0.747
- 7   BofA_Help        0.655   6,550   6,080  0.558      3.36      0.067    0.115   0.301        0.821
- 8   sainsburys       0.652  10,832  10,108  0.535      3.58      0.158    0.305   0.061        0.766
- 9   British_Airways  0.644  16,389  15,439  0.506      3.41      0.166    0.114   0.009        0.735
-10   GWRHelp          0.642  10,676   9,577  0.605      3.80      0.158    0.019   0.009        0.737
-```
-
-## VirginTrains pipeline (phase 2)
-
-```bash
-pip install -r requirements.txt            # adds pyyaml, scikit-learn, sentence-transformers
-python scripts/run_virgintrains_pipeline.py --input data/raw/twcs.csv     # about 5 min (GPU) / longer on CPU
-python scripts/run_virgintrains_pipeline.py --from taxonomy               # after editing the cluster labels
-python -m pytest -q
-```
-
-Steps (each is also a standalone script): `build_virgintrains.py` → `discover_intents.py` → `prepare_splits.py` → `generate_taxonomy.py` → `virgintrains_report.py`. Embeddings are cached in `data/processed/cache/`; every step is deterministic (seed 42), and a re-run reproduces the split files byte for byte.
-
-| output | what |
-|---|---|
-| `data/processed/virgintrains_conversations.parquet` | one row per reconstructed thread, turns nested in chronological order with `case_id`/`role` per turn |
-| `data/processed/virgintrains_tweets.parquet` | one row per tweet, with role, owner, case, exclusion reason, raw timestamp and response ids |
-| `data/processed/virgintrains_cases.parquet` | one row per customer episode (the required case fields plus evidence, flags, related cases) |
-| `data/processed/virgintrains_case_sample.csv`, `reports/virgintrains_case_inspection.md` | 450 coverage-sampled cases (train + dev only) and a readable rendering |
-| `data/processed/virgintrains_intent_clusters.json`, `reports/virgintrains_intent_clusters.md` | per-cluster detail |
-| `configs/virgintrains_intents.yaml` | candidate taxonomy (`CANDIDATE_NOT_GROUND_TRUTH`) until human calibration; see [Taxonomy calibration and freeze](#taxonomy-calibration-and-freeze-phase-3) |
-| `data/processed/splits/*`, `data/golden/virgintrains_golden_candidates.*` | train/retrieval, dev/calibration, and 250 unlabeled golden candidates (blank `human_*` columns) |
-| `reports/virgintrains_eda.md` | statistics, quality issues, recommended taxonomy |
-
-How cases are built, in one paragraph: a conversation is a connected component of the reply graph. Within it each customer tweet belongs to its author, and each agent tweet to the customer found by walking up the reply chain, then by `@customer_id` mention, then by the thread's only customer. A gap above 24 h between a customer's consecutive tweets starts a new case, flagged `is_continuation` and linked to the previous one. Agent tweets that answer nobody (announcements) are kept as `context_tweet_ids` rather than turns. Some accounts flagged `inbound=True` are really other operators' agents (they sign off with `^XX`); the raw flag is kept and a derived `role` is used.
-
-Resolution types come from regexes over the brand's turns, with the matching sentence quoted as evidence (`resolution_evidence`), and `resolved` additionally requires a positive thread ending. Nothing is generated or paraphrased.
-
-**Leakage rules for the splits.** Cases that share a customer or a thread are grouped and the group is hashed to a split, so no customer appears in two splits. Clusters are fit without the golden pool. The golden set is stratified from that pool (not prevalence-faithful; use `golden_stratum_weight`), and any train/dev case whose opening text or context tweet matches a golden case is excluded. `verify_no_leakage` runs at the end of `prepare_splits.py` and fails the run on any overlap. Do not tune thresholds, prompts, or retrieval on the golden set.
-
-## Taxonomy calibration and freeze (phase 3)
-
-The candidate taxonomy is calibrated by a **human** on a sample of the `golden_pool_reserve` split, then frozen, and only then are the 250 golden cases prepared for labelling. There is no LLM anywhere in this phase and no label is ever generated by code.
-
-```bash
-# 1. Draw the 200-case calibration sample (reserve only, golden-adjacent cases excluded) + labelling pack.  Done; deterministic.
-python scripts/build_taxonomy_calibration.py
-#    -> data/processed/taxonomy_calibration.csv  (fill the human_* columns)
-#    -> data/processed/taxonomy_calibration_labeling.md  (guidelines + every case, readable)
-#    -> data/processed/taxonomy_calibration_guide.md     (the reviewer guide on its own; `--guide-only` regenerates it without touching the CSV)
-
-# 1b. Label the 200 cases (human, local, no extra dependencies). Opens http://127.0.0.1:8765/
-python scripts/label_taxonomy_calibration.py
-python scripts/label_taxonomy_calibration.py --check   # verify files and print progress; starts nothing, writes nothing
-
-# 2. After labelling: candidate vs human report (exits 2 until labels exist)
-python scripts/compare_taxonomy.py
-#    -> reports/taxonomy_calibration_report.md, data/processed/taxonomy_calibration_report.json, *_confusion_matrix.csv
-
-# 3. Record decisions (merges / splits / renames / edits) in configs/virgintrains_taxonomy_decisions.yaml and sign it
-python scripts/finalize_taxonomy.py --dry-run     # checks everything, writes nothing
-python scripts/finalize_taxonomy.py               # writes HUMAN_CALIBRATED configs/virgintrains_intents.yaml + frozen configs/virgintrains_taxonomy_v1.yaml
-
-# 4. Only now: 250 golden cases for human labelling (gold_* columns blank)
-python scripts/prepare_golden_labeling.py          # -> data/golden/virgintrains_golden_v1.csv
-python -m pytest -q
-```
-
-**Labeling tool.** A stdlib HTTP server bound to `127.0.0.1` (random per-run token, Host check, no new dependency). It shows one case at a time (conversation oldest-first, customer and agent visually distinct), progress `N / 200`, previous / next / next-unlabelled / jump, and a form for the five `human_*` fields. The system's candidate intent is **not** sent to the browser until you press *Reveal* (each reveal is logged), and the reference drawer lists all intents alphabetically with their definition and confusables. Save writes only the `human_*` cells of that row to `data/processed/taxonomy_calibration.csv`, atomically, after re-verifying the file; there is no auto-fill. `human_intent` must be a current intent or `NEW:<snake_case>` (with a note). Resume = start it again; it opens at the first unlabelled case. The audit trail is `data/processed/taxonomy_calibration_label_audit.jsonl` (timestamp, labeler, before/after, whether the suggestion was revealed first) and the previous save is kept as `taxonomy_calibration.csv.bak`. Before every read and write the tool checks that case ids, tweet ids, order and sampling columns still match a fingerprint in the manifest and that no case belongs to the golden set, and it refuses to touch a modified sample. It never reads or writes `data/golden/`. Stopping and restarting is safe at any point; two windows cannot run at once (the port is the lock).
-
-Guards: the finalizer refuses unless at least 95% of calibration rows are fully labelled with valid values, the decisions file is signed (`reviewed_by`, `reviewed_on`), the golden set hash equals the one recorded when the sample was drawn, and the final registry has 8-12 intents plus the fallback with examples only from `train_retrieval`. A frozen taxonomy cannot be re-frozen; `content_sha256` detects any later edit. `prepare_golden_labeling.py` refuses without a verified frozen taxonomy, never alters the golden sampling (hash-checked), and never overwrites gold labels. The golden CSV adds `source_tweet_ids`, `conversation_id` and `golden_stratum_weight` after the requested columns for provenance, and shows no system-suggested intent.
-
-Calibration sample design: 1,240 reserve cases, minus 128 that share a group with a golden case, 22 continuations and 8 that do not start with a customer, leaves 1,082 eligible. 200 are drawn with quotas that over-represent the confusable intents; within an intent, half are low-margin boundary cases and half are diverse coverage. `stratum_weight` re-balances within an intent only (the sample is not prevalence-faithful). Cases are presented in a shuffled order and the system suggestion is shown after the conversation to limit anchoring.
-
-## Evidence-Grounded RAG
+## Architecture
 
 ```text
-Twitter conversations
-        |
-Support cases              (episodes per customer, rule-based resolution signals)
-        |
-Resolution memory          (problem + brand response + summary + provenance, train split only)
-        |
-BM25 + embeddings          (hybrid score, optional soft candidate-intent bonus)
-        |
-Historical evidence        (similar past cases and what the brand actually did)
+ twcs.csv (2.8M tweets, 108 brands)
+   │  ingestion/loader + reconstruction       validate schema, dedupe, rebuild reply threads (provenance kept)
+   ▼
+ brand ranking ──► VirginTrains (manual pick)  evaluation/brand_ranking.py
+   │  ingestion/brand_pipeline                 roles → episodes (one per customer, 24h gap) → support cases
+   ▼
+ 17,913 support cases ──► rule-based resolution signals with quoted evidence (no LLM)
+   │
+   ├─► taxonomy/discovery     entity-masked MiniLM embeddings + KMeans (k=12) → 10 candidate intents + fallback
+   ├─► evaluation/splits      customer/thread-grouped hashing → train 14,213 · dev 2,210 · golden 250 · reserve 1,240
+   ▼
+ resolution memory (train only)   problem · what the brand replied · resolution type · tweet ids
+   │
+   ▼
+ ┌──────────────────────────── support agent (src/agent/support_agent.py) ───────────────────────────┐
+ │ message → Gemini classifier (candidate intents, JSON, temp 0)                                     │
+ │         → hybrid retrieval (BM25 + embeddings + soft intent bonus, top 5)                         │
+ │         → deterministic risk policy (confidence, similarity, evidence count/agreement, triggers)  │
+ │             ├─ ESCALATE    → no reply; reasons + evidence for the human                           │
+ │             └─ AUTO_HANDLE → Gemini reply from evidence → grounding check → reply                 │
+ │                                    (link/amount check + Gemini verifier; any failure → ESCALATE)  │
+ └───────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-The system retrieves **historical support resolutions** (what a customer asked, what the brand replied, how it ended), not generic documents. Nothing is generated yet: there is no LLM, escalation policy, or UI in this step.
+A few things about how it fits together:
 
-> The taxonomy is currently a candidate taxonomy derived from data exploration; human taxonomy calibration is intentionally not used as a blocking dependency for this prototype. The candidate intent is used only as a soft retrieval signal, never as ground truth.
+- **The evidence is the brand's own history.** Retrieval returns past *resolutions* (what the customer asked, what
+  VirginTrains replied, how it ended), not generic documents. Every evidence item keeps its `case_id` and source tweet ids, so
+  any reply can be traced back to real tweets.
+- **The policy is deterministic and separate from the LLM.** Gemini classifies and drafts; plain code decides. All
+  thresholds live in one file, [`configs/support_agent.yaml`](configs/support_agent.yaml).
+  - Five intents never auto-handle: status, disruption complaints, Delay Repay, service complaints and unclear messages.
+  - Sensitive wording also forces escalation: legal, safety, accessibility, theft, refunds.
+- **Grounding can only make the agent more cautious.** A deterministic check rejects any link or £ amount that isn't in the
+  evidence. A Gemini verifier then lists unsupported claims. If either fails, or the verifier can't run, the decision becomes
+  ESCALATE. Nothing can turn an ESCALATE into an AUTO_HANDLE.
+- **One model wrapper.** All Gemini calls go through [`src/models/gemini.py`](src/models/gemini.py), which uses plain REST
+  with timeouts, retries and JSON mode, behind a small `LanguageModel` interface. Tests use fakes and never need a key.
 
-```bash
-python scripts/build_resolution_memory.py   # -> data/processed/virgintrains_resolution_memory.parquet (+ manifest)
-python scripts/evaluate_retrieval.py        # -> BM25 vs embeddings vs hybrid vs hybrid + intent; reports/virgintrains_retrieval_evaluation.{md,json}
-```
+Pointers into the code:
+[`classifier.py`](src/agent/classifier.py) ·
+[`retrieval.py`](src/retrieval.py) ·
+[`policy.py`](src/agent/policy.py) ·
+[`generator.py`](src/agent/generator.py) ·
+[`grounding.py`](src/agent/grounding.py) ·
+[`schemas.py`](src/agent/schemas.py) (`Classification`, `Evidence`, `Decision`, `GroundingResult`, `AgentResult`).
 
-```python
-from retrieval import ResolutionRetriever
+---
 
-retriever = ResolutionRetriever.from_files("data/processed/virgintrains_resolution_memory.parquet",
-                                           "data/processed/splits/virgintrains_split_assignments.csv",
-                                           cache_dir="data/processed/cache")
-results = retriever.search(query=customer_message, intent="service_status_delay_enquiry", top_k=5)  # intent is optional
-```
+## Results so far
 
-Design notes:
+### Retrieval (the headline number, for now)
 
-- **Memory** has one record per train-split support case: `customer_problem` (what the customer wrote before the first brand reply, urls and mentions removed), `historical_response` (the brand reply that carried the resolution, original wording, sign-offs removed), a compact `resolution_summary`, `resolution_type`, `resolved`, `dm_redirect`, `escalation_signal` (what past agents *did*, not a policy), and the source/response tweet ids. Cases with no brand reply or only a weak reply (clarifying question, `other`, unresolved, fallback intent, continuation) are kept but flagged `in_primary_corpus = False` and are never retrieved.
-- **Safety:** only `train_retrieval` cases are written to the memory and the retriever refuses any other split or any golden/reserve/dev id. Retrieval is deterministic (ties break on corpus order), uses no LLM, and has configurable `top_k`, `sem_weight` and `intent_weight`. Embeddings (all-MiniLM-L6-v2) are cached under `data/processed/cache/`.
-- **Intent-aware retrieval** adds a small bonus to the normalised hybrid score when the candidate intent matches. It is not a filter, so strong cross-intent evidence can still win, and an unknown or missing intent simply means query-only retrieval.
-- **Evaluation is a proxy**, not human relevance ground truth. Queries are non-golden `dev_calibration` cases; a historical case is "relevant" when it has the same *candidate* intent and the same rule-derived resolution type. Weights are tuned on one half of the queries and every reported number is on the other half. Golden cases are never used. See `reports/virgintrains_retrieval_evaluation.md` for the numbers, the wrong-intent stress test, and failure modes.
+Retrieval is the part I could measure without human labels. The setup:
 
-## Evidence-grounded support agent with risk-aware abstention
+- **Queries:** 857 held-out `dev_calibration` cases.
+- **Corpus:** 10,380 train-split resolutions.
+- **Relevance:** a retrieved case counts as relevant if it has the same candidate intent *and* the same rule-derived
+  resolution type.
+- **Tuning:** weights were tuned on a separate half of dev queries.
 
-```text
-message -> intent (Gemini, candidate taxonomy) -> retrieve similar past cases -> risk policy (deterministic)
-        -> AUTO_HANDLE: Gemini reply from the evidence -> grounding check -> reply        (any failure -> ESCALATE, no reply)
-        -> ESCALATE:    no reply, evidence and reasons handed to a human
-```
+Full report: [`reports/virgintrains_retrieval_evaluation.md`](reports/virgintrains_retrieval_evaluation.md).
 
-The key goes in a git-ignored `.env` file at the repo root (copy `.env.example`), or in the shell environment, which takes precedence. `GEMINI_MODEL` optionally overrides the model name.
+| strategy | R@1 | R@5 | MRR (95% CI) |
+|---|---|---|---|
+| Random (trivial baseline) | 0.053 | 0.237 | 0.152 |
+| BM25 (simple baseline) | 0.223 | 0.551 | 0.372 (0.349–0.396) |
+| Embeddings (MiniLM) | 0.287 | 0.616 | 0.443 (0.418–0.470) |
+| Hybrid (0.9 semantic) | 0.299 | 0.623 | 0.445 (0.420–0.472) |
+| **Hybrid + soft intent bonus (0.15)** | **0.407** | **0.784** | **0.572 (0.547–0.598)** |
 
-```bash
-cp .env.example .env             # then set GEMINI_API_KEY=... in .env
-python scripts/run_support_agent.py --message "The wifi on my train keeps dropping" [--context "earlier conversation"]
-```
+**Stress test.** If 30% of the predicted intents are wrong, the soft bonus still beats query-only retrieval (MRR 0.519 vs 0.445).
+A hard intent filter drops below it (0.404). That's why the intent is only a nudge and never a filter.
 
-- The **historical resolution memory is the only evidence source**; retrieval happens before generation, and every returned case keeps its `case_id`, source tweet ids, resolution type and scores.
-- The **candidate intent taxonomy is not human-validated ground truth**, so the classifier is a prediction of a candidate intent. Its confidence is the model's own, uncalibrated, estimate.
-- The system **prefers escalation to unsupported automation**. `src/agent/policy.py` is deterministic and separate from Gemini: it auto-handles only when classifier confidence, retrieval similarity, the number of usable cases and their agreement all pass, and no trigger fires (multi-intent, low-information message, a never-auto intent, sensitive wording). Each decision lists its reasons. Gemini's grounding verifier can only turn AUTO_HANDLE into ESCALATE.
-- All thresholds and the never-auto intents are in `configs/support_agent.yaml`. They are conservative starting values, not tuned or validated. Policy uses raw cosine similarity because the normalised hybrid score is always about 1.0 for the top result.
-- The **golden evaluation set has not been used** for development. There is no evaluation of reply quality or escalation accuracy yet, and the Gemini calls have not been exercised against a live key. Tests use fakes (`pytest -q`).
+### Agent
 
-## Live smoke test
+- **Unit level:** fully tested with fakes. Those tests cover:
+  - policy paths;
+  - multi-intent and weak-evidence escalation;
+  - grounding failure forcing escalation;
+  - provenance flowing through end to end;
+  - behaviour with no API key.
+- **Live:** a 12-case smoke test on `dev_calibration` showed classification, retrieval and policy escalation working against
+  real Gemini. Cases that passed the policy reached generation. The free-tier quota ran out before a full run, so
+  **I have not yet observed AUTO_HANDLE with a passing grounding check live**.
+- **No accuracy, escalation precision or reply-quality numbers yet.** Those come from the golden set.
 
-A diagnostic that runs the **complete agent against the real Gemini API** on about 12 representative VirginTrains openers (status, booking, seat, Delay Repay, wifi, catering, complaint, praise, short message, multi-intent, boundary case, likely escalation). It checks that the pipeline works end to end and prints every decision for a human to read. It is **not the benchmark**: no accuracy or score is computed, and the historical resolution type and candidate intent it prints are weak metadata, not human ground truth.
+---
 
-```bash
-# needs GEMINI_API_KEY in .env or the environment (see above)
-python scripts/smoke_test_agent.py --limit 12 --seed 42     # --select-only lists the cases without calling Gemini
-```
+## What is misleading about my headline number?
 
-Cases come from `dev_calibration` only and are checked before any model call; golden, reserve and excluded cases are never used. Selection is rule-based and deterministic. Only the opening customer message is sent to the agent. Output goes to the terminal only; live outputs are deliberately not committed because they are model-dependent and are not evaluation ground truth.
+The 0.572 MRR / 0.784 Recall@5 above looks good. Here is why you shouldn't read too much into it:
+
+1. **It's partly self-confirming.** The "+ intent" strategy uses the candidate intent, and so does the relevance rule.
+   Retrieval gets rewarded for agreeing with the same clustering that defines "relevant". On intent-only relevance that row
+   jumps to R@1 0.953, which mostly says the bonus works, not that the evidence is useful.
+2. **The labels behind it are heuristics.** Both the intent (an unsupervised cluster, silhouette ≈ 0.05) and the resolution
+   type (regexes over the brand's reply) are machine-made. No human has judged a single retrieved case as useful.
+3. **"Relevant" isn't "helpful".** A past reply with the same intent and resolution type can still be wrong for this
+   customer, for example a different route or a disruption that has since ended.
+4. **It measures retrieval, not the agent.** A perfect top 5 still has to get through the policy, the generator and the
+   grounding check. The number the brief actually cares about is how often an auto-handled reply is right, and that doesn't
+   exist yet.
+5. **It's seven weeks of 2017 tweets.** Almost all the data is from Oct–Dec 2017, so recurring disruption templates are
+   over-represented and there is no test of how it holds up over time.
+
+---
+
+## Failure modes I already know about
+
+These come from retrieval and data analysis. The agent-level top 5 will come from the golden run.
+
+1. **Right topic, wrong handling.** 178 of the 185 retrieval misses found the same intent but a different resolution type.
+   Example: "can I use Virgin from Watford with this??" was historically a *refund*, but retrieval brought back "next train"
+   answers. *Hypothesis:* the opening message doesn't contain what decides the handling (ticket type, refund eligibility).
+2. **Sarcasm reads as praise or chitchat.** "on what planet can you justify this price? … hand-waited on by Tom Hardy" is a
+   fare complaint, but it clustered as `chitchat_non_support`. *Hypothesis:* short-text embeddings miss irony; the
+   classifier should do better, and the golden labels will show whether it does.
+3. **Mixed messages.** "I appreciate your 2-hour service… sort out your air conditioning" was filed as praise. *Hypothesis:*
+   one opener with two intents; the policy's multi-intent trigger is the safety net.
+4. **Invisible resolutions.** About 4% of cases move to DM, and whatever was resolved there is invisible to us. Refunds and
+   complaints are therefore under-represented as resolved and over-represented as "unresolved".
+5. **Routes instead of intents.** Before I masked places and times, the clusters split by route (Euston–Manchester vs
+   London–Glasgow) rather than by what people wanted. Masking fixed it, but residual entity bias is likely.
+
+---
 
 ## Golden evaluation set
 
-The 250 golden cases are **frozen**: they are the existing `golden_eval` split, and the pack is written only after their hash matches the split manifest and the leakage checks against `train_retrieval` and `dev_calibration` all return zero. Those checks cover case, customer, conversation, group, source and context tweets, and opener. Labels are **created by a human** in a local blind tool. It shows the conversation and the *provisional* candidate taxonomy as a reference, and never shows model output: no candidate intent, cluster, retrieved evidence, policy decision, draft reply or grounding result. The set is **held out from all tuning** (retrieval, prompts, thresholds, taxonomy) and is used **only for final evaluation**.
+**Sampling.** I took 250 cases from a held-out golden pool, stratified by:
 
-**Status: not labelled yet.** `data/golden/virgintrains_golden_v1.csv` currently has blank human columns.
+- candidate cluster;
+- resolution type;
+- conversation length;
+- DM redirect;
+- resolved.
 
-```bash
-python scripts/prepare_golden_eval.py          # verify + write the blank pack (done; refuses once labels exist)
-python scripts/label_golden_eval.py            # label at http://127.0.0.1:8766/   (--check: verify + print progress)
-python scripts/golden_taxonomy_review.py       # after 250/250: reports/golden_taxonomy_review.md (taxonomy only, no metrics)
+That deliberately over-represents rare and hard cases; `golden_stratum_weight` restores natural prevalence.
+The pool is separated *before* clustering, and splits are assigned by grouping customers and threads. So no golden customer,
+conversation, thread, tweet or near-duplicate opener appears in train or dev. Train or dev cases that copied a golden opener
+or context tweet are dropped. [`evaluation/splits.py`](src/evaluation/splits.py) checks all of this, and it currently passes
+with zero overlaps.
+
+**Labeling.** [`scripts/label_golden_eval.py`](scripts/label_golden_eval.py) is a small local web tool (127.0.0.1 only). It
+shows one case at a time: the full conversation oldest-first and the candidate taxonomy, clearly marked *provisional*.
+**It never shows model output**: no predicted intent, cluster, retrieved evidence, policy decision or draft reply. The
+labeler fills in:
+
+- `gold_intent`: a candidate intent, or `NEW:<snake_case>` with a note if none fits;
+- `gold_should_escalate`: yes or no, judged against what *this* AI can actually do;
+- `gold_resolution_type`;
+- `gold_confidence` (optional);
+- `human_notes`.
+
+Before every read and write the tool re-checks the sample's fingerprints, writes only the human columns, keeps an audit log,
+and refuses to run if the CSV was edited by hand.
+
+**Status:** `data/golden/virgintrains_golden_v1.csv` exists with **all human columns blank**. The golden set has not been
+used for any tuning: not retrieval weights, prompts, thresholds or the taxonomy. When labeling is finished,
+[`scripts/golden_taxonomy_review.py`](scripts/golden_taxonomy_review.py) compares candidate intents against human ones.
+
+---
+
+## Decision log
+
+1. **VirginTrains over higher-ranked brands.** It ranked 3rd of 78 eligible brands, but its replies happen *in public*: only
+   3.3% go to DM, against 31.5% for Tesco. You can't learn resolutions you can't see. AskAmex ranked 1st mostly because of
+   templated follow-ups.
+2. **One case per customer episode, not per thread.** Busy VirginTrains threads mix several customers and other operators'
+   agents. I attribute each tweet to a customer through the reply chain and @mentions, and treat a gap of more than 24 hours as
+   a new episode.
+3. **Rule-based resolution labels with quoted evidence, no LLM.** These are weak labels, but every one points to the exact
+   sentence that triggered it, so they're auditable and nothing is paraphrased.
+4. **Mask entities before clustering.** Without it the clusters were train routes, not intents.
+5. **Taxonomy stays a *candidate*.** Clusters are soft (silhouette ≈ 0.05), so I marked uncertain fields `NEEDS_REVIEW` and
+   never called them ground truth.
+6. **Skipped human taxonomy calibration on purpose.** I built a 200-case calibration workflow, then fast-forwarded past it to
+   get an end-to-end agent. The golden labels allow `NEW:` intents and feed a taxonomy review afterwards, so the taxonomy can
+   still change.
+7. **Split by customer and thread groups, golden pool carved out first.** Hashing cases at random would leak the same
+   customer, or the same templated reply, across splits.
+8. **Retrieve resolutions, not documents.** The question is "what did VirginTrains do last time?", so a memory record is
+   problem → brand reply → outcome, from the train split only.
+9. **Intent is a soft bonus, never a filter.** The stress test shows filters fall apart once the classifier is wrong.
+10. **Tune on one half of dev, report on the other.** Golden is never touched for tuning.
+11. **Deterministic policy, separate from the LLM.** LLM confidence is uncalibrated, so the auto-handle decision is made by
+    configurable thresholds that list their reasons, not by the model.
+12. **Some intents always escalate.** Live status, Delay Repay and complaints need live data, account access or human
+    judgment that this system doesn't have. Getting them wrong costs more than escalating them.
+13. **Grounding is one-directional and fails closed.** It can only downgrade to ESCALATE, and a verifier error counts as
+    "not grounded".
+14. **REST client instead of the Gemini SDK, one wrapper.** It's easy to fake in tests, has no SDK version drift, and is one
+    place to swap providers.
+15. **Blind golden labeling against a provisional taxonomy.** Showing the labeler predictions would anchor them, and the
+    evaluation would end up measuring agreement with the model.
+
+---
+
+## What I'd do next with one more week
+
+1. **Label the 250 golden cases**, then run the taxonomy review and decide on merges and renames *before* evaluating.
+2. **Build the evaluation harness** on golden. It would measure:
+   - intent accuracy and macro-F1;
+   - escalation precision and recall;
+   - the precision of auto-handled replies (the one that matters).
+
+   It would compare against a trivial baseline (always escalate, or always the majority intent) and a simple one (BM25 top-1
+   reply plus keyword rules).
+3. **LLM-as-judge for reply quality**, with a short rubric: grounded, answers the question, no invented commitments, tone.
+   I'd label about 50 replies by hand to measure how well the judge agrees with a human (Cohen's κ) before trusting it.
+4. **Calibrate the policy on dev, not golden.** Sweep the thresholds for an auto-handle precision target and report the
+   coverage that buys.
+5. **Finish the live smoke test** with a paid key, to see AUTO_HANDLE plus grounding PASS end to end.
+
+---
+
+## Repo map
+
+```text
+src/
+  ingestion/     loader, schema, thread reconstruction, roles, episodes, resolution signals, case builder, resolution memory
+  taxonomy/      entity masking, discovery (TF-IDF / embeddings / KMeans), taxonomy builder, registry, finalize
+  evaluation/    brand ranking, splits + leakage checks, sampling, retrieval eval, smoke test, calibration and golden labeling tools
+  agent/         schemas, classifier, policy, generator, grounding, support_agent (orchestration), config
+  models/        LanguageModel interface + Gemini REST client
+  retrieval.py   BM25 + embeddings + hybrid retriever
+configs/         support_agent.yaml (all thresholds), virgintrains_intents.yaml (candidate taxonomy), cluster labels
+scripts/         one entry point per step (see below)
+reports/         EDA, intent clusters, case inspection, retrieval evaluation
+data/            raw/ (twcs.csv, not committed) · processed/ · golden/
+tests/           489 tests, no network or API key needed
 ```
 
-Fields: `gold_intent` (a candidate intent, or `NEW:<snake_case>` with a note), `gold_should_escalate` (yes means route to a human, no means this project's AI could safely auto-handle it), `gold_resolution_type`, optional `gold_confidence`, and `human_notes`. The tool re-verifies the frozen sample before every read and write, writes only these columns atomically, and logs every change to `data/golden/virgintrains_golden_v1_label_audit.jsonl`. It refuses to run if labels were edited outside it. This replaces the freeze-gated `prepare_golden_labeling.py` path described in phase 3. The taxonomy stays a candidate and is reviewed only after the labeling is done.
+| script | what it does |
+|---|---|
+| `profile_dataset.py`, `build_cases.py`, `rank_brands.py` | phase 1: profile all brands, rebuild threads, rank brands |
+| `run_virgintrains_pipeline.py` | runs `build_virgintrains` → `discover_intents` → `prepare_splits` → `generate_taxonomy` → `virgintrains_report` |
+| `build_resolution_memory.py`, `evaluate_retrieval.py` | memory + proxy retrieval evaluation |
+| `run_support_agent.py`, `smoke_test_agent.py` | the agent on one message / on 12 representative dev cases |
+| `prepare_golden_eval.py`, `label_golden_eval.py`, `golden_taxonomy_review.py` | golden pack, blind labeling, post-labeling taxonomy review |
+| `build_taxonomy_calibration.py`, `label_taxonomy_calibration.py`, `compare_taxonomy.py`, `finalize_taxonomy.py` | optional taxonomy-calibration path (built, not used yet) |
 
-## Assumptions and known limitations
+---
 
-- **VirginTrains specifics.** Taxonomy clusters are weak (silhouette about 0.05) and only loosely agree with a TF-IDF clustering; read `reports/virgintrains_eda.md` section 4 before relying on them. Resolution labels are English-only heuristics; `refund` means a refund was discussed (including refusals). The largest group of linked cases holds about 16% of all cases and therefore lands in a single split. `golden_pool_reserve` cases are held back and must not be used for retrieval or prompts.
-- **What counts as a brand.** A brand is any author of an outbound tweet (`inbound == False`); there are 108. Inbound tweets don't record which brand they're addressed to, so a case's brand comes from whoever replied. If no brand replied, it falls back to an @-mention of a known handle.
-- **What counts as a conversation.** A conversation is a connected component of the reply graph. Links come from both `in_response_to_tweet_id` and `response_tweet_id`. Branches, such as one customer tweet answered by two agents, stay inside a single conversation.
-- **Dangling references.** Links to tweets that aren't in the file (172,500 response references and 3,862 parent references) are flagged, not treated as errors. The public file is a sample, so dangling ids are expected.
-- **No unanswered tweets.** Every tweet in the public file has at least one reply link, which means there are no single-tweet conversations in the data. As a result, `no_response` cases essentially never occur on the full file. That says something about how the dataset was sampled, not about the brands.
-- **Multi-party threads.** 54,642 conversations involve more than one customer, and the largest has 972 customers and 1,390 tweets (many people replying under a single brand tweet during an outage). They're flagged with `is_multi_party` and excluded from the ranking's reconstructable metrics, but they aren't split apart yet.
-- **Resolution labels are heuristics.** They're English-only regexes, and "resolved" here means only "visibly resolved in public". Many brands resolve issues in DMs, so their true resolution rate is higher than these labels suggest.
-- **Seed intents are a proxy.** The keyword intents exist only to compare intent diversity between brands. About 25–45% of openers fall into `other`. This lexicon is not the agent's taxonomy.
-- **The Latin-script gate is not a language filter.** It doesn't detect language: Safaricom_Care (Swahili/English) and idea_cares (Hinglish) pass it. Check language manually for any brand you shortlist.
-- **Caveats on the top rank.** AskAmex is first partly because it sends templated follow-ups ("Hi, I never heard back from you…"). Those inflate both its multi-turn density and its template repetition, and it has about 4k conversations, the lowest volume in the top 10.
+## Reference: data contracts and pipeline details
+
+<details>
+<summary><b>Input format</b> (from the real <code>twcs.csv</code> header)</summary>
+
+| column | observed type | notes |
+|---|---|---|
+| `tweet_id` | integer | unique |
+| `author_id` | string | brand handle for outbound tweets, anonymised number for customers |
+| `inbound` | `"True"`/`"False"` | True = customer |
+| `created_at` | `Tue Oct 31 22:10:47 +0000 2017` | parsed to UTC |
+| `text` | string | stored untouched |
+| `response_tweet_id` | nullable, comma-separated ids | |
+| `in_response_to_tweet_id` | nullable integer | |
+
+If a required column is missing, the loader raises `SchemaError`. Extra columns trigger a warning. Rows with an invalid id or
+`inbound` value are dropped and counted. Timestamps that can't be parsed become NaT and sort last in their thread.
+`--nrows N` gives a fast debug run.
+</details>
+
+<details>
+<summary><b>How VirginTrains cases are built</b></summary>
+
+A conversation is a connected component of the reply graph. Customer tweets belong to their author. Agent tweets belong to
+the customer found by walking up the reply chain, then by `@mention`, then by the thread's only customer. A gap of more than
+24 hours starts a new case, flagged `is_continuation`. Agent tweets that answer nobody (announcements) are kept as
+`context_tweet_ids`. Some accounts flagged `inbound=True` are really other operators' agents (they sign off `^XX`); the raw
+flag is kept and a derived `role` is used.
+
+Each case carries:
+
+- `case_id`, `brand`, `conversation_id`;
+- `customer_messages`, `agent_messages`;
+- `full_turns`: every turn with its tweet id, role, raw text, timestamp and source row;
+- `turn_count`, `first_timestamp`, `last_timestamp`;
+- `resolved`, `resolution_type`, `resolution_summary`, `resolution_evidence`;
+- `dm_redirect`, `source_tweet_ids`.
+
+Outputs: `data/processed/virgintrains_{conversations,tweets,cases}.parquet`. Numbers:
+[`reports/virgintrains_eda.md`](reports/virgintrains_eda.md) has 14,853 conversations, 65,810 tweets, 17,913 cases, 16%
+visibly resolved and 4% DM-redirected.
+</details>
+
+<details>
+<summary><b>Brand ranking</b> (phase 1)</summary>
+
+Each metric is converted to a percentile among the eligible brands (at least 1,000 conversations and 85% Latin-script
+openers), then combined with these weights:
+
+| metric | weight |
+|---|---|
+| volume | 0.10 |
+| reconstructable conversations | 0.15 |
+| reconstructable rate | 0.05 |
+| multi-turn density | 0.20 |
+| template repeat rate | 0.15 |
+| intent diversity | 0.15 |
+| resolved rate | 0.10 |
+| non-DM rate | 0.10 |
+
+Top 3 of 78 eligible brands: AskAmex 0.718, Tesco 0.695, VirginTrains 0.688. The output is
+`data/processed/brand_ranking.{csv,json}`.
+</details>
+
+<details>
+<summary><b>Taxonomy-calibration path</b> (built, optional, not used yet)</summary>
+
+There is a 200-case calibration sample drawn from `golden_pool_reserve`, with a local labeling tool (the system suggestion
+is hidden until you click Reveal), a comparison report and a guarded finalizer that writes a frozen
+`virgintrains_taxonomy_v1.yaml`. I chose not to run it; the golden labels plus the taxonomy review cover the same need with
+one labeling pass. The scripts are listed in the [repo map](#repo-map).
+</details>
+
+---
+
+## Assumptions, limitations and credits
+
+- **The public view only.** Anything resolved in DMs, by phone or in person is invisible, so "resolved" is a lower bound.
+- **English-only heuristics.** The resolution signals are regexes. `refund` means a refund was *discussed*, including
+  refusals.
+- **The dataset is a sample.** Some reply links point to tweets that aren't in the file; these are flagged, not treated as
+  errors. Every tweet has at least one link, so there are no single-tweet threads.
+- **One big linked group.** The largest group of linked cases holds about 16% of all cases, so it lands in a single split.
+- **Thresholds are starting values**, chosen conservatively on dev data. They are not tuned to a validated target.
+- **Credits.**
+  - Data: Customer Support on Twitter (Kaggle, thoughtvector).
+  - Embeddings: `sentence-transformers/all-MiniLM-L6-v2`.
+  - Clustering and TF-IDF: scikit-learn.
+  - LLM: Google Gemini (`gemini-2.5-flash`) over REST.
+  - BM25 is my own implementation in [`src/retrieval.py`](src/retrieval.py).
+  - Written with an AI coding assistant; I can walk through and change any part of it.
