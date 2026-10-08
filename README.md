@@ -417,6 +417,20 @@ The headline is **60.0% intent accuracy (0.533 macro-F1) on 100 blind labels**. 
 
 ## Reproducing the results
 
+**Quick check for reviewers (about 5 minutes, no dataset, no API key).** Everything below runs from a fresh clone:
+
+```bash
+pip install -r requirements.txt
+python -m pytest -q                                  # tests that need the regenerated data are skipped
+python scripts/run_copilot_ui.py --no-live           # the UI over the committed 50-case run: http://127.0.0.1:8770
+python scripts/analyze_failures.py                   # rebuilds reports/failure_analysis.md from committed artifacts
+python scripts/evaluate_agent.py --select-only       # shows the stratified 50-case slice
+python scripts/label_golden_eval.py --check          # verifies the frozen golden set and prints label provenance
+```
+
+Every report referenced above is committed under `reports/`. Everything else (retrieval, intent baselines, the agent run)
+needs the data pipeline first, because the large tables aren't committed.
+
 Three kinds of steps. **Local**: deterministic, no API key. **Cached**: replays committed model outputs without an API call.
 **Live**: calls an LLM and is subject to free-tier rate limits. The main data pipeline took about 5 minutes on my GPU
 (CPU is slower). The live evaluations can't promise a time budget: the Groq free tier allows about 200K tokens a day, so the
