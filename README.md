@@ -48,11 +48,13 @@ replies blind ([Reproducing the results](#reproducing-the-results), step 7).
 
 *The local Support Copilot UI (`python scripts/run_copilot_ui.py`). It shows real cached agent runs: decision, intent,
 risk checks, the historical VirginTrains replies used as evidence, and the execution trace. It shows no chain-of-thought.
-Above is an AUTO_HANDLE case whose reply passed grounding. Below are two escalations from the same run.*
+Above is an AUTO_HANDLE case whose reply passed grounding. Below are three escalations from the same run.*
 
 | Escalated: staff complaint, no usable evidence (`case_756996`) | Escalated: praise mentioning a wheelchair, an over-escalation (`case_2396788`) |
 |---|---|
 | ![Escalated ticket: blocked intent, weak retrieval and no usable evidence; no reply drafted](docs/screenshots/copilot-escalated-no-evidence.png) | ![Escalated praise ticket: the sensitive-word rule fired on "wheelchair" although all 5 evidence cases were strong matches](docs/screenshots/copilot-escalated-sensitive-wording.png) |
+| **Draft blocked by grounding (`case_690119`)** | |
+| ![Grounding failure: the draft invented a fare-release date; the verifier lists the unsupported claims and the case is escalated](docs/screenshots/copilot-grounding-fail.png) | The policy allowed this case through, but the draft added claims the evidence doesn't support (a fare-release timeline), so grounding failed and the agent escalated instead of replying. The trace ends in "draft blocked" and "fail". |
 
 ---
 
