@@ -14,8 +14,8 @@ replies when it has strong historical evidence, and otherwise it hands the case 
 
 > **Where things stand (honestly).** The data pipeline, the intent taxonomy, retrieval, the agent and a blind labeling tool for
 > the golden set are built and tested (`pytest -q`: 490 passed). Retrieval has a proxy evaluation with baselines. The 250-case
-> golden set is sampled, frozen and leakage-checked. **240 cases have human labels: 100 labelled blind, and 140
-> AI-assistant drafts reviewed and confirmed by a human; 10 drafts are still unreviewed** (see
+> golden set is sampled, frozen and leakage-checked. **All 250 cases have human labels: 100 labelled blind, and 150
+> AI-assistant drafts reviewed and confirmed by a human** (see
 > [Golden evaluation set](#golden-evaluation-set)). The end-to-end evaluation harness and the
 > LLM-as-judge are **not built yet**; I didn't want to build them before the labels were final. The
 > [deliverables table](#deliverables-vs-the-brief) shows exactly what is done and what isn't.
@@ -82,7 +82,7 @@ python scripts/label_golden_eval.py            # --check verifies the files and 
 | Intents defined from the data | ✅ 10 candidate intents plus a fallback, still marked *candidate* (not human-validated) | [`configs/virgintrains_intents.yaml`](configs/virgintrains_intents.yaml), [`reports/virgintrains_eda.md`](reports/virgintrains_eda.md) §4 and §8 |
 | Grounded reply drafting | ✅ built and unit-tested; the live run was cut short by the Gemini free-tier quota | [`src/agent/generator.py`](src/agent/generator.py), [`src/agent/grounding.py`](src/agent/grounding.py) |
 | Auto-handle vs escalate, with a reason | ✅ deterministic policy; every decision lists its reasons | [`src/agent/policy.py`](src/agent/policy.py), [`configs/support_agent.yaml`](configs/support_agent.yaml) |
-| Golden set of 150–250 hand-labelled examples | ⚠️ 250 cases sampled, frozen and leakage-checked; **240 human-labelled or human-reviewed** (100 blind, 140 confirmed AI drafts), 10 drafts unreviewed | [Golden evaluation set](#golden-evaluation-set) |
+| Golden set of 150–250 hand-labelled examples | ⚠️ 250 cases sampled, frozen and leakage-checked; **250 human-labelled or human-reviewed** (100 blind, 150 confirmed AI drafts) | [Golden evaluation set](#golden-evaluation-set) |
 | Evaluation harness: metrics, LLM judge, judge-vs-human agreement | ⚠️ retrieval harness done; **agent harness and LLM judge not built yet** (they need the golden labels) | [`src/evaluation/retrieval.py`](src/evaluation/retrieval.py) |
 | Results vs a trivial and a simple baseline | ⚠️ done for retrieval (random, BM25, embeddings, hybrid); agent-level baselines pending | [Results so far](#results-so-far) |
 | Top 5 failure modes | ⚠️ retrieval and data failure modes documented below; agent failure modes need the golden run | [Failure modes](#failure-modes-i-already-know-about) |
@@ -286,10 +286,9 @@ and refuses to run if the CSV was edited by hand.
   taxonomy, never agent output, and nothing from the first 100 was changed. A draft is **not** a human label.
 - Every save in the audit log records its `source`. When a human opens a draft in the tool it shows a banner; saving it
   unchanged records a confirmation, and editing it records a correction. `python scripts/label_golden_eval.py --check`
-  prints the counts. Right now: 100 human, 140 drafts confirmed by a human, 0 corrected, 10 still unreviewed
-  (orders 235–236 and 243–250).
-- Reviewing a draft is weaker than labeling blind, because the draft can anchor the reviewer. The 140 confirmations were
-  made in one five-minute pass with no corrections, so I treat them as a light review. Results will be reported twice:
+  prints the counts. Right now: 100 human, 150 drafts confirmed by a human, 0 corrected.
+- Reviewing a draft is weaker than labeling blind, because the draft can anchor the reviewer. The 150 confirmations were
+  made in about six minutes in total with no corrections, so I treat them as a light review. Results will be reported twice:
   on the 100 blind human labels alone (the primary number), and on all reviewed cases.
 
 The golden set has not been used for any tuning: not retrieval weights, prompts, thresholds or the taxonomy. When labeling is
@@ -335,7 +334,7 @@ finished,
 
 ## What I'd do next with one more week
 
-1. **Review the last 10 drafted golden labels** and re-check the 140 confirmed drafts more slowly, then run the taxonomy review and decide on merges and renames *before* evaluating.
+1. **Re-check the 150 confirmed golden drafts more slowly**, then run the taxonomy review and decide on merges and renames *before* evaluating.
 2. **Build the evaluation harness** on golden. It would measure:
    - intent accuracy and macro-F1;
    - escalation precision and recall;
