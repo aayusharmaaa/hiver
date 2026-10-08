@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import argparse
 import sys
+import time
 from pathlib import Path
 
 import _bootstrap  # noqa: F401
@@ -71,12 +72,15 @@ def main() -> int:
     parser.add_argument("--select-only", action="store_true", help="Print the selected cases and safety checks; make no model calls.")
     parser.add_argument("--processed-dir", type=Path, default=_bootstrap.DEFAULT_PROCESSED)
     parser.add_argument("--config", type=Path, default=None, help="Support-agent config (default: configs/support_agent.yaml).")
+    parser.add_argument("--pause-seconds", type=float, default=0.0, help="Wait between cases to stay under a per-minute rate limit (e.g. 20 on the free tier).")
     parser.add_argument("--env-file", type=Path, default=_bootstrap.DEFAULT_ENV_FILE, help="Git-ignored file with GEMINI_API_KEY=... (default: .env).")
     parser.add_argument("--log-level", default="WARNING")
     args = parser.parse_args()
     configure_logging(args.log_level)
     if args.limit < 1:
         parser.error("--limit must be >= 1")
+    if args.pause_seconds < 0:
+        parser.error("--pause-seconds must be >= 0")
     _bootstrap.load_env_file(args.env_file)
 
     key = api_key_from_env()
@@ -127,6 +131,8 @@ def main() -> int:
     outcomes = []
     try:
         for i, case in enumerate(selection.cases, 1):
+            if i > 1 and args.pause_seconds > 0:
+                time.sleep(args.pause_seconds)
             outcome = run_case(
                 agent, case, allowed_intents=taxonomy_intents, corpus_case_ids=corpus_ids, split_by_case=safety.split_by_case,
                 policy_settings=agent.config.policy, secrets=[key],
