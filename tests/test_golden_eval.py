@@ -318,6 +318,15 @@ def test_store_writes_only_the_human_columns_and_audits(prepared) -> None:
     open_store(prepared)
 
 
+def test_store_survives_crlf_conversion_of_the_pack(prepared) -> None:
+    csv = prepared["golden_dir"] / PACK_CSV
+    open_store(prepared).save_label(prepared["ids"][0], {**GOOD, "human_notes": "line one\nline two"})
+    csv.write_bytes(csv.read_bytes().replace(b"\r\n", b"\n").replace(b"\n", b"\r\n"))
+    store = open_store(prepared)
+    store.save_label(prepared["ids"][1], GOOD)
+    assert open_store(prepared).counts()["labelled"] == 2
+
+
 def test_store_never_prefills_and_reports_progress(prepared) -> None:
     store = open_store(prepared)
     state = store.state()

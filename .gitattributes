@@ -1,0 +1,2 @@
+# Fingerprinted labeling pack: newlines inside conversation cells must not be converted on checkout.
+data/golden/virgintrains_golden_v1.csv -text

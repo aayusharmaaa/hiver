@@ -189,8 +189,8 @@ def build_pack_frame(golden: pd.DataFrame, seed: int = PACK_SEED) -> pd.DataFram
 
 
 def source_fingerprint(frame: pd.DataFrame) -> str:
-    """sha256 of every non-human column, row order included, computed on the CSV as re-read as strings."""
-    source = frame[[c for c in frame.columns if c not in GOLD_COLUMNS]].astype(str)
+    """sha256 of every non-human column, row order included, computed on the CSV as re-read as strings (CRLF-insensitive)."""
+    source = frame[[c for c in frame.columns if c not in GOLD_COLUMNS]].astype(str).replace("\r\n", "\n", regex=True)
     payload = json.dumps({"columns": list(source.columns), "rows": source.values.tolist()}, ensure_ascii=False, separators=(",", ":"))
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()
 
@@ -364,7 +364,7 @@ class GoldenLabelStore:
             raise LabelStoreError("messages, conversations, provenance or order in the golden pack were edited; restore it from git")
         expected = replay_audit(self.audit_path)
         blank = {c: "" for c in GOLD_COLUMNS}
-        edited = [r.case_id for r in frame.itertuples(index=False) if {c: getattr(r, c) for c in GOLD_COLUMNS} != expected.get(r.case_id, blank)]
+        edited = [r.case_id for r in frame.itertuples(index=False) if {c: getattr(r, c).replace("\r\n", "\n") for c in GOLD_COLUMNS} != expected.get(r.case_id, blank)]
         if edited:
             raise LabelStoreError(f"{len(edited)} label(s) in {PACK_CSV} were changed outside the labeling tool (e.g. {edited[0]}); restore the file from the .bak or git")
         return frame
