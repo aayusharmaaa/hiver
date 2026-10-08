@@ -1,0 +1,288 @@
+{
+  "meta": {
+    "golden_cases": 250,
+    "blind_cases": 100,
+    "llm_predictions": 250,
+    "llm_model": "openai/gpt-oss-120b",
+    "agent_cases": 11,
+    "agent_expected": 50
+  },
+  "modes": [
+    {
+      "key": "intent_errors",
+      "title": "Intent classification errors",
+      "layer": "model + taxonomy",
+      "scope": "LLM classifier (gpt-oss-120b) on the 100 blind-human golden cases",
+      "count": 40,
+      "denominator": 100,
+      "examples": [
+        {
+          "case_id": "case_2232487",
+          "message": "So @VirginTrains got a new voice in the toilets. Shit myself not in the place I’d planned to.",
+          "detail": "gold `chitchat_non_support`, predicted `journey_disruption_complaint` (confidence 0.92)"
+        },
+        {
+          "case_id": "case_2607464",
+          "message": "Hey @VirginTrains I’m sure the automated voice in your loos is fun and quirky to most folk.....unless they have a heart condition!!!!",
+          "detail": "gold `customer_service_complaint`, predicted `chitchat_non_support` (confidence 0.97)"
+        },
+        {
+          "case_id": "case_2667822",
+          "message": "London bound @VirginTrains 💞 #HappySunday https://t.co/l3O7CMWdXb",
+          "detail": "gold `praise_positive_feedback`, predicted `chitchat_non_support` (confidence 0.97)"
+        }
+      ],
+      "observed": "40 of 100 blind cases misclassified; 32 of those errors had self-reported confidence >= 0.90, so the confidence threshold (0.75) does not catch them.",
+      "why": "Self-reported LLM confidence is uncalibrated; the classifier sees only the opening tweet while the labeler saw the whole conversation.",
+      "fix": "Calibrate confidence on dev (reliability curve) or replace it with retrieval-agreement signals; give the classifier the thread context the labeler had."
+    },
+    {
+      "key": "intent_boundary",
+      "title": "Intent boundary ambiguity",
+      "layer": "taxonomy",
+      "scope": "LLM errors on the blind 100, grouped into unordered intent pairs",
+      "count": 14,
+      "denominator": 40,
+      "examples": [
+        {
+          "case_id": "case_2639881",
+          "message": "@VirginTrains Hello I'm on the 18:15 from Birmingham to edinburgh there has been a few announcements but I can't hear any of them because of a lot of…",
+          "detail": "gold `journey_disruption_complaint`, predicted `service_status_delay_enquiry`; label confidence high"
+        },
+        {
+          "case_id": "case_509179",
+          "message": "@VirginTrains running late from London - probably not their fault. But then abandoned Shropshire passengers in Wolverhampton. Poor show.",
+          "detail": "gold `service_status_delay_enquiry`, predicted `journey_disruption_complaint`; label confidence high"
+        },
+        {
+          "case_id": "case_1325195",
+          "message": "@VirginTrains any idea how long the Euston line will be blocked for?",
+          "detail": "gold `journey_disruption_complaint`, predicted `service_status_delay_enquiry`; label confidence medium"
+        }
+      ],
+      "observed": "Most confused pairs: journey_disruption_complaint / service_status_delay_enquiry (5); chitchat_non_support / praise_positive_feedback (4); service_status_delay_enquiry / ticket_booking_query (3); customer_service_complaint / ticket_booking_query (2). Independently, the candidate taxonomy disagrees with the final gold intent on 131 of 250 golden cases.",
+      "why": "Several intents describe the same tweet from different angles (a delayed train is both a status question and a complaint); the taxonomy came from soft clusters (silhouette about 0.05).",
+      "fix": "Define intents by the action the brand must take (live info / compensation / acknowledge) and add decision rules for the top pairs; re-label only after freezing the new definitions."
+    },
+    {
+      "key": "retrieval_misses",
+      "title": "Retrieval finds the topic but not the handling",
+      "layer": "retrieval",
+      "scope": "proxy retrieval evaluation on 857 dev queries (labels are heuristic, not human)",
+      "count": 185,
+      "denominator": 857,
+      "examples": [
+        {
+          "case_id": "case_1011870",
+          "message": "Hi @VirginTrains on what planet can you justify this price? Will I have my own private carriage, hand-waited on by Tom Hardy? 🙃",
+          "detail": "proxy relevance = same intent `chitchat_non_support` + resolution `troubleshooting`; top-1 was `first_class_catering_issue` / `information_provided`; first relevant at rank 47"
+        },
+        {
+          "case_id": "case_2960895",
+          "message": "Dear @VirginTrains, whilst I really appreciate your on average 2 hour service for London Euston to Manchester Piccadilly, I would also love for you t…",
+          "detail": "proxy relevance = same intent `praise_positive_feedback` + resolution `self_service`; top-1 was `praise_positive_feedback` / `feedback_acknowledged`; first relevant at rank 9"
+        },
+        {
+          "case_id": "case_527334",
+          "message": "trying to get to Birmingham now can I use virgin from Watford with this??",
+          "detail": "proxy relevance = same intent `service_status_delay_enquiry` + resolution `refund`; top-1 was `service_status_delay_enquiry` / `information_provided`; first relevant at rank 246"
+        }
+      ],
+      "observed": "185 queries had no relevant case in the top 5; 178 of them retrieved the same intent but a different resolution type.",
+      "why": "The opening message rarely contains what decided the historical handling (ticket type, eligibility, whether a DM happened).",
+      "fix": "Retrieve on the full thread when available and show resolution-type diversity in the evidence instead of top-5 by similarity alone."
+    },
+    {
+      "key": "policy_over_escalation",
+      "title": "Over-escalation built into the policy",
+      "layer": "policy",
+      "scope": "hard rules applied to the GOLD intent of the blind 100 (perfect-classifier oracle)",
+      "count": 40,
+      "denominator": 81,
+      "examples": [
+        {
+          "case_id": "case_1615687",
+          "message": "@VirginTrains chaos at Euston. My sister was told to go to Marylebone, but then her train departed almost on time. How to get a refund?",
+          "detail": "gold intent `delay_repay_refund_claim`, gold should_escalate = no; fired: intent rule (delay_repay_refund_claim); sensitive wording (refund)"
+        },
+        {
+          "case_id": "case_2396788",
+          "message": "@VirginTrains Just had a lovely journey on the 0930 Euston to Glasgow, got off at Lancaster. James at Euston and Katie the train manager were very he…",
+          "detail": "gold intent `praise_positive_feedback`, gold should_escalate = no; fired: sensitive wording (wheelchair)"
+        },
+        {
+          "case_id": "case_2607464",
+          "message": "Hey @VirginTrains I’m sure the automated voice in your loos is fun and quirky to most folk.....unless they have a heart condition!!!!",
+          "detail": "gold intent `customer_service_complaint`, gold should_escalate = no; fired: intent rule (customer_service_complaint)"
+        }
+      ],
+      "observed": "Of 81 blind cases a human said need not escalate, 40 would still be escalated by a hard rule even with perfect classification (intent rule 37, sensitive wording 7, low-information 1; a case can fire several).",
+      "why": "Whole intents are blocked (status, disruption, Delay Repay, complaints, unclear), and the sensitive-word list matches words like 'wheelchair' or 'refund' even in praise or simple questions.",
+      "fix": "Gate on the action needed rather than the intent (a timetable question is not a live-status question), and scope sensitive words to complaints; tune on dev, not golden."
+    },
+    {
+      "key": "unsafe_auto_handle",
+      "title": "Potential unsafe auto-handles",
+      "layer": "policy",
+      "scope": "blind 100 (oracle) + the partial agent run",
+      "count": 3,
+      "denominator": 19,
+      "examples": [
+        {
+          "case_id": "case_2884600",
+          "message": "@VirginTrains @127472 you’ve just tried charging me £102 to change my ticket from 13:30 nom peak train from London to Lancaster to 11:30 non peak tra…",
+          "detail": "gold intent `ticket_booking_query`, gold should_escalate = yes; no hard rule fires; note: -"
+        },
+        {
+          "case_id": "case_2590829",
+          "message": "Great work @VirginTrains no buffet or trolley service on a 3hr journey? Even @121513 can sort that shit out #shambles",
+          "detail": "gold intent `first_class_catering_issue`, gold should_escalate = yes; no hard rule fires; note: -"
+        },
+        {
+          "case_id": "case_1419429",
+          "message": "@VirginTrains your cross country to Plymouth this evening was late but to be fair it was (thank god) warm and the staff on it were lush.",
+          "detail": "gold intent `praise_positive_feedback`, gold should_escalate = yes; no hard rule fires; note: -"
+        }
+      ],
+      "observed": "3 of 19 blind cases that should escalate are not caught by any hard rule; only the soft checks (confidence, evidence, grounding) stand between them and an auto-reply. Observed in the partial agent run: 0 unsafe auto-handles out of 11 cases.",
+      "why": "Escalation-worthy cases that look like routine intents (e.g. a booking question that actually needs an account lookup) slip past intent-level rules.",
+      "fix": "Measure auto-handle precision on the full 50-case slice, then add the specific triggers found (account/booking-reference requests) as rules."
+    },
+    {
+      "key": "observed_over_escalation",
+      "title": "Over-escalation (observed)",
+      "layer": "policy",
+      "scope": "end-to-end agent run: 11 of 50 cases (PARTIAL)",
+      "count": 4,
+      "denominator": 6,
+      "examples": [
+        {
+          "case_id": "case_2396788",
+          "message": "@VirginTrains Just had a lovely journey on the 0930 Euston to Glasgow, got off at Lancaster. James at Euston and Katie the train manager were very he…",
+          "detail": "gold `praise_positive_feedback`, predicted `praise_positive_feedback`; potentially sensitive or exceptional wording: wheelchair"
+        },
+        {
+          "case_id": "case_1325195",
+          "message": "@VirginTrains any idea how long the Euston line will be blocked for?",
+          "detail": "gold `journey_disruption_complaint`, predicted `service_status_delay_enquiry`; intent 'service_status_delay_enquiry' is never auto-handled: answer depends on live service data that historical cases cannot provide"
+        },
+        {
+          "case_id": "case_491221",
+          "message": "@VirginTrains please can you advise when your peak train times are today?",
+          "detail": "gold `service_status_delay_enquiry`, predicted `service_status_delay_enquiry`; intent 'service_status_delay_enquiry' is never auto-handled: answer depends on live service data that historical cases cannot provide"
+        }
+      ],
+      "observed": "4 cases a human said need not escalate were escalated.",
+      "why": "See the policy oracle above: most are blanket intent rules or sensitive words.",
+      "fix": "Same as the policy oracle fix."
+    },
+    {
+      "key": "generation_failures",
+      "title": "Reply-generation failures",
+      "layer": "model",
+      "scope": "end-to-end agent run: 11 of 50 cases (PARTIAL)",
+      "count": 0,
+      "denominator": 2,
+      "examples": [],
+      "observed": "0 of 2 attempted generations declined or errored.",
+      "why": "Generator refuses when evidence does not cover the question, or the model output is unusable.",
+      "fix": "Inspect declined drafts once the full run exists."
+    },
+    {
+      "key": "grounding_failures",
+      "title": "Grounding failures",
+      "layer": "model + retrieval",
+      "scope": "end-to-end agent run: 11 of 50 cases (PARTIAL)",
+      "count": 0,
+      "denominator": 2,
+      "examples": [],
+      "observed": "0 of 2 grounding checks failed or could not run.",
+      "why": "Drafts add details (times, links, promises) the evidence does not contain.",
+      "fix": "Keep fail-closed; report blocked drafts alongside sent ones."
+    },
+    {
+      "key": "insufficient_evidence",
+      "title": "Insufficient or inconsistent historical evidence",
+      "layer": "retrieval + data",
+      "scope": "end-to-end agent run: 11 of 50 cases (PARTIAL)",
+      "count": 3,
+      "denominator": 11,
+      "examples": [
+        {
+          "case_id": "case_756996",
+          "message": "@VirginTrains You are a joke.. I forgive the fact that I missed my meetings but to be treated like shit by one of your dick managers.. 😡😡🖕",
+          "detail": "weak retrieval: best similarity 0.43 < 0.60; insufficient evidence: 0 usable case(s) < 3"
+        },
+        {
+          "case_id": "case_2196804",
+          "message": "@VirginTrains what is the meaning of this ? https://t.co/E42XIGly4V",
+          "detail": "weak retrieval: best similarity 0.45 < 0.60; insufficient evidence: 0 usable case(s) < 3"
+        },
+        {
+          "case_id": "case_1394159",
+          "message": "@VirginTrains appalling situation of non flushing wc's, no water, broken dryers &amp; most horrendous sewer smell nxt to buffett car!",
+          "detail": "weak retrieval: best similarity 0.58 < 0.60; insufficient evidence: 1 usable case(s) < 3; evidence disagrees with the predicted intent: 0% of usable cases share"
+        }
+      ],
+      "observed": "3 of 11 cases had weak, too few or intent-inconsistent evidence.",
+      "why": "Rare or unusual complaints have no close historical match in the train split.",
+      "fix": "Expected behaviour (abstain); track how often it is the only reason for escalation."
+    },
+    {
+      "key": "other_operator",
+      "title": "Cases involving another train operator",
+      "layer": "data",
+      "scope": "all 250 golden cases (thread data + label notes)",
+      "count": 19,
+      "denominator": 250,
+      "examples": [
+        {
+          "case_id": "case_482898",
+          "message": "@VirginTrains what is going on with the heating on the 13.00 Edinburgh - LKX???",
+          "detail": "note: Heating complaint on another operator's service; redirected to them."
+        },
+        {
+          "case_id": "case_813046",
+          "message": "This is how you travel by virgin now !!!!! Shame on you @VirginTrains https://t.co/cLAdWmk2Hj",
+          "detail": "note: Overcrowding on another operator's service; redirected to them."
+        },
+        {
+          "case_id": "case_2129830",
+          "message": "Now I’ve got #280characters probably a good time to continue my story. Also delayed massively by @VirginTrains so let’s be honest I have some time!",
+          "detail": "note: Delay on another operator's service."
+        }
+      ],
+      "observed": "19 golden cases either have another operator's agent in the thread or a label note saying the service was another operator's (5 of them in the blind 100).",
+      "why": "Customers tag VirginTrains about trains it does not run; the right answer is a redirect, which no intent captures.",
+      "fix": "Add an operator-detection rule (station/route and operator names) and a 'redirect to operator' resolution path."
+    },
+    {
+      "key": "low_information",
+      "title": "Low-information and media-only messages",
+      "layer": "data + model",
+      "scope": "all 250 golden cases",
+      "count": 7,
+      "denominator": 250,
+      "examples": [
+        {
+          "case_id": "case_1343962",
+          "message": "@VirginTrains can you help? X https://t.co/abcXynNhtz",
+          "detail": "gold `unclear_or_media_only`; LLM predicted `unclear_or_media_only`"
+        },
+        {
+          "case_id": "case_1344887",
+          "message": "@VirginTrains to Edinburgh Haymarket? 2.",
+          "detail": "gold `unclear_or_media_only`; LLM predicted `service_status_delay_enquiry`"
+        },
+        {
+          "case_id": "case_1845809",
+          "message": "@VirginTrains your trains are disgusting.... https://t.co/vnZr1Pf8bH",
+          "detail": "gold `unclear_or_media_only`; LLM predicted `journey_disruption_complaint`"
+        }
+      ],
+      "observed": "7 cases are gold `unclear_or_media_only`; the LLM labelled 2 of them as unclear. Opening messages with fewer than 3 content words (which the policy escalates): 1.",
+      "why": "The real request is in an image or a link the system never sees, so the model guesses an intent from the surrounding words.",
+      "fix": "Treat bare links/images as an explicit low-information trigger and ask a clarifying question instead of classifying."
+    }
+  ]
+}
