@@ -303,8 +303,10 @@ init().catch(e=>{document.body.textContent="Could not start the labeling tool: "
 """
 
 
-def make_handler(store: LabelStore, reference: dict[str, Any], guide_html: str, token: str, allowed_hosts: set[str]):
-    index_html = INDEX_PAGE.replace("__TOKEN__", token).encode("utf-8")
+def make_handler(store: LabelStore, reference: dict[str, Any], guide_html: str, token: str, allowed_hosts: set[str], *, index_page: str = INDEX_PAGE, with_suggestion: bool = True):
+    """`with_suggestion=False` removes the suggestion route entirely (404), for blind labeling such as the golden set."""
+    index_html = index_page.replace("__TOKEN__", token).encode("utf-8")
+    case_kinds = ("case", "suggestion", "save", "clear") if with_suggestion else ("case", "save", "clear")
     guide_bytes = GUIDE_PAGE.replace("__BODY__", guide_html).encode("utf-8")
     vocab = store.vocab.as_dict()
 
@@ -391,7 +393,7 @@ def make_handler(store: LabelStore, reference: dict[str, Any], guide_html: str, 
                 self._json(200, {**store.state(), "vocab": vocab})
             elif method == "GET" and parts == ["api", "reference"]:
                 self._json(200, reference)
-            elif len(parts) == 3 and parts[1] in ("case", "suggestion", "save", "clear") and CASE_ID.match(parts[2]):
+            elif len(parts) == 3 and parts[1] in case_kinds and CASE_ID.match(parts[2]):
                 kind, case_id = parts[1], parts[2]
                 if (kind == "case") != (method == "GET"):
                     self._json(HTTPStatus.METHOD_NOT_ALLOWED, {"error": "wrong method"})
@@ -415,10 +417,20 @@ def make_handler(store: LabelStore, reference: dict[str, Any], guide_html: str, 
     return Handler
 
 
-def serve(store: LabelStore, reference: dict[str, Any], guide_md: str, host: str = "127.0.0.1", port: int = 8765, open_browser: bool = True) -> None:
+def serve(
+    store: LabelStore,
+    reference: dict[str, Any],
+    guide_md: str,
+    host: str = "127.0.0.1",
+    port: int = 8765,
+    open_browser: bool = True,
+    *,
+    index_page: str = INDEX_PAGE,
+    with_suggestion: bool = True,
+) -> None:
     token = secrets.token_urlsafe(24)
     allowed = {f"127.0.0.1:{port}", f"localhost:{port}"}
-    handler = make_handler(store, reference, md_to_html(guide_md), token, allowed)
+    handler = make_handler(store, reference, md_to_html(guide_md), token, allowed, index_page=index_page, with_suggestion=with_suggestion)
     try:
         server = ThreadingHTTPServer((host, port), handler)
     except OSError as exc:
