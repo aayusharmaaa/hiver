@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Support Copilot · VirginTrains</title>
+<style>
+:root {
+  --bg: #f6f6f7; --panel: #ffffff; --line: #e5e5e8; --line-strong: #d4d4d8;
+  --text: #17171c; --muted: #6a6a75; --faint: #9a9aa3;
+  --accent: #3446c9; --accent-soft: #eef0fb;
+  --ok: #0f7a55; --ok-soft: #e7f4ee; --warn: #9a5b00; --warn-soft: #fcf2e2;
+  --bad: #b3261e; --bad-soft: #fcebea; --idle: #74747e; --idle-soft: #f0f0f2;
+  --radius: 8px; --mono: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body {
+  font: 13px/1.5 Inter, "Segoe UI", system-ui, -apple-system, sans-serif; color: var(--text); background: var(--bg);
+  display: grid; grid-template-rows: 52px 1fr 76px; overflow: hidden; -webkit-font-smoothing: antialiased;
+}
+button { font: inherit; cursor: pointer; }
+.label { font-size: 11px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
+.mono { font-family: var(--mono); font-size: 12px; }
+.muted { color: var(--muted); }
+
+/* header */
+header { display: flex; align-items: center; gap: 16px; padding: 0 20px; background: var(--panel); border-bottom: 1px solid var(--line); }
+.app-brand { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 14px; }
+.logo { width: 22px; height: 22px; border-radius: 6px; background: var(--text); color: #fff; display: grid; place-items: center; font-size: 12px; font-weight: 700; }
+.crumb { color: var(--muted); font-weight: 400; }
+.spacer { flex: 1; }
+.meta-pill { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-size: 12px; background: #fff; }
+.dot { width: 7px; height: 7px; border-radius: 50%; background: var(--faint); }
+.dot.on { background: var(--ok); }
+
+/* layout */
+main { display: grid; grid-template-columns: 320px minmax(420px, 1fr) 440px; min-height: 0; }
+section { min-height: 0; display: flex; flex-direction: column; }
+.pane-head { padding: 14px 18px 12px; border-bottom: 1px solid var(--line); background: var(--panel); }
+.scroll { overflow-y: auto; min-height: 0; flex: 1; }
+
+/* inbox */
+#inbox { background: var(--panel); border-right: 1px solid var(--line); }
+.search { width: 100%; padding: 7px 10px; border: 1px solid var(--line); border-radius: 6px; font: inherit; background: var(--bg); outline: none; }
+.search:focus { border-color: var(--line-strong); background: #fff; }
+.tabs { display: flex; gap: 2px; margin-top: 10px; }
+.tab { border: 0; background: none; padding: 5px 9px; border-radius: 6px; color: var(--muted); font-size: 12px; white-space: nowrap; }
+.tab:hover { background: var(--idle-soft); }
+.tab.active { background: var(--text); color: #fff; }
+.tab .n { opacity: .7; margin-left: 4px; }
+.ticket { display: block; width: 100%; text-align: left; border: 0; border-bottom: 1px solid var(--line); background: none; padding: 12px 18px; position: relative; transition: background .12s; }
+.ticket:hover { background: #fafafb; }
+.ticket.active { background: var(--accent-soft); }
+.ticket.active::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--accent); }
+.ticket .row { display: flex; align-items: center; gap: 8px; }
+.ticket .who { font-weight: 600; font-size: 12.5px; }
+.ticket .time { margin-left: auto; color: var(--faint); font-size: 11.5px; white-space: nowrap; }
+.ticket .preview { color: var(--muted); margin: 3px 0 7px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.chip { display: inline-flex; align-items: center; gap: 5px; padding: 1px 8px; border-radius: 999px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+.chip::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.chip.plain::before { display: none; }
+.s-auto_handled, .ok { color: var(--ok); background: var(--ok-soft); }
+.s-escalated, .warn { color: var(--warn); background: var(--warn-soft); }
+.s-model_error, .bad { color: var(--bad); background: var(--bad-soft); }
+.s-pending, .idle { color: var(--idle); background: var(--idle-soft); }
+.tag { display: inline-block; padding: 0 7px; border: 1px solid var(--line); border-radius: 4px; color: var(--muted); font-size: 11px; background: #fff; white-space: nowrap; }
+.empty-list { padding: 40px 20px; text-align: center; color: var(--muted); }
+
+/* conversation */
+#conversation { background: var(--bg); }
+#conversation .pane-head { display: flex; align-items: center; gap: 12px; }
+.title { font-weight: 600; font-size: 14px; }
+.thread { padding: 22px 28px 8px; display: flex; flex-direction: column; gap: 14px; max-width: 760px; width: 100%; margin: 0 auto; }
+.note { font-size: 12px; color: var(--muted); text-align: center; padding: 2px 0 6px; }
+.msg { max-width: 82%; animation: in .18s ease-out; }
+.msg .who { font-size: 11.5px; color: var(--muted); margin: 0 2px 4px; display: flex; gap: 8px; align-items: center; }
+.bubble { padding: 10px 13px; border-radius: 10px; white-space: pre-wrap; word-wrap: break-word; }
+.msg.customer { align-self: flex-start; }
+.msg.customer .bubble { background: #fff; border: 1px solid var(--line); border-top-left-radius: 3px; }
+.msg.customer.input .bubble { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.msg.brand { align-self: flex-end; }
+.msg.brand .who { justify-content: flex-end; }
+.msg.brand .bubble { background: #ececef; border-top-right-radius: 3px; color: #2c2c33; }
+.msg.other_operator { align-self: flex-end; }
+.msg.other_operator .who { justify-content: flex-end; }
+.msg.other_operator .bubble { background: transparent; border: 1px dashed var(--line-strong); color: var(--muted); }
+.composer { margin: 8px 28px 24px; max-width: 760px; width: calc(100% - 56px); align-self: center; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); }
+.composer-head { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+.composer-body { padding: 14px; white-space: pre-wrap; }
+.composer-body.blocked { background: repeating-linear-gradient(-45deg, #fff, #fff 8px, #fdf6f5 8px, #fdf6f5 16px); color: #5b5b63; }
+.composer-foot { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; }
+.btn { border: 1px solid var(--line-strong); background: #fff; padding: 5px 12px; border-radius: 6px; color: var(--text); font-size: 12.5px; transition: background .12s, border-color .12s; }
+.btn:hover { background: var(--idle-soft); }
+.btn.primary { background: var(--text); color: #fff; border-color: var(--text); }
+.btn.primary:hover { background: #33333b; }
+.btn:disabled { opacity: .5; cursor: default; }
+
+/* analysis */
+#analysis { background: var(--panel); border-left: 1px solid var(--line); }
+.block { padding: 16px 20px; border-bottom: 1px solid var(--line); }
+.block > .label { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.decision { display: flex; align-items: center; gap: 12px; }
+.decision .big { font-size: 15px; font-weight: 650; letter-spacing: .01em; padding: 4px 12px; border-radius: 6px; }
+.kv { display: grid; grid-template-columns: 110px 1fr; gap: 6px 10px; align-items: baseline; }
+.kv .k { color: var(--muted); }
+.intent { font-weight: 600; font-size: 14px; }
+.meter { height: 4px; background: var(--idle-soft); border-radius: 2px; overflow: hidden; margin-top: 6px; width: 160px; }
+.meter > i { display: block; height: 100%; background: var(--text); }
+.reasons { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 7px; }
+.reasons li { display: grid; grid-template-columns: 16px 1fr; gap: 8px; align-items: start; }
+.mark { width: 16px; height: 16px; border-radius: 50%; display: grid; place-items: center; font-size: 10px; font-weight: 700; margin-top: 1px; }
+.ev { border: 1px solid var(--line); border-radius: var(--radius); padding: 11px 12px; margin-bottom: 8px; }
+.ev.weak { opacity: .62; }
+.ev-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.sim { display: flex; align-items: center; gap: 6px; margin-left: auto; font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
+.sim .bar { width: 46px; height: 4px; background: var(--idle-soft); border-radius: 2px; overflow: hidden; }
+.sim .bar i { display: block; height: 100%; background: var(--text); }
+.ev p { margin: 0 0 6px; }
+.ev .q { color: var(--muted); }
+.ev .why { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+.gold { background: #fafafb; }
+.claims { margin: 8px 0 0; padding-left: 18px; color: var(--bad); }
+.placeholder { padding: 48px 28px; text-align: center; color: var(--muted); }
+.placeholder h3 { margin: 0 0 6px; color: var(--text); font-size: 14px; font-weight: 600; }
+.skeleton { height: 12px; border-radius: 4px; background: linear-gradient(90deg, #f0f0f2 0, #f7f7f8 40%, #f0f0f2 80%); background-size: 400px 100%; animation: shimmer 1.2s linear infinite; margin: 8px 0; }
+
+/* trace */
+footer { background: var(--panel); border-top: 1px solid var(--line); display: flex; align-items: center; padding: 0 20px; gap: 0; overflow-x: auto; }
+.trace-label { margin-right: 18px; }
+.stage { display: flex; align-items: center; min-width: 0; }
+.stage .box { display: flex; flex-direction: column; gap: 1px; padding: 6px 10px; border-radius: 6px; min-width: 104px; transition: background .2s; }
+.stage .name { font-size: 10.5px; font-weight: 700; letter-spacing: .06em; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+.stage .val { font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px; }
+.stage .d { width: 7px; height: 7px; border-radius: 50%; background: var(--line-strong); }
+.stage.ok .d { background: var(--ok); } .stage.warn .d { background: var(--warn); } .stage.bad .d { background: var(--bad); }
+.stage.ok, .stage.warn, .stage.bad, .stage.idle { background: none; color: inherit; }
+.stage.skip .val { color: var(--faint); }
+.arrow { color: var(--faint); padding: 0 2px; }
+
+@keyframes in { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: none; } }
+@keyframes shimmer { from { background-position: -400px 0; } to { background-position: 400px 0; } }
+@media (max-width: 1280px) { main { grid-template-columns: 280px minmax(360px, 1fr) 380px; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="app-brand"><div class="logo">S</div>Support Copilot <span class="crumb">/ @VirginTrains · Twitter</span></div>
+  <div class="spacer"></div>
+  <span class="meta-pill" id="meta-results">Loading…</span>
+  <span class="meta-pill" id="meta-live"><span class="dot"></span>Live</span>
+</header>
+<main>
+  <section id="inbox">
+    <div class="pane-head">
+      <input class="search" id="search" placeholder="Search messages or case id" autocomplete="off">
+      <div class="tabs" id="tabs"></div>
+    </div>
+    <div class="scroll" id="list"></div>
+  </section>
+  <section id="conversation"><div class="placeholder"><div class="skeleton" style="width:40%;margin:auto"></div></div></section>
+  <section id="analysis"></section>
+</main>
+<footer id="trace"></footer>
+
+<script>
+const S = { tickets: [], meta: {}, filter: "all", q: "", selected: null, running: new Set() };
+const STATUS = { auto_handled: "Auto-handled", escalated: "Escalated", pending: "Not analysed", model_error: "Model error" };
+const FILTERS = [["all", "All"], ["auto_handled", "Auto"], ["escalated", "Escalated"], ["pending", "Not analysed"]];
+const $ = (id) => document.getElementById(id);
+
+const decoder = document.createElement("textarea");
+function decode(s) { decoder.innerHTML = String(s ?? "").replace(/</g, "&lt;"); return decoder.value; }
+function esc(s) { return decode(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+function human(intent) { if (!intent) return "—"; const s = String(intent).replace(/^NEW:/, "new: ").replace(/_/g, " "); return s.charAt(0).toUpperCase() + s.slice(1); }
+function when(ts, long) {
+  const d = new Date(String(ts).replace(" ", "T")); if (isNaN(d)) return "";
+  const opt = long ? { weekday: "short", day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit", timeZone: "UTC" }
+                   : { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", timeZone: "UTC" };
+  return d.toLocaleString("en-GB", opt) + (long ? " UTC" : "");
+}
+function chip(status) { return `<span class="chip s-${status}">${STATUS[status]}</span>`; }
+function pct(x) { return x == null ? "—" : Math.round(x * 100) + "%"; }
+
+/* ---------- data ---------- */
+async function load() {
+  const r = await fetch("/api/tickets"); const data = await r.json();
+  S.tickets = data.tickets; S.meta = data.meta;
+  $("meta-results").textContent = `${data.meta.cached_results} of ${data.meta.slice_size} analysed · cached ${data.meta.model}`;
+  $("meta-live").innerHTML = `<span class="dot ${data.meta.live_available ? "on" : ""}"></span>Live ${data.meta.live_available ? "on" : "off"}`;
+  $("meta-live").title = data.meta.live_available ? "Not-analysed tickets can be run with the real agent (uses API quota)." : "Set GROQ_API_KEY in .env to run tickets live.";
+  const first = S.tickets.find((t) => t.status !== "pending") || S.tickets[0];
+  S.selected = first ? first.case_id : null;
+  renderAll();
+}
+
+function visible() {
+  const q = S.q.toLowerCase();
+  return S.tickets.filter((t) => (S.filter === "all" || t.status === S.filter || (S.filter === "escalated" && t.status === "model_error"))
+    && (!q || t.message.toLowerCase().includes(q) || t.case_id.includes(q)));
+}
+function current() { return S.tickets.find((t) => t.case_id === S.selected) || null; }
+
+/* ---------- inbox ---------- */
+function renderTabs() {
+  const count = (f) => f === "all" ? S.tickets.length : S.tickets.filter((t) => t.status === f || (f === "escalated" && t.status === "model_error")).length;
+  $("tabs").innerHTML = FILTERS.map(([k, l]) => `<button class="tab ${S.filter === k ? "active" : ""}" data-f="${k}">${l}<span class="n">${count(k)}</span></button>`).join("");
+  $("tabs").querySelectorAll(".tab").forEach((b) => b.onclick = () => { S.filter = b.dataset.f; renderAll(); });
+}
+function renderList() {
+  const items = visible();
+  if (!items.length) { $("list").innerHTML = `<div class="empty-list">No conversations match.</div>`; return; }
+  $("list").innerHTML = items.map((t) => {
+    const intent = t.result ? `<span class="tag">${esc(human(t.result.pred_intent))}</span>` : "";
+    const running = S.running.has(t.case_id) ? `<span class="chip idle">Running…</span>` : chip(t.status);
+    return `<button class="ticket ${t.case_id === S.selected ? "active" : ""}" data-id="${t.case_id}">
+      <div class="row"><span class="who">Customer ${t.case_id.replace("case_", "#")}</span><span class="time">${when(t.opened_at)}</span></div>
+      <div class="preview">${esc(t.message.replace(/^(@\w+\s*)+/, ""))}</div>
+      <div class="row">${running}${intent}</div></button>`;
+  }).join("");
+  $("list").querySelectorAll(".ticket").forEach((b) => b.onclick = () => { S.selected = b.dataset.id; renderAll(); });
+}
+
+/* ---------- conversation ---------- */
+function renderConversation() {
+  const t = current();
+  if (!t) { $("conversation").innerHTML = `<div class="placeholder"><h3>No conversation selected</h3>Pick a ticket from the inbox.</div>`; return; }
+  const turns = t.turns.length ? t.turns : [{ role: "customer", text: t.message }];
+  let inputMarked = false;
+  const thread = turns.map((m) => {
+    const isInput = m.role === "customer" && !inputMarked; if (isInput) inputMarked = true;
+    const who = m.role === "customer" ? `Customer${isInput ? ` <span class="chip plain" style="background:var(--accent-soft);color:var(--accent)">Copilot input</span>` : ""}`
+      : m.role === "brand" ? "VirginTrains · historical" : "Other operator · historical";
+    return `<div class="msg ${m.role} ${isInput ? "input" : ""}"><div class="who">${who}</div><div class="bubble">${esc(m.text)}</div></div>`;
+  }).join("");
+  $("conversation").innerHTML = `
+    <div class="pane-head"><span class="title">Customer ${t.case_id.replace("case_", "#")}</span>
+      <span class="muted">${when(t.opened_at, true)}</span><div class="spacer"></div>${chip(t.status)}</div>
+    <div class="scroll"><div class="thread">
+      <div class="note">Public thread from the 2017 dataset. The copilot reads only the highlighted opening message; later replies are VirginTrains' real history.</div>
+      ${thread}</div>${composer(t)}</div>`;
+  const copy = $("copy-reply"); if (copy) copy.onclick = () => { navigator.clipboard.writeText(decode(t.result.reply)); copy.textContent = "Copied"; setTimeout(() => copy.textContent = "Copy", 1200); };
+  const run = $("run-live"); if (run) run.onclick = () => runLive(t.case_id);
+}
+
+function composer(t) {
+  const r = t.result;
+  if (S.running.has(t.case_id)) return `<div class="composer"><div class="composer-head"><span class="label">Copilot</span><span class="muted">Running the agent…</span></div>
+    <div class="composer-body"><div class="skeleton" style="width:90%"></div><div class="skeleton" style="width:70%"></div><div class="skeleton" style="width:45%"></div></div></div>`;
+  if (!r) {
+    const action = S.meta.live_available ? `<button class="btn primary" id="run-live">Run agent live</button><span>Uses Groq quota; result is cached locally.</span>`
+      : `<span>Run <span class="mono">python scripts/evaluate_agent.py</span>, or set GROQ_API_KEY to run it here.</span>`;
+    return `<div class="composer"><div class="composer-head"><span class="label">Copilot</span>${chip("pending")}</div>
+      <div class="composer-body muted">This ticket is in the evaluation slice but has no agent result yet. Nothing is shown rather than a guess.</div>
+      <div class="composer-foot">${action}</div></div>`;
+  }
+  const src = `<span class="tag">${t.source === "live" ? "live run" : "cached evaluation run"}</span>`;
+  if (r.model_error || r.classification_failed) {
+    const err = r.model_error || (r.reasons.find((x) => x.startsWith("classification failed")) || "model call failed");
+    return `<div class="composer"><div class="composer-head"><span class="label">Copilot</span>${chip("model_error")}${src}</div>
+      <div class="composer-body">The model call failed, so the agent fell back to escalation. No reply was drafted.<div class="mono muted" style="margin-top:8px">${esc(err.slice(0, 220))}</div></div>
+      <div class="composer-foot">${S.meta.live_available ? `<button class="btn" id="run-live">Retry</button>` : ""}<span>Fail-safe: model errors never produce a customer reply.</span></div></div>`;
+  }
+  if (r.final_action === "AUTO_HANDLE" && r.reply) {
+    return `<div class="composer"><div class="composer-head"><span class="label">Suggested reply</span><span class="chip ok">Grounding pass</span>${src}</div>
+      <div class="composer-body">${esc(r.reply)}</div>
+      <div class="composer-foot"><button class="btn" id="copy-reply">Copy</button><span>Link/amount check passed; LLM verifier found no unsupported claims (confidence ${pct(r.grounding_confidence)}) · not sent anywhere</span></div></div>`;
+  }
+  if (r.internal_draft_reply) {
+    return `<div class="composer"><div class="composer-head"><span class="label">Draft blocked</span><span class="chip bad">Grounding ${r.grounding === "unavailable" ? "unavailable" : "fail"}</span>${src}</div>
+      <div class="composer-body blocked">${esc(r.internal_draft_reply)}</div>
+      <div class="composer-foot"><span>Not sent. The draft made claims the evidence does not support, so the ticket was escalated.</span></div></div>`;
+  }
+  const top = (r.reasons || [])[0] || "";
+  return `<div class="composer"><div class="composer-head"><span class="label">Routed to a human</span>${chip("escalated")}${src}</div>
+    <div class="composer-body">No reply drafted. ${esc(top.charAt(0).toUpperCase() + top.slice(1))}.</div>
+    <div class="composer-foot"><span>The agent only drafts when intent, evidence and risk policy all allow it.</span></div></div>`;
+}
+
+/* ---------- analysis ---------- */
+function evidenceStats(r) {
+  const th = S.meta.thresholds; const sims = (r.evidence || []).map((e) => e.similarity ?? 0);
+  const usable = sims.filter((s) => s >= th.min_usable_similarity).length;
+  return { usable, best: sims.length ? Math.max(...sims) : null, none: usable === 0 };
+}
+function renderAnalysis() {
+  const t = current();
+  if (!t) { $("analysis").innerHTML = ""; return; }
+  const r = t.result;
+  const gold = `<div class="block gold"><div class="label">Golden label <span class="tag">${t.gold.blind_human ? "blind human" : "reviewed assistant draft"}</span></div>
+    <div class="kv"><span class="k">Intent</span><span>${esc(human(t.gold.intent))}</span>
+    <span class="k">Should escalate</span><span>${esc(t.gold.should_escalate)}</span>
+    <span class="k">Resolution</span><span>${esc(human(t.gold.resolution_type))}</span></div>
+    <div class="muted" style="margin-top:8px;font-size:12px">Shown for evaluation only; the agent never sees it.</div></div>`;
+  if (S.running.has(t.case_id)) {
+    $("analysis").innerHTML = `<div class="pane-head"><span class="label">AI analysis</span></div><div class="scroll"><div class="block">${'<div class="skeleton"></div>'.repeat(6)}</div></div>`; return;
+  }
+  if (!r) {
+    $("analysis").innerHTML = `<div class="pane-head"><span class="label">AI analysis</span></div><div class="scroll">
+      <div class="placeholder"><h3>Not analysed yet</h3>No cached agent result for this ticket.</div>${gold}</div>`; return;
+  }
+  const ev = evidenceStats(r); const th = S.meta.thresholds;
+  const decisionCls = r.model_error || r.classification_failed ? "bad" : r.final_action === "AUTO_HANDLE" ? "ok" : "warn";
+  const PASSED = "policy check passed: ";
+  const checks = (r.reasons || []).map((x) => ({ ok: r.final_action === "AUTO_HANDLE" || x.startsWith(PASSED), text: x.replace(PASSED, "") }));
+  const blocking = checks.filter((c) => !c.ok).length;
+  const reasons = checks.map((c) => `<li><span class="mark ${c.ok ? "ok" : "warn"}">${c.ok ? "✓" : "!"}</span><span>${esc(c.text.charAt(0).toUpperCase() + c.text.slice(1))}</span></li>`).join("");
+  const cards = (r.evidence || []).map((e, i) => {
+    const s = e.similarity ?? 0; const same = e.intent === r.pred_intent;
+    const strength = s >= th.min_top_similarity ? `<span class="chip plain ok">Strong match</span>` : s >= th.min_usable_similarity ? `<span class="chip plain idle">Usable match</span>` : `<span class="chip plain warn">Below usable threshold</span>`;
+    return `<div class="ev ${s < th.min_usable_similarity ? "weak" : ""}">
+      <div class="ev-head"><span class="label">Case ${i + 1}</span><span class="mono muted">${esc(e.case_id)}</span>
+        <span class="sim">${s.toFixed(2)}<span class="bar"><i style="width:${Math.max(0, Math.min(1, s)) * 100}%"></i></span></span></div>
+      <p class="q">“${esc(e.customer_problem)}”</p><p>${esc(e.historical_response)}</p>
+      <div class="why">${strength}<span class="chip plain ${same ? "ok" : "idle"}">${same ? "Same intent" : "Other intent: " + esc(human(e.intent))}</span><span class="tag">${esc(human(e.resolution_type))}</span></div></div>`;
+  }).join("") || `<div class="muted">No historical cases retrieved.</div>`;
+  const grounding = r.grounding === "not_run" ? `<span class="chip idle">Not run</span><span class="muted">Escalated before drafting</span>`
+    : r.grounding === "pass" ? `<span class="chip ok">Pass</span><span class="muted">verifier ${pct(r.grounding_confidence)}</span>`
+    : `<span class="chip bad">${r.grounding === "unavailable" ? "Unavailable" : "Fail"}</span>`;
+  const claims = (r.unsupported_claims || []).length ? `<ul class="claims">${r.unsupported_claims.map((c) => `<li>${esc(c)}</li>`).join("")}</ul>` : "";
+  $("analysis").innerHTML = `<div class="pane-head"><span class="label">AI analysis</span></div><div class="scroll">
+    <div class="block"><div class="label">Decision</div><div class="decision"><span class="big ${decisionCls}">${r.final_action === "AUTO_HANDLE" ? "AUTO_HANDLE" : "ESCALATE"}</span>
+      ${ev.none ? `<span class="chip bad">No usable evidence</span>` : ""}${r.multi_intent ? `<span class="chip warn">Multi-intent</span>` : ""}</div></div>
+    <div class="block"><div class="label">Intent</div><div class="intent">${esc(human(r.pred_intent))}</div>
+      <div class="kv" style="margin-top:8px"><span class="k">Confidence</span><span>${pct(r.pred_confidence)} <span class="muted">· model self-report, threshold ${pct(th.min_classifier_confidence)}</span><div class="meter"><i style="width:${(r.pred_confidence || 0) * 100}%"></i></div></span></div></div>
+    <div class="block"><div class="label">Risk policy <span class="muted" style="text-transform:none;letter-spacing:0;font-weight:400">${blocking ? blocking + " blocking" : "all checks passed"}</span></div><ul class="reasons">${reasons}</ul></div>
+    <div class="block"><div class="label">Historical evidence <span class="muted" style="text-transform:none;letter-spacing:0;font-weight:400">${ev.usable} of ${(r.evidence || []).length} usable · need ${th.min_usable_evidence}</span></div>${cards}</div>
+    <div class="block"><div class="label">Grounding</div><div class="decision">${grounding}</div>${claims}</div>
+    ${gold}</div>`;
+}
+
+/* ---------- trace ---------- */
+function stages(t) {
+  const r = t && t.result; const th = S.meta.thresholds || {};
+  const st = (name, cls, val) => ({ name, cls, val });
+  if (!t) return [];
+  if (!r) return [st("MESSAGE", "ok", "received"), ...["INTENT", "RETRIEVAL", "EVIDENCE", "RISK", "DECISION", "REPLY", "GROUNDING"].map((n) => st(n, "skip", S.running.has(t.case_id) ? "running…" : "not run"))];
+  const ev = evidenceStats(r); const auto = r.final_action === "AUTO_HANDLE"; const failed = r.classification_failed || r.model_error;
+  const policyOk = r.policy_action === "AUTO_HANDLE"; const triggers = (r.reasons || []).filter((x) => !x.startsWith("policy check passed: ")).length;
+  const reply = { produced: auto ? st("REPLY", "ok", "drafted") : st("REPLY", "bad", "draft blocked"), not_attempted: st("REPLY", "skip", "skipped"), declined: st("REPLY", "warn", "declined"), error: st("REPLY", "bad", "error") }[r.generation] || st("REPLY", "skip", r.generation);
+  const ground = { pass: st("GROUNDING", "ok", "pass"), fail: st("GROUNDING", "bad", "fail"), unavailable: st("GROUNDING", "bad", "unavailable"), not_run: st("GROUNDING", "skip", "not run") }[r.grounding];
+  return [
+    st("MESSAGE", "ok", "received"),
+    failed ? st("INTENT", "bad", "model error") : st("INTENT", r.pred_confidence >= th.min_classifier_confidence ? "ok" : "warn", `${human(r.pred_intent)} · ${pct(r.pred_confidence)}`),
+    st("RETRIEVAL", (r.evidence || []).length ? "ok" : "bad", `${(r.evidence || []).length} cases · best ${ev.best == null ? "—" : ev.best.toFixed(2)}`),
+    st("EVIDENCE", ev.none ? "bad" : ev.usable >= th.min_usable_evidence ? "ok" : "warn", ev.none ? "none usable" : `${ev.usable} usable`),
+    st("RISK", policyOk ? "ok" : "warn", policyOk ? "clear" : `${triggers} trigger${triggers === 1 ? "" : "s"}`),
+    st("DECISION", auto ? "ok" : "warn", auto ? "AUTO_HANDLE" : "ESCALATE"),
+    reply, ground,
+  ];
+}
+function renderTrace() {
+  const items = stages(current());
+  $("trace").innerHTML = `<span class="label trace-label">Execution trace</span>` + items.map((s, i) =>
+    `${i ? '<span class="arrow">→</span>' : ""}<div class="stage ${s.cls}"><div class="box"><span class="name"><span class="d"></span>${s.name}</span><span class="val" title="${esc(s.val)}">${esc(s.val)}</span></div></div>`).join("");
+}
+
+function renderAll() { renderTabs(); renderList(); renderConversation(); renderAnalysis(); renderTrace(); }
+
+/* ---------- live ---------- */
+async function runLive(id) {
+  S.running.add(id); renderAll();
+  try {
+    const r = await fetch(`/api/run/${id}`, { method: "POST" }); const data = await r.json();
+    if (!r.ok) throw new Error(data.error || r.statusText);
+    S.tickets = S.tickets.map((t) => t.case_id === id ? data : t);
+  } catch (e) {
+    S.tickets = S.tickets.map((t) => t.case_id === id ? { ...t, status: "model_error", source: "live", result: { model_error: String(e.message || e), reasons: [], evidence: [], final_action: "ESCALATE", generation: "not_attempted", grounding: "not_run" } } : t);
+  } finally { S.running.delete(id); renderAll(); }
+}
+
+/* ---------- keyboard ---------- */
+document.addEventListener("keydown", (e) => {
+  if (e.target.tagName === "INPUT") return;
+  const items = visible(); const i = items.findIndex((t) => t.case_id === S.selected);
+  if (e.key === "j" || e.key === "ArrowDown") { const n = items[Math.min(items.length - 1, i + 1)]; if (n) { S.selected = n.case_id; renderAll(); e.preventDefault(); } }
+  if (e.key === "k" || e.key === "ArrowUp") { const n = items[Math.max(0, i - 1)]; if (n) { S.selected = n.case_id; renderAll(); e.preventDefault(); } }
+  if (e.key === "/") { $("search").focus(); e.preventDefault(); }
+});
+$("search").addEventListener("input", (e) => { S.q = e.target.value; renderTabs(); renderList(); });
+load().catch((e) => { $("conversation").innerHTML = `<div class="placeholder"><h3>Could not load tickets</h3>${esc(e.message)}</div>`; });
+</script>
+</body>
+</html>
