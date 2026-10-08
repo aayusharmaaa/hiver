@@ -1,6 +1,6 @@
-"""Intent-classification harness: data safety, baselines, cached Gemini predictions, metrics and subsets.
+"""Intent-classification harness: data safety, baselines, cached LLM predictions, metrics and subsets.
 
-Synthetic data only; the Gemini classifier is a fake.
+Synthetic data only; the LLM classifier is a fake.
 """
 
 from __future__ import annotations
@@ -21,7 +21,7 @@ from evaluation.intent_eval import (
     assert_no_golden,
     evaluate_systems,
     fit_tfidf_logreg,
-    gemini_predictions,
+    llm_predictions,
     golden_eval_frame,
     intent_metrics,
     normalise_text,
@@ -105,11 +105,11 @@ def test_systems_are_scored_per_subset_with_coverage() -> None:
     assert res[ALL_REVIEWED]["full"]["accuracy"] == pytest.approx(2 / 3)
     assert res[ALL_REVIEWED]["partial"]["coverage"] == {"predicted": 1, "subset_size": 3}
     md = render_markdown({"meta": {"train_cases": 10, "dev_cases": 5, "majority_label": "a_intent", "tfidf_c": 1.0, "tfidf_dev_macro_f1": {"1.0": 0.5},
-                                    "gemini_model": "fake", "gemini_stopped": None, "gemini_unparseable": 0, "provenance": "human: 2"}, "subsets": res})
+                                    "llm_provider": "fake", "llm_model": "fake-1", "llm_stopped": None, "llm_unparseable": 0, "provenance": "human: 2"}, "subsets": res})
     assert "Blind human labels" in md and "All reviewed labels" in md and "confusion matrix" in md and "| partial | 1 / 3 |" in md
     skipped = render_markdown({"meta": {"train_cases": 10, "dev_cases": 5, "majority_label": "a_intent", "tfidf_c": 1.0, "tfidf_dev_macro_f1": {"1.0": 0.5},
-                                         "gemini_model": None, "provenance": "human: 2"}, "subsets": res})
-    assert "Gemini: not run" in skipped
+                                         "llm_model": None, "provenance": "human: 2"}, "subsets": res})
+    assert "LLM classifier: not run" in skipped
 
 
 class OutputBroken(Exception):
@@ -136,13 +136,13 @@ class FakeClassifier:
 
 
 def run(classifier: FakeClassifier, cases: pd.DataFrame, cache: Path, sleeps: list[float] | None = None):
-    return gemini_predictions(
+    return llm_predictions(
         classifier, cases, cache, model_name="fake-1", fallback_intent="unclear_or_media_only",
         output_errors=(OutputBroken,), stop_errors=(QuotaHit,), pause_seconds=2.0, sleep=(sleeps.append if sleeps is not None else lambda s: None),
     )
 
 
-def test_gemini_predictions_are_cached_and_unparseable_output_becomes_the_fallback(tmp_path: Path) -> None:
+def test_llm_predictions_are_cached_and_unparseable_output_becomes_the_fallback(tmp_path: Path) -> None:
     cases = pd.DataFrame({"case_id": ["c1", "c2"], "text": ["hi", "bad"]})
     cache, sleeps = tmp_path / "preds.jsonl", []
     fake = FakeClassifier({"hi": "a_intent", "bad": OutputBroken("not json")})
@@ -155,7 +155,7 @@ def test_gemini_predictions_are_cached_and_unparseable_output_becomes_the_fallba
     assert run(again, cases, cache)[0] == preds and again.calls == []
 
 
-def test_gemini_run_stops_on_quota_and_resumes_from_the_cache(tmp_path: Path) -> None:
+def test_llm_run_stops_on_quota_and_resumes_from_the_cache(tmp_path: Path) -> None:
     cases = pd.DataFrame({"case_id": ["c1", "c2", "c3"], "text": ["one", "two", "three"]})
     cache = tmp_path / "preds.jsonl"
     preds, stopped = run(FakeClassifier({"one": "a_intent", "two": QuotaHit("429"), "three": "b_intent"}), cases, cache)

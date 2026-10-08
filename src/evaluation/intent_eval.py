@@ -1,6 +1,7 @@
 """Intent-classification evaluation on the frozen VirginTrains golden set.
 
-Systems: a majority-class baseline, TF-IDF + logistic regression, and the agent's Gemini `IntentClassifier`. Every system sees
+Systems: a majority-class baseline, TF-IDF + logistic regression, and the agent's LLM `IntentClassifier` (Groq or Gemini
+backend; the prompt and taxonomy are the agent's, unchanged). Every system sees
 only the opening customer message (what the agent receives in production); the human labels were made from the full
 conversation.
 
@@ -162,7 +163,7 @@ def fit_tfidf_logreg(train: pd.DataFrame, dev: pd.DataFrame, grid: Iterable[floa
 
 
 # --------------------------------------------------------------------------------------------------------------------
-# Gemini predictions (cached, resumable)
+# LLM classifier predictions (cached, resumable)
 # --------------------------------------------------------------------------------------------------------------------
 def prompt_sha(prompt: str) -> str:
     return hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:16]
@@ -178,7 +179,7 @@ def load_prediction_cache(path: Path) -> dict[tuple[str, str, str], dict[str, An
     return cache
 
 
-def gemini_predictions(
+def llm_predictions(
     classifier: Any,
     cases: pd.DataFrame,
     cache_path: Path,
@@ -300,11 +301,11 @@ def render_markdown(results: dict[str, Any]) -> str:
         + ", ".join(f"{c}: {v:.3f}" for c, v in meta["tfidf_dev_macro_f1"].items())
         + ").",
         (
-            "- Gemini: not run (`--skip-gemini`)."
-            if not meta.get("gemini_model")
-            else f"- Gemini: the agent's `IntentClassifier`, model `{meta['gemini_model']}`. "
-            + (f"**Incomplete: {meta['gemini_stopped']}**" if meta.get("gemini_stopped") else "All cases predicted.")
-            + (f" {meta['gemini_unparseable']} unparseable output(s) scored as the fallback intent." if meta.get("gemini_unparseable") else "")
+            "- LLM classifier: not run (`--skip-llm`)."
+            if not meta.get("llm_model")
+            else f"- LLM classifier: the agent's `IntentClassifier` on {meta['llm_provider']}, model `{meta['llm_model']}`. "
+            + (f"**Incomplete: {meta['llm_stopped']}**" if meta.get("llm_stopped") else "All cases predicted.")
+            + (f" {meta['llm_unparseable']} unparseable output(s) scored as the fallback intent." if meta.get("llm_unparseable") else "")
         ),
         f"- Label provenance: {meta['provenance']}.",
         "",

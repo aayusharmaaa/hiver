@@ -1,13 +1,14 @@
-"""Intent-classification evaluation on the frozen golden set: majority class vs TF-IDF + logistic regression vs Gemini.
+"""Intent-classification evaluation on the frozen golden set: majority class vs TF-IDF + logistic regression vs the LLM classifier.
 
-    python scripts/evaluate_intents.py                        # all three systems (needs GEMINI_API_KEY for Gemini)
-    python scripts/evaluate_intents.py --skip-gemini          # baselines only, no key needed
-    python scripts/evaluate_intents.py --pause-seconds 7      # stay under a free-tier per-minute limit
+    python scripts/evaluate_intents.py                        # all three systems; LLM on Groq (needs GROQ_API_KEY)
+    python scripts/evaluate_intents.py --provider gemini      # LLM on Gemini instead (needs GEMINI_API_KEY)
+    python scripts/evaluate_intents.py --skip-llm             # baselines only, no key needed
 
+The LLM system is the agent's own `IntentClassifier` (same prompt, taxonomy and few-shot examples); only the backend differs.
 Baselines are fitted on train_retrieval and selected on dev_calibration (weak cluster-derived labels); golden is only scored.
-Gemini predictions are cached in reports/intent_eval/gemini_predictions.jsonl, keyed by case, model and prompt hash, so an
-interrupted run resumes and a finished run re-scores without calling the API. Cases are sent in labeling order, so the 100
-blind-human cases are covered first.
+LLM predictions are cached in reports/intent_eval/llm_predictions.jsonl, keyed by case, model and prompt hash, so an
+interrupted run (e.g. a daily rate limit) resumes and a finished run re-scores without calling the API. Cases are sent in
+labeling order, so the 100 blind-human cases are covered first.
 
 Outputs: reports/intent_eval/virgintrains_intent_evaluation.md and .json.
 """
@@ -31,8 +32,8 @@ from evaluation.intent_eval import (
     MajorityBaseline,
     evaluate_systems,
     fit_tfidf_logreg,
-    gemini_predictions,
     golden_eval_frame,
+    llm_predictions,
     load_prediction_cache,
     render_markdown,
     weak_labelled_split,
@@ -45,14 +46,20 @@ from taxonomy.registry import FALLBACK_INTENT, intent_names
 ROOT = _bootstrap.REPO_ROOT
 
 
-def build_gemini_classifier(registry: dict):
+def build_llm_classifier(registry: dict, provider: str):
     from agent.classifier import IntentClassifier
     from agent.config import load_config
-    from models.gemini import GeminiModel
 
     config = load_config(None)
     m = config.model
-    model = GeminiModel(model_name=m.name, timeout_seconds=m.timeout_seconds, max_retries=m.max_retries, response_schema=m.response_schema)
+    if provider == "groq":
+        from models.groq import GroqModel
+
+        model = GroqModel(max_retries=m.max_retries)
+    else:
+        from models.gemini import GeminiModel
+
+        model = GeminiModel(model_name=m.name, timeout_seconds=m.timeout_seconds, max_retries=m.max_retries, response_schema=m.response_schema)
     classifier = IntentClassifier(
         model, registry, examples_per_intent=config.classifier.examples_per_intent, temperature=m.classifier_temperature,
         max_output_tokens=m.max_output_tokens, use_schema=m.response_schema,
@@ -67,8 +74,9 @@ def main() -> int:
     parser.add_argument("--registry", type=Path, default=ROOT / "configs" / "virgintrains_intents.yaml")
     parser.add_argument("--cluster-labels", type=Path, default=ROOT / "configs" / "virgintrains_cluster_labels.yaml")
     parser.add_argument("--report-dir", type=Path, default=ROOT / "reports" / "intent_eval")
-    parser.add_argument("--skip-gemini", action="store_true", help="Score only the baselines (and any cached Gemini predictions are ignored).")
-    parser.add_argument("--pause-seconds", type=float, default=0.0, help="Wait between uncached Gemini calls.")
+    parser.add_argument("--provider", choices=("groq", "gemini"), default="groq", help="Backend for the agent's LLM classifier (default: groq).")
+    parser.add_argument("--skip-llm", action="store_true", help="Score only the baselines.")
+    parser.add_argument("--pause-seconds", type=float, default=0.0, help="Wait between uncached LLM calls.")
     parser.add_argument("--env-file", type=Path, default=_bootstrap.DEFAULT_ENV_FILE)
     parser.add_argument("--log-level", default="WARNING")
     args = parser.parse_args()
@@ -107,30 +115,30 @@ def main() -> int:
     print(f"Baselines fitted on {len(train):,} train cases; C={tfidf.c} chosen on {len(dev):,} dev cases.")
 
     report_dir = args.report_dir
-    cache_path = report_dir / "gemini_predictions.jsonl"
+    cache_path = report_dir / "llm_predictions.jsonl"
     meta = {
         "train_cases": len(train), "dev_cases": len(dev), "majority_label": majority.label_, "tfidf_c": tfidf.c,
         "tfidf_dev_macro_f1": {str(c): round(v, 4) for c, v in tfidf.dev_macro_f1.items()},
         "provenance": ", ".join(f"{k}: {v}" for k, v in sorted(Counter(golden["provenance"]).items())),
-        "gemini_model": None, "gemini_stopped": None, "gemini_unparseable": 0,
+        "llm_provider": None, "llm_model": None, "llm_stopped": None, "llm_unparseable": 0,
     }
-    if not args.skip_gemini:
+    if not args.skip_llm:
         from agent.classifier import ClassifierError
         from models.base import ModelConfigError, ModelError
 
         try:
-            classifier, model_name = build_gemini_classifier(registry)
+            classifier, model_name = build_llm_classifier(registry, args.provider)
         except ModelConfigError as exc:
-            print(f"SETUP FAILURE: {exc}\nRe-run with --skip-gemini to score the baselines only.", file=sys.stderr)
+            print(f"SETUP FAILURE: {exc}\nRe-run with --skip-llm to score the baselines only.", file=sys.stderr)
             return 2
-        preds, stopped = gemini_predictions(
+        preds, stopped = llm_predictions(
             classifier, scored, cache_path, model_name=model_name, fallback_intent=FALLBACK_INTENT,
             output_errors=(ClassifierError,), stop_errors=(ModelError,), pause_seconds=args.pause_seconds,
         )
         cached = [r for r in load_prediction_cache(cache_path).values() if r["model"] == model_name and r["case_id"] in preds]
-        meta.update(gemini_model=model_name, gemini_stopped=stopped, gemini_unparseable=sum(1 for r in cached if r.get("error")))
-        predictions["gemini"] = preds
-        print(f"Gemini ({model_name}): {len(preds)} / {len(scored)} cases predicted." + (f" {stopped}" if stopped else ""))
+        meta.update(llm_provider=args.provider, llm_model=model_name, llm_stopped=stopped, llm_unparseable=sum(1 for r in cached if r.get("error")))
+        predictions[f"llm_{args.provider}"] = preds
+        print(f"LLM classifier ({args.provider}: {model_name}): {len(preds)} / {len(scored)} cases predicted." + (f" {stopped}" if stopped else ""))
 
     results = {"meta": meta, "subsets": evaluate_systems(golden, predictions, intents)}
     report_dir.mkdir(parents=True, exist_ok=True)
@@ -148,7 +156,7 @@ def main() -> int:
         print(f"\nINTEGRITY FAILURE: protected files changed during the run: {touched}", file=sys.stderr)
         return 1
     print(f"\nReport: {md_path}\nMetrics: {json_path}")
-    return 1 if meta["gemini_stopped"] else 0
+    return 1 if meta["llm_stopped"] else 0
 
 
 if __name__ == "__main__":
