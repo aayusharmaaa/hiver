@@ -37,11 +37,12 @@ policy has checked the risk. Anything it can't support goes to a human, with its
 | Intent classification, **100 blind human labels** (headline) | LLM classifier 60.0% accuracy / 0.533 macro-F1, vs TF-IDF 54.0% / 0.466 and majority class 15.0% / 0.024 | final |
 | Intent classification, all 250 reviewed labels | LLM 65.6% / 0.573 (secondary: 150 labels began as assistant drafts) | final |
 | Retrieval, 857 dev queries (proxy relevance) | hybrid + intent bonus MRR 0.572, R@5 0.784, vs BM25 0.372 / 0.551 and random 0.152 / 0.237 | final, proxy |
-| End-to-end routing on a 50-case golden slice | [FINAL 50-CASE RESULT PENDING — DO NOT FABRICATE] (11 of 50 done) | **incomplete** |
-| Reply quality: LLM judge vs human ratings | [FINAL 50-CASE RESULT PENDING — DO NOT FABRICATE] | **incomplete** |
+| End-to-end routing on a 50-case golden slice | 11 of 50 auto-handled (22%); 1 of those 11 should have escalated (9.1%); 12 of 13 must-escalate cases escalated; 27 of 37 automatable cases escalated anyway | final, small sample |
+| Reply quality: LLM judge vs human ratings | 14 drafts judged; [HUMAN RATINGS PENDING — judge-vs-human agreement not yet computed] | **incomplete** |
 
-The end-to-end run and the judge-vs-human check are blocked only by the Groq free-tier daily token limit. The harnesses are
-built, tested and resumable; [Reproducing the results](#reproducing-the-results) gives the exact commands.
+The agent is conservative, as designed: it automates a fifth of the slice, with one unsafe auto-handle, and pays for that
+with heavy over-escalation. The only step left is the human side of the judge check, which needs a person to rate 14
+replies blind ([Reproducing the results](#reproducing-the-results), step 7).
 
 ![Support Copilot UI: ticket list, conversation with a grounded suggested reply, AI analysis with risk checks and historical evidence, and the execution trace](docs/screenshots/copilot-auto-handled.png)
 
@@ -232,19 +233,40 @@ while a hard intent filter drops below it (0.404). That's why intent is a nudge 
 gold escalation (at least 3 per intent, seed 42; 48 of the 50 have blind human labels). It scores routing against
 `gold_should_escalate` and checks pipeline invariants on every case.
 
-| metric | definition | result |
-|---|---|---|
-| auto-handle rate (coverage) | share of cases answered without a human | [FINAL 50-CASE RESULT PENDING — DO NOT FABRICATE] |
-| false auto-handle rate | auto-handled but gold says escalate, over auto-handled | [FINAL 50-CASE RESULT PENDING — DO NOT FABRICATE] |
-| safe automation rate | auto-handled and gold says no escalation, over all cases | [FINAL 50-CASE RESULT PENDING — DO NOT FABRICATE] |
-| escalation precision / recall | against `gold_should_escalate` | [FINAL 50-CASE RESULT PENDING — DO NOT FABRICATE] |
-| generation success, grounding pass rate | over attempted drafts | [FINAL 50-CASE RESULT PENDING — DO NOT FABRICATE] |
+The slice has 13 cases where gold says escalate and 37 where it doesn't. Report:
+[`reports/agent_eval/virgintrains_agent_evaluation.md`](reports/agent_eval/virgintrains_agent_evaluation.md).
 
-**Partial run (11 of 50 cases, not a result).** Two cases were auto-handled; both replies passed grounding and both
-matched a gold "no escalation" label. Nine were escalated: 5 correctly, and 4 that a human said could have been automated.
-There were no unsafe auto-handles, classification failures or invariant violations. This is the first live observation of
-AUTO_HANDLE with a passing grounding check. Eleven cases can't support any rate, so I don't report percentages. Partial
-outputs stay uncommitted until the run finishes.
+| metric | definition | always escalate (baseline) | **agent, all 50** | agent, blind-labelled 48 |
+|---|---|---|---|---|
+| auto-handle rate | share of cases answered without a human | 0% | **22.0%** (11) | 22.9% |
+| false auto-handle rate | auto-handled but gold says escalate, over auto-handled | – | **9.1%** (1 of 11) | 9.1% |
+| safe automation rate | auto-handled and gold says no escalation, over all cases | 0% | **20.0%** | 20.8% |
+| escalation recall | escalated, over gold says escalate | 100% | **92.3%** (12 of 13) | 91.7% |
+| escalation precision | gold says escalate, over escalated | 26.0% | **30.8%** (12 of 39) | 29.7% |
+| intent accuracy | predicted equals gold intent | – | 58.0% | 58.3% |
+
+**Pipeline stages.**
+- The policy allowed 15 of the 50 cases to auto-handle.
+- The generator produced 14 drafts and declined 1.
+- Grounding passed 11 of the 14 drafts. The 3 failures were downgraded to ESCALATE: each draft had added a detail the evidence
+  doesn't contain (a fare-release date, a claim that a specific service has no reservations, a payment-options claim).
+- There were 0 model errors, classification failures or pipeline-invariant violations.
+
+**Why cases were escalated.**
+- 18 were blocked intents.
+- 5 had weak retrieval.
+- 4 had evidence showing that similar cases needed account access.
+- 3 failed grounding.
+- 3 looked like they contained more than one request.
+- The rest were low-information messages, sensitive wording, insufficient evidence, evidence that disagreed with the
+  predicted intent, or the generator declining.
+
+**Reading it.** Against "always escalate", the agent takes 11 of 50 cases off a human's queue. It gets one wrong:
+`case_2884600`, a customer charged £102 to change a ticket. The agent replied with the Aftersales number and fee rule,
+which grounding accepted, but the human label says it needed escalation. The failure analysis had already flagged this
+case as one that [no hard rule catches](#11-top-5-failure-modes). The cost is over-escalation: 27 of the 37 cases that could have been automated
+went to a human, most of them because of blanket intent rules. With 50 cases, a single error moves the false auto-handle
+rate by 9 points, so these are estimates of direction, not stable rates.
 
 ---
 
@@ -266,23 +288,31 @@ reliable".
 
 | | result |
 |---|---|
-| judge scores on the 50-case slice | [FINAL 50-CASE RESULT PENDING — DO NOT FABRICATE] |
-| judge vs human agreement (κ, ρ) | [FINAL 50-CASE RESULT PENDING — DO NOT FABRICATE] |
+| judge scores on the 14 drafts | [WITHHELD UNTIL HUMAN RATINGS ARE IN — see below] |
+| judge vs human agreement (κ, ρ) | [HUMAN RATINGS PENDING — DO NOT FABRICATE] |
 
-**Status:** 2 draft replies exist so far, and there are no human ratings. Only about 1 in 5 cases reaches generation, so even
-the full 50-case run will probably give fewer than 30 replies. In that case agreement will be reported as indicative only.
+**Status:** The judge has scored all 14 drafts (11 sent, 3 blocked by grounding), and the blind rating sheet has been written.
+I'm leaving the judge's scores out of this README until the human ratings are in, so the rater isn't anchored by them. With
+14 replies, agreement will be reported as indicative only (fewer than 30).
+
+**What routing metrics miss.** `case_1035449`, "always wondered what it must be like to travel by train in India
+#mightaswellallsitontheroof", is sarcasm about overcrowding. The agent read it as praise and replied "Thanks for the kind
+words! Glad you enjoyed your journey." The gold label says this case needn't escalate, so routing counts it as a *safe*
+auto-handle, and grounding passed because the evidence contains similar thank-you replies. Only a reply-quality check
+catches this, which is why the judge-vs-human step matters.
 
 ---
 
 ## 11. Top 5 failure modes
 
 From [`reports/failure_analysis.md`](reports/failure_analysis.md), generated by `scripts/analyze_failures.py` from existing
-artifacts only (no model calls). Every example is a real case id. Counts from the agent run are marked partial.
+artifacts only (no model calls). Every example is a real case id.
 
 1. **Policy over-escalation (policy).** Apply the hard rules to the *gold* intent of the blind 100, as if the classifier
    were perfect. Of the 81 cases a human said needn't escalate, 40 would still be escalated: 37 by an intent rule, 7 by
    sensitive wording, 1 for low information. Examples: `case_2396788` is praise, escalated because it mentions a
-   wheelchair; `case_1615687` is a simple "how to get a refund?". The partial run shows the same thing (4 of 6). *Fix:*
+   wheelchair; `case_1615687` is a simple "how to get a refund?". The agent run shows the same thing: 27 of 37 automatable
+   cases were escalated. *Fix:*
    gate on the action needed rather than the intent, and scope sensitive words to complaints. Tune on dev.
 2. **Intent boundary ambiguity (taxonomy).** 14 of the 40 blind errors are between two pairs: journey disruption vs status
    enquiry (`case_2639881`, `case_509179`), and chitchat vs praise. The candidate taxonomy disagrees with gold on 131 of 250
@@ -298,9 +328,14 @@ artifacts only (no model calls). Every example is a real case id. Counts from th
    answer is a redirect that no intent captures (`case_482898`). 7 are media-only or unclear, and the LLM labelled only 2 of
    those as unclear (`case_1845809`: "your trains are disgusting.... <link>").
 
-Also tracked: **3 of the 19** blind should-escalate cases trigger no hard rule (`case_2884600`, a £102 change fee), so only
-the soft checks stand between them and an auto-reply. Generation and grounding failures have **not been observed yet**
-(0 of 2 partial). The UI's grounding-fail and model-error states are built and unit-tested, but no real example exists.
+Also tracked:
+- **Hard-rule gaps.** 3 of the 19 blind should-escalate cases trigger no hard rule, so only the soft checks stand between
+  them and an auto-reply. One of them, `case_2884600` (a £102 change fee), was auto-handled in the agent run: the only
+  unsafe auto-handle.
+- **Grounding catches invented detail.** 3 of 14 drafts failed and were blocked, for example `case_690119`, where the draft
+  invented a fare-release date.
+- **Generator declines.** The generator declined 1 of 15 (`case_166715`, a joke about the toilet voice).
+- **Model errors.** None occurred in the run, so the UI's model-error state is covered only by unit tests.
 
 ---
 
@@ -319,12 +354,14 @@ The headline is **60.0% intent accuracy (0.533 macro-F1) on 100 blind labels**. 
    intent bonus uses the same intent, so the best row is partly self-confirming. No human has judged a retrieved case as
    useful.
 5. **The end-to-end slice is small and not representative.** 50 cases, stratified to over-represent rare intents and
-   escalations. Its rates will not match real traffic (use `golden_stratum_weight` for prevalence), and 11 of 50 are done.
+   escalations. Its rates won't match real traffic (`golden_stratum_weight` gives prevalence). The 9.1% false
+   auto-handle rate is a single case, and one more error would nearly double it.
 6. **Low coverage isn't automatically failure.** The policy is deliberately conservative, and "always escalate" is a valid
    baseline. The question is whether each extra automated case is safe. The oracle analysis shows that much of the
    over-escalation is by design, in the rules, not caused by model errors.
-7. **The judge is only trustworthy once checked against enough human ratings.** With 2 replies and no ratings, no judge
-   score here means anything yet; under 30 rated replies, agreement is indicative only.
+7. **The judge is only trustworthy once checked against enough human ratings.** There are 14 replies and no human ratings
+   yet. Even after rating, agreement on 14 replies is indicative only. Routing "safe" doesn't mean the reply is good
+   (`case_1035449` thanked a sarcastic complainant).
 8. **Resolution signals are weak heuristics.** Resolution types come from regexes over the brand's reply ("refund" means a
    refund was *discussed*). DM-resolved cases are invisible. Both the memory filter and the retrieval relevance inherit
    this noise.
@@ -365,7 +402,8 @@ The headline is **60.0% intent accuracy (0.533 macro-F1) on 100 blind labels**. 
 
 ## 14. What I'd do with one more week
 
-1. **Finish the 50-case run and the judge-vs-human check**, then rerun the failure analysis on the complete run.
+1. **Finish the judge-vs-human check, then grow the e2e slice** to the full 250 golden cases, so the false auto-handle
+   rate rests on more than one case.
 2. **Fix the over-escalation found by the oracle**, calibrated on dev and not golden: gate on action needed, scope
    sensitive words, and report the auto-handle precision vs coverage curve.
 3. **Redefine the taxonomy by required action** (live info / compensation / acknowledge / redirect), add
@@ -417,7 +455,8 @@ python scripts/evaluate_intents.py --skip-llm     # majority + TF-IDF, about 40 
 python scripts/evaluate_intents.py                # re-scores the LLM from the committed prediction cache; no API call
 ```
 
-**6. End-to-end agent evaluation** (live; resumable).
+**6. End-to-end agent evaluation** (cached: the committed `model_cache.jsonl` replays every call, so a re-run makes no new
+API calls, though the client still needs a key to start; delete the cache to run live).
 
 ```bash
 python scripts/evaluate_agent.py --select-only    # the 50 cases, no key

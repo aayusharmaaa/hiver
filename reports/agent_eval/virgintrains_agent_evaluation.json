@@ -1,0 +1,163 @@
+{
+  "meta": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "seed": 42,
+    "selected": 50,
+    "scored": 50,
+    "blind_human_selected": 48,
+    "stopped": null,
+    "cache_hits": 15,
+    "cache_misses": 64
+  },
+  "subsets": {
+    "all sampled": {
+      "n": 50,
+      "gold_should_escalate": {
+        "yes": 13,
+        "no": 37
+      },
+      "final": {
+        "auto_handle": 11,
+        "escalate": 39
+      },
+      "routing_confusion": {
+        "auto_handle_gold_no": 10,
+        "auto_handle_gold_yes": 1,
+        "escalate_gold_yes": 12,
+        "escalate_gold_no": 27
+      },
+      "escalation_coverage": 0.78,
+      "safe_automation_rate": 0.2,
+      "false_auto_handle_rate": 0.09090909090909091,
+      "escalation_precision": 0.3076923076923077,
+      "escalation_recall": 0.9230769230769231,
+      "intent_accuracy": 0.58,
+      "policy_auto_handle": 15,
+      "generation": {
+        "attempted": 15,
+        "produced": 14,
+        "declined": 1,
+        "error": 0,
+        "success_rate": 0.9333333333333333
+      },
+      "grounding": {
+        "run": 14,
+        "pass": 11,
+        "fail": 3,
+        "unavailable": 0,
+        "pass_rate": 0.7857142857142857
+      },
+      "classification_failures": 0,
+      "invariant_violations": 0,
+      "reply_quality": {
+        "all_drafts": {
+          "count": 14,
+          "mean_words": 22.357142857142858,
+          "median_words": 18.5,
+          "share_under_60_words": 1.0,
+          "share_with_link": 0.21428571428571427,
+          "share_asking_question": 0.0,
+          "share_mentioning_dm": 0.0
+        },
+        "sent_replies": {
+          "count": 11,
+          "mean_words": 20,
+          "median_words": 18,
+          "share_under_60_words": 1.0,
+          "share_with_link": 0.18181818181818182,
+          "share_asking_question": 0.0,
+          "share_mentioning_dm": 0.0
+        },
+        "drafts_awaiting_judge": 14
+      },
+      "escalation_reasons": {
+        "intent '\u2026' is never auto-handled": 18,
+        "weak retrieval": 5,
+        "60% of similar historical cases needed account access or a formal route that this agent does not have": 3,
+        "grounding fail": 3,
+        "message appears to contain more than one request": 3,
+        "low-information message": 2,
+        "potentially sensitive or exceptional wording": 1,
+        "insufficient evidence": 1,
+        "100% of similar historical cases needed account access or a formal route that this agent does not have": 1,
+        "evidence disagrees with the predicted intent": 1,
+        "generator declined to reply": 1
+      }
+    },
+    "blind human only": {
+      "n": 48,
+      "gold_should_escalate": {
+        "yes": 12,
+        "no": 36
+      },
+      "final": {
+        "auto_handle": 11,
+        "escalate": 37
+      },
+      "routing_confusion": {
+        "auto_handle_gold_no": 10,
+        "auto_handle_gold_yes": 1,
+        "escalate_gold_yes": 11,
+        "escalate_gold_no": 26
+      },
+      "escalation_coverage": 0.7708333333333334,
+      "safe_automation_rate": 0.20833333333333334,
+      "false_auto_handle_rate": 0.09090909090909091,
+      "escalation_precision": 0.2972972972972973,
+      "escalation_recall": 0.9166666666666666,
+      "intent_accuracy": 0.5833333333333334,
+      "policy_auto_handle": 15,
+      "generation": {
+        "attempted": 15,
+        "produced": 14,
+        "declined": 1,
+        "error": 0,
+        "success_rate": 0.9333333333333333
+      },
+      "grounding": {
+        "run": 14,
+        "pass": 11,
+        "fail": 3,
+        "unavailable": 0,
+        "pass_rate": 0.7857142857142857
+      },
+      "classification_failures": 0,
+      "invariant_violations": 0,
+      "reply_quality": {
+        "all_drafts": {
+          "count": 14,
+          "mean_words": 22.357142857142858,
+          "median_words": 18.5,
+          "share_under_60_words": 1.0,
+          "share_with_link": 0.21428571428571427,
+          "share_asking_question": 0.0,
+          "share_mentioning_dm": 0.0
+        },
+        "sent_replies": {
+          "count": 11,
+          "mean_words": 20,
+          "median_words": 18,
+          "share_under_60_words": 1.0,
+          "share_with_link": 0.18181818181818182,
+          "share_asking_question": 0.0,
+          "share_mentioning_dm": 0.0
+        },
+        "drafts_awaiting_judge": 14
+      },
+      "escalation_reasons": {
+        "intent '\u2026' is never auto-handled": 18,
+        "weak retrieval": 4,
+        "grounding fail": 3,
+        "message appears to contain more than one request": 3,
+        "low-information message": 2,
+        "60% of similar historical cases needed account access or a formal route that this agent does not have": 2,
+        "potentially sensitive or exceptional wording": 1,
+        "insufficient evidence": 1,
+        "100% of similar historical cases needed account access or a formal route that this agent does not have": 1,
+        "evidence disagrees with the predicted intent": 1,
+        "generator declined to reply": 1
+      }
+    }
+  }
+}
