@@ -1,3 +1,5 @@
 # Fingerprinted labeling pack: newlines inside conversation cells must not be converted on checkout.
 data/golden/virgintrains_golden_v1.csv -text
 data/golden/virgintrains_golden_v1_label_audit.jsonl -text
+data/processed/taxonomy_calibration.csv -text
+data/processed/taxonomy_calibration_label_audit.jsonl -text
