@@ -13,11 +13,12 @@ I picked **VirginTrains**. The system is built as an *evidence-grounded support 
 replies when it has strong historical evidence, and otherwise it hands the case to a human with its reasons.
 
 > **Where things stand (honestly).** The data pipeline, the intent taxonomy, retrieval, the agent and a blind labeling tool for
-> the golden set are built and tested (`pytest -q`: 499 passed). Retrieval has a proxy evaluation with baselines. The 250-case
+> the golden set are built and tested (`pytest -q`: 505 passed). Retrieval has a proxy evaluation with baselines. The 250-case
 > golden set is sampled, frozen and leakage-checked. **All 250 cases have human labels: 100 labelled blind, and 150
 > AI-assistant drafts reviewed and confirmed by a human** (see
-> [Golden evaluation set](#golden-evaluation-set)). Intent classification is scored on golden against two baselines; the
-> Gemini run is blocked by the free-tier quota. Escalation and reply-quality evaluation and the LLM-as-judge are
+> [Golden evaluation set](#golden-evaluation-set)). Intent classification is scored on golden: the agent's LLM classifier
+> (run on Groq's `gpt-oss-120b`) gets 60% accuracy on the blind 100, against 54% for TF-IDF and 15% for the majority class.
+> Escalation and reply-quality evaluation and the LLM-as-judge are
 > **not built yet**. The
 > [deliverables table](#deliverables-vs-the-brief) shows exactly what is done and what isn't.
 
@@ -73,12 +74,16 @@ python scripts/smoke_test_agent.py --limit 12 --seed 42        # 12 representati
 python scripts/label_golden_eval.py            # --check verifies the files and prints progress
 ```
 
-**Score intent classification on the golden set.** This needs the pipeline outputs above; Gemini needs the key.
+**Score intent classification on the golden set.** This needs the pipeline outputs above. The LLM run needs
+`GROQ_API_KEY` in `.env`.
 
 ```bash
-python scripts/evaluate_intents.py --skip-gemini       # majority class + TF-IDF/logistic regression, about 40 s, no key
-python scripts/evaluate_intents.py --pause-seconds 6   # adds the agent's Gemini classifier; cached and resumable
+python scripts/evaluate_intents.py --skip-llm          # majority class + TF-IDF/logistic regression, about 40 s, no key
+python scripts/evaluate_intents.py                     # adds the agent's LLM classifier on Groq; cached and resumable
+python scripts/evaluate_intents.py --provider gemini   # same classifier on Gemini instead
 ```
+
+The committed prediction cache means a re-run re-scores without calling any API.
 
 The report goes to [`reports/intent_eval/`](reports/intent_eval/virgintrains_intent_evaluation.md).
 
@@ -93,8 +98,8 @@ The report goes to [`reports/intent_eval/`](reports/intent_eval/virgintrains_int
 | Grounded reply drafting | ✅ built and unit-tested; the live run was cut short by the Gemini free-tier quota | [`src/agent/generator.py`](src/agent/generator.py), [`src/agent/grounding.py`](src/agent/grounding.py) |
 | Auto-handle vs escalate, with a reason | ✅ deterministic policy; every decision lists its reasons | [`src/agent/policy.py`](src/agent/policy.py), [`configs/support_agent.yaml`](configs/support_agent.yaml) |
 | Golden set of 150–250 hand-labelled examples | ⚠️ 250 cases sampled, frozen and leakage-checked; **250 human-labelled or human-reviewed** (100 blind, 150 confirmed AI drafts) | [Golden evaluation set](#golden-evaluation-set) |
-| Evaluation harness: metrics, LLM judge, judge-vs-human agreement | ⚠️ retrieval and golden intent-classification harnesses done; **Gemini golden run blocked by the free-tier quota; LLM judge not built yet** | [`src/evaluation/retrieval.py`](src/evaluation/retrieval.py), [`src/evaluation/intent_eval.py`](src/evaluation/intent_eval.py) |
-| Results vs a trivial and a simple baseline | ⚠️ done for retrieval and for intent classification (majority class, TF-IDF + logistic regression); Gemini pending | [Results so far](#results-so-far) |
+| Evaluation harness: metrics, LLM judge, judge-vs-human agreement | ⚠️ retrieval and golden intent-classification harnesses done (LLM run on Groq); **LLM judge not built yet** | [`src/evaluation/retrieval.py`](src/evaluation/retrieval.py), [`src/evaluation/intent_eval.py`](src/evaluation/intent_eval.py) |
+| Results vs a trivial and a simple baseline | ✅ done for retrieval and for intent classification (majority class, TF-IDF + logistic regression, LLM) | [Results so far](#results-so-far) |
 | Top 5 failure modes | ⚠️ retrieval and data failure modes documented below; agent failure modes need the golden run | [Failure modes](#failure-modes-i-already-know-about) |
 | "What is misleading about my headline number?" | ✅ | [below](#what-is-misleading-about-my-headline-number) |
 | Decision log (10–15 items) | ✅ | [Decision log](#decision-log) |
@@ -214,12 +219,18 @@ Full report, with per-intent precision/recall/F1 and confusion matrices:
 |---|---|---|---|---|
 | Majority class (`service_status_delay_enquiry`) | 15.0% | 0.024 | 12.4% | 0.018 |
 | TF-IDF + logistic regression | 54.0% | 0.466 | 49.6% | 0.409 |
-| Gemini (agent's `IntentClassifier`) | not run yet | | | |
+| **LLM: agent's `IntentClassifier` on `gpt-oss-120b` (Groq)** | **60.0%** | **0.533** | **65.6%** | **0.573** |
 
 Things to keep in mind when reading this:
 
-- **Gemini is missing because of quota, not choice.** `gemini-2.5-flash` allows 20 requests a day on the free tier. The run
-  caches every prediction and resumes, so it can finish over several days or on a paid key.
+- **The LLM row runs on Groq, not Gemini.** The prompt, taxonomy and few-shot examples are the agent's own; only the
+  backend changed. `gemini-2.5-flash` allows 20 free requests a day, so I ran the same classifier on Groq's free tier.
+  It's a different model, so this is not a measurement of the production Gemini configuration.
+- **The LLM's errors are mostly confusable complaints.** On the blind 100, `journey_disruption_complaint` and
+  `customer_service_complaint` bleed into each other (F1 0.47 and 0.43). It almost never picks `unclear_or_media_only`
+  (recall 0.25). Delay Repay predictions are always right (precision 1.00) but it finds only about half of them.
+- **The LLM scores higher on all 250 than on the blind 100.** 150 of those labels started as AI drafts, and drafts written
+  by an LLM probably agree more with another LLM. That's another reason the blind 100 is the number to trust.
 - **The baseline learned weak labels.** On dev, against the same weak labels, it scores 0.77 macro-F1. On human labels it
   drops to 0.47. Most of that gap is the cluster labels disagreeing with people, not the model.
 - **The input is narrower than what the labeler saw.** Labels came from the whole conversation, predictions from the
@@ -238,7 +249,7 @@ Things to keep in mind when reading this:
 - **Live:** a 12-case smoke test on `dev_calibration` showed classification, retrieval and policy escalation working against
   real Gemini. Cases that passed the policy reached generation. The free-tier quota ran out before a full run, so
   **I have not yet observed AUTO_HANDLE with a passing grounding check live**.
-- **No Gemini accuracy, escalation precision or reply-quality numbers yet.** The intent harness above is ready for Gemini.
+- **No escalation precision or reply-quality numbers yet.** Only intent classification is scored on golden so far.
 
 ---
 
@@ -369,7 +380,7 @@ finished,
 ## What I'd do next with one more week
 
 1. **Re-check the 150 confirmed golden drafts more slowly**, then run the taxonomy review and decide on merges and renames *before* evaluating.
-2. **Finish the Gemini intent run and extend the harness** past intents. It would measure:
+2. **Run the intent harness on the production Gemini model and extend it** past intents. It would measure:
    - escalation precision and recall;
    - the precision of auto-handled replies (the one that matters).
 
@@ -391,7 +402,7 @@ src/
   taxonomy/      entity masking, discovery (TF-IDF / embeddings / KMeans), taxonomy builder, registry, finalize
   evaluation/    brand ranking, splits + leakage checks, sampling, retrieval eval, smoke test, calibration and golden labeling tools
   agent/         schemas, classifier, policy, generator, grounding, support_agent (orchestration), config
-  models/        LanguageModel interface + Gemini REST client
+  models/        LanguageModel interface + Gemini and Groq REST clients
   retrieval.py   BM25 + embeddings + hybrid retriever
 configs/         support_agent.yaml (all thresholds), virgintrains_intents.yaml (candidate taxonomy), cluster labels
 scripts/         one entry point per step (see below)
@@ -405,7 +416,7 @@ tests/           489 tests, no network or API key needed
 | `profile_dataset.py`, `build_cases.py`, `rank_brands.py` | phase 1: profile all brands, rebuild threads, rank brands |
 | `run_virgintrains_pipeline.py` | runs `build_virgintrains` → `discover_intents` → `prepare_splits` → `generate_taxonomy` → `virgintrains_report` |
 | `build_resolution_memory.py`, `evaluate_retrieval.py` | memory + proxy retrieval evaluation |
-| `evaluate_intents.py` | golden intent classification: majority class, TF-IDF + logistic regression, Gemini |
+| `evaluate_intents.py` | golden intent classification: majority class, TF-IDF + logistic regression, the agent's LLM classifier |
 | `run_support_agent.py`, `smoke_test_agent.py` | the agent on one message / on 12 representative dev cases |
 | `prepare_golden_eval.py`, `label_golden_eval.py`, `golden_taxonomy_review.py` | golden pack, blind labeling, post-labeling taxonomy review |
 | `build_taxonomy_calibration.py`, `label_taxonomy_calibration.py`, `compare_taxonomy.py`, `finalize_taxonomy.py` | optional taxonomy-calibration path (built, not used yet) |
@@ -500,6 +511,7 @@ one labeling pass. The scripts are listed in the [repo map](#repo-map).
   - Data: Customer Support on Twitter (Kaggle, thoughtvector).
   - Embeddings: `sentence-transformers/all-MiniLM-L6-v2`.
   - Clustering and TF-IDF: scikit-learn.
-  - LLM: Google Gemini (`gemini-2.5-flash`) over REST.
+  - LLM: Google Gemini (`gemini-2.5-flash`) for the agent; OpenAI's open-weight `gpt-oss-120b` served by Groq for the golden
+    intent evaluation. Both are called over REST.
   - BM25 is my own implementation in [`src/retrieval.py`](src/retrieval.py).
   - Written with an AI coding assistant; I can walk through and change any part of it.

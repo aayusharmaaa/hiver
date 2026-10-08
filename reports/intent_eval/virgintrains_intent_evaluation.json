@@ -12,9 +12,10 @@
       "10.0": 0.7673
     },
     "provenance": "assistant_draft_confirmed: 150, human: 100",
-    "gemini_model": null,
-    "gemini_stopped": null,
-    "gemini_unparseable": 0
+    "llm_provider": "groq",
+    "llm_model": "openai/gpt-oss-120b",
+    "llm_stopped": null,
+    "llm_unparseable": 0
   },
   "subsets": {
     "blind_human": {
@@ -510,6 +511,256 @@
               2,
               0,
               0
+            ]
+          ]
+        },
+        "coverage": {
+          "predicted": 100,
+          "subset_size": 100
+        }
+      },
+      "llm_groq": {
+        "n": 100,
+        "accuracy": 0.6,
+        "macro_f1": 0.5326271429719707,
+        "macro_f1_labels": [
+          "service_status_delay_enquiry",
+          "journey_disruption_complaint",
+          "chitchat_non_support",
+          "praise_positive_feedback",
+          "ticket_booking_query",
+          "seat_reservation_issue",
+          "customer_service_complaint",
+          "delay_repay_refund_claim",
+          "first_class_catering_issue",
+          "onboard_wifi_issue",
+          "unclear_or_media_only"
+        ],
+        "per_intent": {
+          "service_status_delay_enquiry": {
+            "precision": 0.7142857142857143,
+            "recall": 0.6666666666666666,
+            "f1": 0.689655172413793,
+            "support": 15
+          },
+          "journey_disruption_complaint": {
+            "precision": 0.3888888888888889,
+            "recall": 0.5833333333333334,
+            "f1": 0.4666666666666666,
+            "support": 12
+          },
+          "chitchat_non_support": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 2
+          },
+          "praise_positive_feedback": {
+            "precision": 0.8461538461538461,
+            "recall": 0.6470588235294118,
+            "f1": 0.7333333333333334,
+            "support": 17
+          },
+          "ticket_booking_query": {
+            "precision": 0.7333333333333333,
+            "recall": 0.7857142857142857,
+            "f1": 0.7586206896551724,
+            "support": 14
+          },
+          "seat_reservation_issue": {
+            "precision": 0.4444444444444444,
+            "recall": 1.0,
+            "f1": 0.6153846153846153,
+            "support": 4
+          },
+          "customer_service_complaint": {
+            "precision": 0.6,
+            "recall": 0.3333333333333333,
+            "f1": 0.42857142857142855,
+            "support": 9
+          },
+          "delay_repay_refund_claim": {
+            "precision": 1.0,
+            "recall": 0.5384615384615384,
+            "f1": 0.7000000000000001,
+            "support": 13
+          },
+          "first_class_catering_issue": {
+            "precision": 0.2857142857142857,
+            "recall": 0.6666666666666666,
+            "f1": 0.4,
+            "support": 3
+          },
+          "onboard_wifi_issue": {
+            "precision": 0.8,
+            "recall": 0.5714285714285714,
+            "f1": 0.6666666666666666,
+            "support": 7
+          },
+          "unclear_or_media_only": {
+            "precision": 1.0,
+            "recall": 0.25,
+            "f1": 0.4,
+            "support": 4
+          }
+        },
+        "confusion": {
+          "labels": [
+            "service_status_delay_enquiry",
+            "journey_disruption_complaint",
+            "chitchat_non_support",
+            "praise_positive_feedback",
+            "ticket_booking_query",
+            "seat_reservation_issue",
+            "customer_service_complaint",
+            "delay_repay_refund_claim",
+            "first_class_catering_issue",
+            "onboard_wifi_issue",
+            "unclear_or_media_only"
+          ],
+          "matrix": [
+            [
+              10,
+              3,
+              0,
+              0,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              2,
+              7,
+              0,
+              0,
+              0,
+              1,
+              1,
+              0,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              3,
+              11,
+              0,
+              0,
+              1,
+              0,
+              1,
+              0,
+              0
+            ],
+            [
+              2,
+              0,
+              0,
+              0,
+              11,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              4,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              1,
+              0,
+              2,
+              1,
+              3,
+              0,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              1,
+              1,
+              1,
+              0,
+              7,
+              1,
+              1,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            [
+              0,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              4,
+              0
+            ],
+            [
+              0,
+              1,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1
             ]
           ]
         },
@@ -1070,6 +1321,289 @@
               0,
               0,
               1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        "coverage": {
+          "predicted": 250,
+          "subset_size": 250
+        }
+      },
+      "llm_groq": {
+        "n": 250,
+        "accuracy": 0.656,
+        "macro_f1": 0.5727963930598552,
+        "macro_f1_labels": [
+          "service_status_delay_enquiry",
+          "journey_disruption_complaint",
+          "chitchat_non_support",
+          "praise_positive_feedback",
+          "ticket_booking_query",
+          "seat_reservation_issue",
+          "customer_service_complaint",
+          "delay_repay_refund_claim",
+          "first_class_catering_issue",
+          "onboard_wifi_issue",
+          "unclear_or_media_only",
+          "NEW:lost_property"
+        ],
+        "per_intent": {
+          "service_status_delay_enquiry": {
+            "precision": 0.7575757575757576,
+            "recall": 0.8064516129032258,
+            "f1": 0.7812499999999999,
+            "support": 31
+          },
+          "journey_disruption_complaint": {
+            "precision": 0.5217391304347826,
+            "recall": 0.6486486486486487,
+            "f1": 0.5783132530120482,
+            "support": 37
+          },
+          "chitchat_non_support": {
+            "precision": 0.3333333333333333,
+            "recall": 0.6363636363636364,
+            "f1": 0.43749999999999994,
+            "support": 11
+          },
+          "praise_positive_feedback": {
+            "precision": 0.9032258064516129,
+            "recall": 0.7,
+            "f1": 0.7887323943661972,
+            "support": 40
+          },
+          "ticket_booking_query": {
+            "precision": 0.7096774193548387,
+            "recall": 0.6285714285714286,
+            "f1": 0.6666666666666666,
+            "support": 35
+          },
+          "seat_reservation_issue": {
+            "precision": 0.5909090909090909,
+            "recall": 0.8125,
+            "f1": 0.6842105263157896,
+            "support": 16
+          },
+          "customer_service_complaint": {
+            "precision": 0.5789473684210527,
+            "recall": 0.5789473684210527,
+            "f1": 0.5789473684210527,
+            "support": 19
+          },
+          "delay_repay_refund_claim": {
+            "precision": 1.0,
+            "recall": 0.5517241379310345,
+            "f1": 0.7111111111111111,
+            "support": 29
+          },
+          "first_class_catering_issue": {
+            "precision": 0.29411764705882354,
+            "recall": 0.7142857142857143,
+            "f1": 0.4166666666666667,
+            "support": 7
+          },
+          "onboard_wifi_issue": {
+            "precision": 0.9166666666666666,
+            "recall": 0.6875,
+            "f1": 0.7857142857142857,
+            "support": 16
+          },
+          "unclear_or_media_only": {
+            "precision": 1.0,
+            "recall": 0.2857142857142857,
+            "f1": 0.4444444444444445,
+            "support": 7
+          },
+          "NEW:lost_property": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 2
+          }
+        },
+        "confusion": {
+          "labels": [
+            "service_status_delay_enquiry",
+            "journey_disruption_complaint",
+            "chitchat_non_support",
+            "praise_positive_feedback",
+            "ticket_booking_query",
+            "seat_reservation_issue",
+            "customer_service_complaint",
+            "delay_repay_refund_claim",
+            "first_class_catering_issue",
+            "onboard_wifi_issue",
+            "unclear_or_media_only",
+            "NEW:lost_property"
+          ],
+          "matrix": [
+            [
+              25,
+              3,
+              0,
+              0,
+              2,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              2,
+              24,
+              1,
+              0,
+              1,
+              5,
+              3,
+              0,
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              3,
+              7,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              2,
+              7,
+              28,
+              0,
+              0,
+              1,
+              0,
+              2,
+              0,
+              0,
+              0
+            ],
+            [
+              5,
+              1,
+              1,
+              1,
+              22,
+              1,
+              0,
+              0,
+              4,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              13,
+              3,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              2,
+              0,
+              2,
+              1,
+              11,
+              0,
+              2,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              3,
+              0,
+              1,
+              4,
+              1,
+              1,
+              16,
+              2,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              5,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              3,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              11,
+              0,
+              0
+            ],
+            [
+              1,
+              2,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              2,
+              0
+            ],
+            [
+              0,
+              2,
+              0,
+              0,
               0,
               0,
               0,
