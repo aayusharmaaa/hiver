@@ -1,12 +1,12 @@
-"""Live smoke test: run the REAL support agent (real Gemini) on a handful of representative NON-golden VirginTrains openers.
+"""Live smoke test: run the REAL support agent (real LLM) on a handful of representative NON-golden VirginTrains openers.
 
-    export GEMINI_API_KEY=...          # PowerShell: $env:GEMINI_API_KEY="..."
-    python scripts/smoke_test_agent.py --limit 12 --seed 42
+    python scripts/smoke_test_agent.py --limit 12 --seed 42                     # Groq (GROQ_API_KEY in .env)
+    python scripts/smoke_test_agent.py --provider gemini --limit 12 --seed 42   # Gemini (GEMINI_API_KEY)
 
 This is a diagnostic, not the evaluation: no accuracy or score is computed and nothing is written to disk. Messages are opening
 customer messages from `dev_calibration` (golden / reserve / excluded cases are never used and every case is checked before any
 model call). Historical resolution type, candidate intent etc. are printed for inspection only; they are weak metadata, NOT human
-ground truth, and are never sent to the model. `--select-only` prints the selected cases without calling Gemini (no key needed).
+ground truth, and are never sent to the model. `--select-only` prints the selected cases without calling a model (no key needed).
 
 Exit codes: 0 = ran (even if some scenarios were unavailable), 1 = at least one case failed, 2 = setup problem (e.g. no API key).
 """
@@ -40,15 +40,14 @@ from evaluation.smoke_selection import (
 )
 from evaluation.splits import LeakageError, verify_no_leakage
 from models.base import ModelError
-from models.gemini import api_key_from_env
+from models.factory import KEY_ENV, PROVIDERS, build_model, provider_key
 
 ROOT = _bootstrap.REPO_ROOT
 KEY_HELP = (
-    "SETUP FAILURE: GEMINI_API_KEY is not set, so the live smoke test cannot run (nothing was sent anywhere and no mock was used).\n"
-    "  Create a key at https://aistudio.google.com/apikey, then either put it in the git-ignored .env file\n"
-    "  (copy .env.example to .env and fill in GEMINI_API_KEY=...) or set it for this shell:\n"
-    "    PowerShell:  $env:GEMINI_API_KEY = \"your-key\"\n"
-    "    bash/zsh:    export GEMINI_API_KEY=\"your-key\"\n"
+    "SETUP FAILURE: {var} is not set, so the live smoke test cannot run (nothing was sent anywhere and no mock was used).\n"
+    "  Put it in the git-ignored .env file (copy .env.example to .env and fill in {var}=...) or set it for this shell:\n"
+    "    PowerShell:  $env:{var} = \"your-key\"\n"
+    "    bash/zsh:    export {var}=\"your-key\"\n"
     "  and re-run:  python scripts/smoke_test_agent.py --limit 12 --seed 42\n"
     "  (`--select-only` shows which cases would be sent, without a key.)"
 )
@@ -71,9 +70,10 @@ def main() -> int:
     parser.add_argument("--seed", type=int, default=42, help="Seed for the deterministic tie-break between equally good candidates.")
     parser.add_argument("--select-only", action="store_true", help="Print the selected cases and safety checks; make no model calls.")
     parser.add_argument("--processed-dir", type=Path, default=_bootstrap.DEFAULT_PROCESSED)
+    parser.add_argument("--provider", choices=PROVIDERS, default="groq")
     parser.add_argument("--config", type=Path, default=None, help="Support-agent config (default: configs/support_agent.yaml).")
     parser.add_argument("--pause-seconds", type=float, default=0.0, help="Wait between cases to stay under a per-minute rate limit (e.g. 20 on the free tier).")
-    parser.add_argument("--env-file", type=Path, default=_bootstrap.DEFAULT_ENV_FILE, help="Git-ignored file with GEMINI_API_KEY=... (default: .env).")
+    parser.add_argument("--env-file", type=Path, default=_bootstrap.DEFAULT_ENV_FILE, help="Git-ignored file with the API key (default: .env).")
     parser.add_argument("--log-level", default="WARNING")
     args = parser.parse_args()
     configure_logging(args.log_level)
@@ -83,9 +83,9 @@ def main() -> int:
         parser.error("--pause-seconds must be >= 0")
     _bootstrap.load_env_file(args.env_file)
 
-    key = api_key_from_env()
+    key = provider_key(args.provider)
     if key is None and not args.select_only:
-        print(KEY_HELP, file=sys.stderr)
+        print(KEY_HELP.format(var=KEY_ENV[args.provider]), file=sys.stderr)
         return 2
 
     processed = args.processed_dir
@@ -116,15 +116,17 @@ def main() -> int:
             print(f"{i:02d}. {case.scenario:28s} {case.case_id:14s} {case.why_selected}\n      {case.message[:160]!r}")
         return 0
 
-    # ---- the real agent: real Gemini client + real retriever + real policy ----
+    # ---- the real agent: real LLM client + real retriever + real policy ----
+    from agent.config import load_config
     from agent.support_agent import SupportAgent
 
     try:
-        agent = SupportAgent.from_config(args.config, processed_dir=processed)
+        model = build_model(args.provider, load_config(args.config).model)
+        agent = SupportAgent.from_config(args.config, processed_dir=processed, model=model)
     except (ModelError, FileNotFoundError) as exc:
         print(f"SETUP FAILURE: {scrub_secret(str(exc), [key])}", file=sys.stderr)
         return 2
-    print(f"Model: {getattr(getattr(agent.classifier, 'model', None), 'name', 'unknown')}   (live Gemini; the API key is never printed)\n")
+    print(f"Model: {getattr(getattr(agent.classifier, 'model', None), 'name', 'unknown')}   (live {args.provider}; the API key is never printed)\n")
 
     taxonomy_intents = list(agent.classifier.allowed_intents)  # candidate intents + fallback, from the registry
     corpus_ids = set(agent.retriever.corpus["case_id"])  # type: ignore[attr-defined]

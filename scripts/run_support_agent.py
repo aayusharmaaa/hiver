@@ -2,9 +2,10 @@
 
     python scripts/run_support_agent.py --message "Is there wifi on the 09:00 to Glasgow?"
     python scripts/run_support_agent.py --message "yes please" --context "Customer: Can I take a bike on the train?"
+    python scripts/run_support_agent.py --provider gemini --message "..."
 
-Needs a Gemini API key: GEMINI_API_KEY in the environment or in the git-ignored .env file (see .env.example).
-GEMINI_MODEL optionally overrides the model name.
+Needs an API key for the chosen provider in the environment or the git-ignored .env file (see .env.example):
+GROQ_API_KEY (default provider; GROQ_MODEL overrides the model) or GEMINI_API_KEY (GEMINI_MODEL overrides the model).
 Intents come from the CANDIDATE taxonomy (not human validated); evidence comes from the train-split resolution memory.
 """
 
@@ -18,9 +19,11 @@ from pathlib import Path
 
 import _bootstrap  # noqa: F401
 
+from agent.config import load_config
 from agent.support_agent import SupportAgent
 from common.logging_utils import configure_logging
 from models.base import ModelConfigError, ModelError
+from models.factory import PROVIDERS, build_model
 
 WIDTH = 100
 
@@ -64,16 +67,18 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--message", required=True, help="The customer message.")
     parser.add_argument("--context", default=None, help="Optional earlier conversation text.")
+    parser.add_argument("--provider", choices=PROVIDERS, default="groq")
     parser.add_argument("--config", type=Path, default=None, help="Config YAML (default: configs/support_agent.yaml).")
     parser.add_argument("--processed-dir", type=Path, default=None)
     parser.add_argument("--json", action="store_true", help="Print the full AgentResult as JSON instead.")
-    parser.add_argument("--env-file", type=Path, default=_bootstrap.DEFAULT_ENV_FILE, help="Git-ignored file with GEMINI_API_KEY=... (default: .env).")
+    parser.add_argument("--env-file", type=Path, default=_bootstrap.DEFAULT_ENV_FILE, help="Git-ignored file with the API key (default: .env).")
     parser.add_argument("--log-level", default="WARNING")
     args = parser.parse_args()
     configure_logging(args.log_level)
     _bootstrap.load_env_file(args.env_file)
     try:
-        agent = SupportAgent.from_config(args.config, processed_dir=args.processed_dir)
+        model = build_model(args.provider, load_config(args.config).model)
+        agent = SupportAgent.from_config(args.config, processed_dir=args.processed_dir, model=model)
         result = agent.handle(args.message, args.context)
     except ModelConfigError as exc:
         print(f"Configuration error: {exc}", file=sys.stderr)
