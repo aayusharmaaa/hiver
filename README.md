@@ -13,7 +13,7 @@ I picked **VirginTrains**. The system is built as an *evidence-grounded support 
 replies when it has strong historical evidence, and otherwise it hands the case to a human with its reasons.
 
 > **Where things stand (honestly).** The data pipeline, the intent taxonomy, retrieval, the agent and a blind labeling tool for
-> the golden set are built and tested (`pytest -q`: 505 passed). Retrieval has a proxy evaluation with baselines. The 250-case
+> the golden set are built and tested (`pytest -q`: 517 passed). Retrieval has a proxy evaluation with baselines. The 250-case
 > golden set is sampled, frozen and leakage-checked. **All 250 cases have human labels: 100 labelled blind, and 150
 > AI-assistant drafts reviewed and confirmed by a human** (see
 > [Golden evaluation set](#golden-evaluation-set)). Intent classification is scored on golden: the agent's LLM classifier
@@ -84,6 +84,17 @@ python scripts/evaluate_intents.py --provider gemini   # same classifier on Gemi
 ```
 
 The committed prediction cache means a re-run re-scores without calling any API.
+
+**Run the whole agent on a 50-case golden slice.** This uses Groq's `gpt-oss-120b` by default (`--provider gemini` to switch).
+Cases are stratified by gold intent and gold escalation.
+
+```bash
+python scripts/evaluate_agent.py --select-only   # show the 50 cases, no key needed
+python scripts/evaluate_agent.py                 # classify, retrieve, decide, generate, ground; every model call cached
+```
+
+The report goes to [`reports/agent_eval/`](reports/agent_eval/). If a rate limit interrupts the run, run the same command
+again: cached calls are replayed and only the missing cases are sent.
 
 The report goes to [`reports/intent_eval/`](reports/intent_eval/virgintrains_intent_evaluation.md).
 
@@ -417,6 +428,7 @@ tests/           489 tests, no network or API key needed
 | `run_virgintrains_pipeline.py` | runs `build_virgintrains` → `discover_intents` → `prepare_splits` → `generate_taxonomy` → `virgintrains_report` |
 | `build_resolution_memory.py`, `evaluate_retrieval.py` | memory + proxy retrieval evaluation |
 | `evaluate_intents.py` | golden intent classification: majority class, TF-IDF + logistic regression, the agent's LLM classifier |
+| `evaluate_agent.py` | end-to-end agent on a stratified 50-case golden slice: routing, generation, grounding, judge inputs |
 | `run_support_agent.py`, `smoke_test_agent.py` | the agent on one message / on 12 representative dev cases |
 | `prepare_golden_eval.py`, `label_golden_eval.py`, `golden_taxonomy_review.py` | golden pack, blind labeling, post-labeling taxonomy review |
 | `build_taxonomy_calibration.py`, `label_taxonomy_calibration.py`, `compare_taxonomy.py`, `finalize_taxonomy.py` | optional taxonomy-calibration path (built, not used yet) |
