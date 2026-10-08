@@ -161,8 +161,12 @@ def test_all_case_ids_retain_source_provenance(cases, assignments, golden, calib
 def test_taxonomy_is_frozen_before_golden_evaluation_and_stays_frozen(golden_ids) -> None:
     status = registry_status(FILES["registry"])
     if not FROZEN.exists():
-        assert not GOLDEN_V1.exists(), "golden_v1.csv must not exist before the taxonomy is frozen"
-        assert not (GOLDEN_DIR / "virgintrains_golden_v1.meta.json").exists()
+        # The golden pack may exist before a freeze: it is labelled against the CANDIDATE taxonomy (scripts/prepare_golden_eval.py).
+        if GOLDEN_V1.exists():
+            pack = json.loads((GOLDEN_DIR / "virgintrains_golden_v1.manifest.json").read_text(encoding="utf-8"))
+            assert pack["taxonomy_reference"]["status"] == "CANDIDATE_NOT_GROUND_TRUTH"
+            assert pack["golden_case_ids_sha256"] == case_ids_sha256(golden_ids)
+        assert not (GOLDEN_DIR / "virgintrains_golden_v1.meta.json").exists(), "the freeze-gated golden script ran without a frozen taxonomy"
         assert status != "HUMAN_CALIBRATED", "a calibrated registry without a frozen v1 means the freeze was skipped"
         return
     frozen = yaml.safe_load(FROZEN.read_text(encoding="utf-8"))
@@ -171,18 +175,19 @@ def test_taxonomy_is_frozen_before_golden_evaluation_and_stays_frozen(golden_ids
     meta = frozen["metadata"]
     assert meta["golden_case_ids_sha256"] == case_ids_sha256(golden_ids), "golden set changed after freezing"
     assert meta["source_split"] == RESERVE
-    if GOLDEN_V1.exists():
-        side = json.loads((GOLDEN_DIR / "virgintrains_golden_v1.meta.json").read_text(encoding="utf-8"))
+    side_path = GOLDEN_DIR / "virgintrains_golden_v1.meta.json"
+    if GOLDEN_V1.exists() and side_path.exists():
+        side = json.loads(side_path.read_text(encoding="utf-8"))
         assert side["taxonomy_content_sha256"] == meta["content_sha256"], "golden_v1.csv was prepared against a different taxonomy"
         assert side["golden_case_ids_sha256"] == meta["golden_case_ids_sha256"]
 
 
-def test_golden_v1_when_present_covers_exactly_the_golden_cases_and_uses_only_frozen_labels(golden_ids) -> None:
+def test_golden_v1_when_present_covers_exactly_the_golden_cases_and_uses_only_allowed_labels(golden_ids) -> None:
     if not GOLDEN_V1.exists():
-        pytest.skip("golden_v1.csv not prepared yet (taxonomy not frozen)")
+        pytest.skip("golden_v1.csv not prepared yet")
     df = pd.read_csv(GOLDEN_V1, dtype=str, keep_default_na=False)
     assert set(df["case_id"]) == golden_ids and df["case_id"].is_unique and len(df) == 250
-    labels = set(yaml.safe_load(FROZEN.read_text(encoding="utf-8"))["labels"])
+    pack = json.loads((GOLDEN_DIR / "virgintrains_golden_v1.manifest.json").read_text(encoding="utf-8"))
     filled = df.loc[df["gold_intent"].str.strip() != "", "gold_intent"]
-    assert set(filled) <= labels, "gold_intent values must come from the frozen taxonomy"
-    assert list(df.columns[:8]) == ["case_id", "first_customer_message", "conversation", "gold_intent", "gold_resolution_type", "gold_resolved", "gold_escalation_signal", "labeling_notes"]
+    assert all(v in pack["allowed"]["intents"] or v.startswith("NEW:") for v in filled), "gold_intent must be a candidate intent or NEW:<name>"
+    assert list(df.columns[-5:]) == ["gold_intent", "gold_should_escalate", "gold_resolution_type", "gold_confidence", "human_notes"]

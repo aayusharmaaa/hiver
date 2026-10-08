@@ -60,7 +60,7 @@ def test_real_calibration_cases_are_all_reserve_and_none_golden() -> None:
 def test_taxonomy_is_still_a_candidate_and_nothing_is_frozen() -> None:
     assert registry_status(REGISTRY) == "CANDIDATE_NOT_GROUND_TRUTH"
     assert not (ROOT / "configs" / "virgintrains_taxonomy_v1.yaml").exists()
-    assert not (ROOT / "data" / "golden" / "virgintrains_golden_v1.csv").exists()
+    assert not (ROOT / "data" / "golden" / "virgintrains_golden_v1.meta.json").exists(), "the freeze-gated golden script must not have run"
 
 
 @needs_pack
