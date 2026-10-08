@@ -92,8 +92,9 @@ def build_review_markdown(df: pd.DataFrame, *, registry_status: str | None, max_
     lines = [
         "# Golden set: taxonomy review",
         "",
-        f"All {n} golden cases are human-labelled. This compares the candidate taxonomy's cluster-derived intent with the human",
-        "`gold_intent`, to decide whether the taxonomy should change before it is frozen. It is **not** an evaluation of the agent and",
+        f"All {n} golden cases have final human-reviewed labels: 100 were labelled blind by a human, the rest began as assistant",
+        "drafts that a human reviewed (see the README's provenance note). This compares the candidate taxonomy's cluster-derived",
+        "intent with the final `gold_intent`, to decide whether the taxonomy should change before it is frozen. It is **not** an evaluation of the agent and",
         "reports no accuracy figures. Nothing here was applied automatically.",
         "",
         f"- Taxonomy reference: candidate registry, status `{registry_status}`. ({TAXONOMY_HEADING})",
