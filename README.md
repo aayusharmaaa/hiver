@@ -1,10 +1,6 @@
-# VirginTrains support copilot: evidence before generation
+# hiver support copilot(Virgin Trains)
 
-My take-home for the Hiver SDE Intern role. The brief: pick one brand from the
-[Customer Support on Twitter](https://www.kaggle.com/datasets/thoughtvector/customer-support-on-twitter) dataset and build a
-support agent that (1) classifies incoming messages into intents defined from the data, (2) drafts replies grounded in how
-the brand actually resolved similar issues, and (3) decides whether to auto-handle or escalate, with a reason. Then show
-whether it can be trusted.
+My take-home for the Hiver SDE Intern role.
 
 **Short versions:** [two-page report](docs/HIVER_TAKEHOME_REPORT.md) · [decision log](docs/DECISION_LOG.md).
 This README is the full write-up.
