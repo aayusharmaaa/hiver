@@ -12,12 +12,16 @@ from __future__ import annotations
 
 import logging
 import os
+import re
 import time
 from typing import Any, Callable
 
 import requests
 
 from models.base import ModelConfigError, ModelOutputError, ModelRuntimeError, parse_json_object
+
+# Groq error messages name the account's organization id; error text ends up in committed reports.
+_ORG_ID = re.compile(r"\borg_[A-Za-z0-9]+")
 
 logger = logging.getLogger(__name__)
 
@@ -151,7 +155,8 @@ class GroqModel:
     @staticmethod
     def _error_message(response: Any) -> str:
         try:
-            return str(response.json().get("error", {}).get("message", ""))[:300] or "no error message"
+            message = str(response.json().get("error", {}).get("message", ""))
+            return _ORG_ID.sub("org_[redacted]", message)[:300] or "no error message"
         except Exception:  # noqa: BLE001 - best-effort diagnostics only
             return "no error message"
 

@@ -91,6 +91,10 @@ def test_daily_rate_limit_stops_immediately_without_leaking_the_key() -> None:
     with pytest.raises(ModelRuntimeError, match="rate limit") as exc:
         m.generate_text("p")
     assert sleeps == [] and len(m._session.calls) == 1 and SECRET not in str(exc.value)
+    org = FakeResponse(429, {"error": {"message": "Rate limit reached in organization `org_01abcXYZ` on tokens per day"}}, {"retry-after": "900"})
+    with pytest.raises(ModelRuntimeError) as exc:
+        model(org).generate_text("p")
+    assert "org_01abcXYZ" not in str(exc.value) and "org_[redacted]" in str(exc.value)
     with pytest.raises(ModelRuntimeError):
         model(limited(5), limited(5), max_rate_limit_waits=1).generate_text("p")
 
