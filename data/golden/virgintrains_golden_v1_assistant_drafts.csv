@@ -1,0 +1,151 @@
+case_id,gold_intent,gold_should_escalate,gold_resolution_type,gold_confidence,human_notes
+case_1627524,journey_disruption_complaint,no,compensation,high,
+case_1287833,seat_reservation_issue,yes,escalated,medium,
+case_2986665,service_status_delay_enquiry,yes,escalated,medium,
+case_1507678,seat_reservation_issue,no,information_provided,high,
+case_978896,delay_repay_refund_claim,no,refund,medium,Refund for wrongly sold peak ticket; told refunds go via point of purchase.
+case_108401,journey_disruption_complaint,no,clarification_requested,high,
+case_498209,service_status_delay_enquiry,no,information_provided,medium,Strike-day travel; alternative routes to be published.
+case_1506857,ticket_booking_query,yes,escalated,medium,First class upgrade price needs booking reference via DM.
+case_1763905,journey_disruption_complaint,no,information_provided,high,
+case_1732752,customer_service_complaint,yes,feedback_acknowledged,high,
+case_2416896,praise_positive_feedback,no,feedback_acknowledged,high,
+case_1255839,customer_service_complaint,yes,escalated,high,
+case_638798,journey_disruption_complaint,no,compensation,high,
+case_2009355,ticket_booking_query,no,clarification_requested,medium,
+case_482898,journey_disruption_complaint,no,escalated,medium,Heating complaint on another operator's service; redirected to them.
+case_1432710,service_status_delay_enquiry,no,information_provided,high,
+case_2826979,customer_service_complaint,yes,escalated,high,
+case_482870,ticket_booking_query,no,self_service,medium,Strike-day alternative operators/route switch; pointed to website.
+case_2605366,chitchat_non_support,no,feedback_acknowledged,medium,Toilet change anecdote; later asks about paying for wifi.
+case_2687600,service_status_delay_enquiry,no,information_provided,high,
+case_845657,seat_reservation_issue,yes,escalated,high,
+case_650857,chitchat_non_support,no,feedback_acknowledged,high,
+case_99689,praise_positive_feedback,no,feedback_acknowledged,high,
+case_509190,delay_repay_refund_claim,yes,refund,high,
+case_1215881,service_status_delay_enquiry,no,self_service,high,
+case_970385,journey_disruption_complaint,no,clarification_requested,medium,
+case_1894754,delay_repay_refund_claim,yes,escalated,high,
+case_1750708,ticket_booking_query,no,information_provided,medium,Route advice between stations.
+case_2737737,praise_positive_feedback,no,feedback_acknowledged,high,
+case_2123030,delay_repay_refund_claim,no,clarification_requested,high,
+case_503201,service_status_delay_enquiry,no,self_service,high,
+case_2392346,onboard_wifi_issue,no,troubleshooting,high,
+case_2530791,ticket_booking_query,no,information_provided,medium,Price complaint about operator site redirect.
+case_747228,journey_disruption_complaint,no,feedback_acknowledged,high,
+case_532939,customer_service_complaint,yes,escalated,medium,Lost luggage: cannot reach lost property provider after 2 months.
+case_900171,chitchat_non_support,no,feedback_acknowledged,high,
+case_1205971,seat_reservation_issue,yes,escalated,high,
+case_813046,journey_disruption_complaint,no,escalated,medium,Overcrowding on another operator's service; redirected to them.
+case_602048,customer_service_complaint,yes,escalated,high,
+case_2777034,onboard_wifi_issue,no,troubleshooting,high,
+case_2129830,journey_disruption_complaint,no,information_provided,medium,Delay on another operator's service.
+case_1844537,praise_positive_feedback,no,feedback_acknowledged,high,
+case_1949966,praise_positive_feedback,no,feedback_acknowledged,high,
+case_2683258,journey_disruption_complaint,no,information_provided,medium,Overcrowding on another operator's service.
+case_680303,onboard_wifi_issue,no,troubleshooting,high,
+case_799171,delay_repay_refund_claim,no,clarification_requested,high,
+case_2106621,first_class_catering_issue,no,escalated,medium,Standard-class catering complaint on another operator's service.
+case_2545480,praise_positive_feedback,no,feedback_acknowledged,high,
+case_2358121,chitchat_non_support,no,information_provided,high,
+case_136342,journey_disruption_complaint,no,feedback_acknowledged,medium,Station cleaning complaint.
+case_1409489,praise_positive_feedback,no,feedback_acknowledged,high,
+case_52614,journey_disruption_complaint,no,escalated,high,
+case_539571,ticket_booking_query,no,information_provided,medium,Free upgrade request for a celebration.
+case_1573957,journey_disruption_complaint,no,feedback_acknowledged,low,Station facilities (bike parking) feedback; no intent fits well.
+case_1364937,delay_repay_refund_claim,yes,clarification_requested,medium,
+case_1465633,journey_disruption_complaint,no,compensation,high,
+case_1276707,delay_repay_refund_claim,yes,escalated,high,
+case_506321,praise_positive_feedback,no,feedback_acknowledged,high,
+case_24677,praise_positive_feedback,no,feedback_acknowledged,high,
+case_1349622,seat_reservation_issue,no,feedback_acknowledged,high,
+case_2763164,ticket_booking_query,yes,escalated,medium,Charged twice for one booking.
+case_1150564,service_status_delay_enquiry,no,information_provided,high,
+case_2831248,delay_repay_refund_claim,yes,escalated,medium,
+case_597615,journey_disruption_complaint,no,information_provided,high,
+case_1388910,seat_reservation_issue,no,compensation,high,
+case_2892671,praise_positive_feedback,no,feedback_acknowledged,high,
+case_2117105,praise_positive_feedback,no,feedback_acknowledged,high,
+case_413912,journey_disruption_complaint,no,clarification_requested,medium,
+case_898056,journey_disruption_complaint,no,information_provided,medium,
+case_2632306,praise_positive_feedback,no,feedback_acknowledged,high,
+case_1354659,ticket_booking_query,no,information_provided,high,
+case_1309039,NEW:lost_property,no,information_provided,high,Lost phone left on train; pointed to lost property line.
+case_1255846,ticket_booking_query,no,clarification_requested,low,Unclear complaint about missing stop/open return.
+case_2108252,ticket_booking_query,no,self_service,medium,
+case_1035355,journey_disruption_complaint,no,troubleshooting,medium,Seat power socket not working.
+case_1343962,unclear_or_media_only,no,information_provided,medium,Question is only in an image; reply suggests an upgrade query.
+case_2836240,ticket_booking_query,no,clarification_requested,medium,
+case_1653520,seat_reservation_issue,yes,escalated,high,
+case_580366,service_status_delay_enquiry,no,information_provided,high,
+case_2436079,onboard_wifi_issue,no,escalated,medium,Wifi on another operator's service; redirected.
+case_1135452,ticket_booking_query,no,clarification_requested,high,
+case_1326537,service_status_delay_enquiry,no,information_provided,high,
+case_1998775,praise_positive_feedback,no,feedback_acknowledged,high,
+case_2325669,ticket_booking_query,no,clarification_requested,high,
+case_576376,service_status_delay_enquiry,no,information_provided,high,
+case_1648566,praise_positive_feedback,no,feedback_acknowledged,high,
+case_165149,ticket_booking_query,no,escalated,medium,
+case_512244,NEW:lost_property,no,information_provided,high,Wallet left on train; pointed to lost property line.
+case_990529,chitchat_non_support,no,feedback_acknowledged,high,
+case_1563026,journey_disruption_complaint,no,information_provided,medium,Train swapped to one without wifi; other operator.
+case_2507024,service_status_delay_enquiry,no,unresolved,medium,
+case_587670,customer_service_complaint,no,feedback_acknowledged,low,Station improvement suggestion; no intent fits well.
+case_1210418,praise_positive_feedback,no,feedback_acknowledged,high,
+case_2896826,seat_reservation_issue,no,information_provided,high,
+case_2479857,onboard_wifi_issue,no,troubleshooting,medium,"Starts with power sockets, then wifi."
+case_2282069,ticket_booking_query,no,escalated,medium,
+case_2931738,customer_service_complaint,yes,escalated,high,
+case_2781481,journey_disruption_complaint,no,clarification_requested,high,
+case_479163,journey_disruption_complaint,no,clarification_requested,high,
+case_1406920,seat_reservation_issue,yes,unresolved,medium,
+case_1648575,praise_positive_feedback,no,compensation,medium,
+case_538329,delay_repay_refund_claim,yes,escalated,high,
+case_2106653,delay_repay_refund_claim,yes,escalated,high,
+case_2325644,delay_repay_refund_claim,no,compensation,medium,
+case_2669189,ticket_booking_query,yes,escalated,medium,
+case_2695909,journey_disruption_complaint,no,escalated,medium,
+case_640861,service_status_delay_enquiry,yes,information_provided,medium,
+case_75081,delay_repay_refund_claim,yes,escalated,high,
+case_2493611,praise_positive_feedback,no,feedback_acknowledged,high,
+case_2271544,first_class_catering_issue,yes,escalated,high,
+case_591788,praise_positive_feedback,no,feedback_acknowledged,high,
+case_2831245,delay_repay_refund_claim,yes,escalated,high,
+case_1344887,unclear_or_media_only,no,clarification_requested,medium,Fragment of a longer thread about ticket validity on another operator.
+case_2418498,onboard_wifi_issue,no,refund,high,
+case_1234365,ticket_booking_query,no,information_provided,medium,
+case_655361,service_status_delay_enquiry,no,unresolved,high,
+case_532947,praise_positive_feedback,no,feedback_acknowledged,high,
+case_2298198,journey_disruption_complaint,no,information_provided,medium,
+case_1961953,praise_positive_feedback,no,feedback_acknowledged,high,
+case_1674292,delay_repay_refund_claim,no,clarification_requested,high,
+case_1854626,ticket_booking_query,yes,escalated,medium,
+case_56491,onboard_wifi_issue,no,information_provided,high,
+case_79717,ticket_booking_query,no,information_provided,high,
+case_472725,first_class_catering_issue,no,escalated,medium,
+case_1977493,seat_reservation_issue,yes,escalated,high,
+case_54047,praise_positive_feedback,no,feedback_acknowledged,medium,
+case_1845809,unclear_or_media_only,no,clarification_requested,medium,
+case_1640440,journey_disruption_complaint,no,clarification_requested,high,
+case_1346945,service_status_delay_enquiry,no,information_provided,high,
+case_110260,first_class_catering_issue,no,feedback_acknowledged,high,
+case_2418539,chitchat_non_support,no,feedback_acknowledged,high,
+case_1330453,service_status_delay_enquiry,no,information_provided,high,
+case_1281706,delay_repay_refund_claim,no,clarification_requested,medium,
+case_142249,chitchat_non_support,no,feedback_acknowledged,high,
+case_1660374,journey_disruption_complaint,no,information_provided,high,
+case_1422540,customer_service_complaint,yes,feedback_acknowledged,medium,Sarcastic staff complaint; the reply misread it as praise.
+case_1131588,seat_reservation_issue,yes,escalated,high,
+case_2626148,praise_positive_feedback,no,feedback_acknowledged,high,
+case_2881702,onboard_wifi_issue,no,troubleshooting,high,
+case_444015,customer_service_complaint,no,information_provided,medium,
+case_551604,chitchat_non_support,no,information_provided,high,
+case_2931735,service_status_delay_enquiry,no,information_provided,medium,
+case_807716,ticket_booking_query,no,information_provided,high,
+case_1330455,ticket_booking_query,no,clarification_requested,low,Fragment about ticket acceptance during disruption.
+case_484235,praise_positive_feedback,no,feedback_acknowledged,high,
+case_809200,onboard_wifi_issue,no,clarification_requested,medium,
+case_1669641,seat_reservation_issue,yes,escalated,high,
+case_2356057,customer_service_complaint,yes,clarification_requested,high,
+case_703520,delay_repay_refund_claim,yes,escalated,high,
+case_2358124,chitchat_non_support,no,feedback_acknowledged,medium,

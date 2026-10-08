@@ -13,9 +13,10 @@ I picked **VirginTrains**. The system is built as an *evidence-grounded support 
 replies when it has strong historical evidence, and otherwise it hands the case to a human with its reasons.
 
 > **Where things stand (honestly).** The data pipeline, the intent taxonomy, retrieval, the agent and a blind labeling tool for
-> the golden set are built and tested (`pytest -q`: 489 passed). Retrieval has a proxy evaluation with baselines. The 250-case
-> golden set is sampled, frozen and leakage-checked, but **not yet hand-labelled**. Because of that, the end-to-end evaluation
-> harness and the LLM-as-judge are **not built yet**. I deliberately did not build them against labels that don't exist. The
+> the golden set are built and tested (`pytest -q`: 490 passed). Retrieval has a proxy evaluation with baselines. The 250-case
+> golden set is sampled, frozen and leakage-checked. **100 cases are hand-labelled; the other 150 are AI-assistant drafts
+> awaiting human review** (see [Golden evaluation set](#golden-evaluation-set)). The end-to-end evaluation harness and the
+> LLM-as-judge are **not built yet**; I didn't want to build them before the labels were final. The
 > [deliverables table](#deliverables-vs-the-brief) shows exactly what is done and what isn't.
 
 **Contents**
@@ -80,7 +81,7 @@ python scripts/label_golden_eval.py            # --check verifies the files and 
 | Intents defined from the data | ✅ 10 candidate intents plus a fallback, still marked *candidate* (not human-validated) | [`configs/virgintrains_intents.yaml`](configs/virgintrains_intents.yaml), [`reports/virgintrains_eda.md`](reports/virgintrains_eda.md) §4 and §8 |
 | Grounded reply drafting | ✅ built and unit-tested; the live run was cut short by the Gemini free-tier quota | [`src/agent/generator.py`](src/agent/generator.py), [`src/agent/grounding.py`](src/agent/grounding.py) |
 | Auto-handle vs escalate, with a reason | ✅ deterministic policy; every decision lists its reasons | [`src/agent/policy.py`](src/agent/policy.py), [`configs/support_agent.yaml`](configs/support_agent.yaml) |
-| Golden set of 150–250 hand-labelled examples | ⚠️ 250 cases sampled, frozen and leakage-checked; labeling tool built; **labels pending** | [Golden evaluation set](#golden-evaluation-set) |
+| Golden set of 150–250 hand-labelled examples | ⚠️ 250 cases sampled, frozen and leakage-checked; **100 hand-labelled, 150 AI-assistant drafts pending human review** | [Golden evaluation set](#golden-evaluation-set) |
 | Evaluation harness: metrics, LLM judge, judge-vs-human agreement | ⚠️ retrieval harness done; **agent harness and LLM judge not built yet** (they need the golden labels) | [`src/evaluation/retrieval.py`](src/evaluation/retrieval.py) |
 | Results vs a trivial and a simple baseline | ⚠️ done for retrieval (random, BM25, embeddings, hybrid); agent-level baselines pending | [Results so far](#results-so-far) |
 | Top 5 failure modes | ⚠️ retrieval and data failure modes documented below; agent failure modes need the golden run | [Failure modes](#failure-modes-i-already-know-about) |
@@ -274,8 +275,22 @@ labeler fills in:
 Before every read and write the tool re-checks the sample's fingerprints, writes only the human columns, keeps an audit log,
 and refuses to run if the CSV was edited by hand.
 
-**Status:** `data/golden/virgintrains_golden_v1.csv` exists with **all human columns blank**. The golden set has not been
-used for any tuning: not retrieval weights, prompts, thresholds or the taxonomy. When labeling is finished,
+**Status and provenance.** Not every label came from a human, and the files say so:
+
+- **Orders 1–100 are hand-labelled** in the blind tool.
+- **Orders 101–250 are AI-assistant drafts.** To save time, an AI coding assistant read those conversations and drafted labels
+  following the conventions in the first 100. They are in
+  [`virgintrains_golden_v1_assistant_drafts.csv`](data/golden/virgintrains_golden_v1_assistant_drafts.csv) and were loaded
+  with [`scripts/import_golden_drafts.py`](scripts/import_golden_drafts.py). The assistant saw only the conversation and the
+  taxonomy, never agent output, and nothing from the first 100 was changed. A draft is **not** a human label.
+- Every save in the audit log records its `source`. When a human opens a draft in the tool it shows a banner; saving it
+  unchanged records a confirmation, and editing it records a correction. `python scripts/label_golden_eval.py --check`
+  prints the counts (right now: 100 human, 150 unreviewed drafts).
+- Reviewing a draft is weaker than labeling blind, because the draft can anchor the reviewer. So results will be reported
+  twice: on the 100 human-labelled cases alone, and on all 250 together with how many drafts were confirmed or corrected.
+
+The golden set has not been used for any tuning: not retrieval weights, prompts, thresholds or the taxonomy. When labeling is
+finished,
 [`scripts/golden_taxonomy_review.py`](scripts/golden_taxonomy_review.py) compares candidate intents against human ones.
 
 ---
@@ -317,7 +332,7 @@ used for any tuning: not retrieval weights, prompts, thresholds or the taxonomy.
 
 ## What I'd do next with one more week
 
-1. **Label the 250 golden cases**, then run the taxonomy review and decide on merges and renames *before* evaluating.
+1. **Finish reviewing the 150 drafted golden labels**, then run the taxonomy review and decide on merges and renames *before* evaluating.
 2. **Build the evaluation harness** on golden. It would measure:
    - intent accuracy and macro-F1;
    - escalation precision and recall;
