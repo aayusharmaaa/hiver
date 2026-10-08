@@ -537,18 +537,41 @@ docs/            reference.md (data contracts, pipeline details, script index), 
 tests/           pytest suite; no network or API key needed
 ```
 
-## Assumptions, limitations and credits
+## Assumptions and limitations
 
 - **Public view only.** Anything resolved in DMs, by phone or in person is invisible, so "resolved" is a lower bound.
 - **Seven weeks of 2017 tweets** (mostly Oct–Dec 2017), so recurring disruption templates are over-represented, and nothing
   shows how the system holds up over time.
 - **English-only regex heuristics** for resolution signals.
 - **Thresholds are conservative starting values** chosen on dev, not tuned to a validated precision target.
-- **Credits.**
-  - Data: Customer Support on Twitter (Kaggle, thoughtvector).
-  - Embeddings: `sentence-transformers/all-MiniLM-L6-v2`.
-  - Clustering and TF-IDF: scikit-learn.
-  - LLMs: OpenAI's open-weight `gpt-oss-120b` served by Groq (evaluation and default provider), and Google Gemini
-    `gemini-2.5-flash` (supported provider, used for the first smoke test). Both are called over REST.
-  - BM25 is my own implementation.
-  - Written with an AI coding assistant; I can walk through and change any part of it.
+## Credits and references
+
+No third-party code was copied into this repo. Everything under `src/` and `scripts/` was written for this project, with an
+AI coding assistant; I can walk through and change any part of it. What it builds on:
+
+**Data**
+- Stuart Axelbrooke / Thought Vector, [*Customer Support on Twitter*](https://www.kaggle.com/datasets/thoughtvector/customer-support-on-twitter),
+  Kaggle, version 10 (2017), licensed [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
+  The raw file isn't committed. Files in `data/` and `reports/` that quote tweet text (the golden set, case samples and
+  report examples) are derived from it and are shared under the same licence, for non-commercial use.
+
+**Models**
+- `sentence-transformers/all-MiniLM-L6-v2` (Apache 2.0), used for embeddings. N. Reimers and I. Gurevych,
+  "Sentence-BERT", EMNLP 2019; W. Wang et al., "MiniLM", NeurIPS 2020.
+- OpenAI `gpt-oss-120b` (open weights, Apache 2.0), served by [Groq](https://groq.com). It's the classifier, generator,
+  verifier and judge in every reported result.
+- Google Gemini `gemini-2.5-flash` via the Gemini API, a supported provider used for the first smoke test.
+
+**Methods**
+- BM25 (my own implementation in [`src/retrieval.py`](src/retrieval.py)): S. Robertson and H. Zaragoza, "The Probabilistic
+  Relevance Framework: BM25 and Beyond", 2009.
+- Quadratic-weighted Cohen's κ for judge-vs-human agreement: J. Cohen, "Weighted kappa", *Psychological Bulletin*, 1968
+  (computed with scikit-learn).
+- LLM-as-a-judge, checked against human ratings before it's trusted: L. Zheng et al., "Judging LLM-as-a-Judge with MT-Bench
+  and Chatbot Arena", NeurIPS 2023.
+
+**Libraries** ([`requirements.txt`](requirements.txt))
+- pandas, NumPy, PyArrow.
+- scikit-learn (TF-IDF, KMeans, logistic regression, metrics).
+- SciPy (Spearman ρ).
+- sentence-transformers, pydantic, requests, PyYAML, python-dotenv, pytest, kagglehub.
