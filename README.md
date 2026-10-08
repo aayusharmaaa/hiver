@@ -351,6 +351,20 @@ python scripts/smoke_test_agent.py --limit 12 --seed 42     # --select-only list
 
 Cases come from `dev_calibration` only and are checked before any model call; golden, reserve and excluded cases are never used. Selection is rule-based and deterministic. Only the opening customer message is sent to the agent. Output goes to the terminal only; live outputs are deliberately not committed because they are model-dependent and are not evaluation ground truth.
 
+## Golden evaluation set
+
+The 250 golden cases are **frozen**: they are the existing `golden_eval` split, and the pack is written only after their hash matches the split manifest and the leakage checks against `train_retrieval` and `dev_calibration` all return zero. Those checks cover case, customer, conversation, group, source and context tweets, and opener. Labels are **created by a human** in a local blind tool. It shows the conversation and the *provisional* candidate taxonomy as a reference, and never shows model output: no candidate intent, cluster, retrieved evidence, policy decision, draft reply or grounding result. The set is **held out from all tuning** (retrieval, prompts, thresholds, taxonomy) and is used **only for final evaluation**.
+
+**Status: not labelled yet.** `data/golden/virgintrains_golden_v1.csv` currently has blank human columns.
+
+```bash
+python scripts/prepare_golden_eval.py          # verify + write the blank pack (done; refuses once labels exist)
+python scripts/label_golden_eval.py            # label at http://127.0.0.1:8766/   (--check: verify + print progress)
+python scripts/golden_taxonomy_review.py       # after 250/250: reports/golden_taxonomy_review.md (taxonomy only, no metrics)
+```
+
+Fields: `gold_intent` (a candidate intent, or `NEW:<snake_case>` with a note), `gold_should_escalate` (yes means route to a human, no means this project's AI could safely auto-handle it), `gold_resolution_type`, optional `gold_confidence`, and `human_notes`. The tool re-verifies the frozen sample before every read and write, writes only these columns atomically, and logs every change to `data/golden/virgintrains_golden_v1_label_audit.jsonl`. It refuses to run if labels were edited outside it. This replaces the freeze-gated `prepare_golden_labeling.py` path described in phase 3. The taxonomy stays a candidate and is reviewed only after the labeling is done.
+
 ## Assumptions and known limitations
 
 - **VirginTrains specifics.** Taxonomy clusters are weak (silhouette about 0.05) and only loosely agree with a TF-IDF clustering; read `reports/virgintrains_eda.md` section 4 before relying on them. Resolution labels are English-only heuristics; `refund` means a refund was discussed (including refusals). The largest group of linked cases holds about 16% of all cases and therefore lands in a single split. `golden_pool_reserve` cases are held back and must not be used for retrieval or prompts.

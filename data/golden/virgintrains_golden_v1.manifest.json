@@ -1,0 +1,87 @@
+{
+  "created_at": "2026-10-08T02:56:23+00:00",
+  "workflow": "golden_eval_v1 (human labels against the candidate taxonomy as a reference)",
+  "n_cases": 250,
+  "golden_case_ids_sha256": "f84b54baaf0331ac47db0925fb67542999e614f78de953ed6e160f185230444c",
+  "golden_candidates_parquet_sha256": "8a28d60fb51e8fb4a58f7c09b7014fbd687e085d12d7b4d65655bdc44af6ba54",
+  "source_columns_sha256": "47216f90c359fb015b1cae8f9c2964327ff4fd6709795f5385599e6a7a020a5c",
+  "labeling_order_seed": 42,
+  "taxonomy_reference": {
+    "path": "virgintrains_intents.yaml",
+    "status": "CANDIDATE_NOT_GROUND_TRUTH",
+    "sha256": "aebac68cca5854c25d331ca7ba5c0dd756488611ba4e8543bb0fd8a811973d1c",
+    "note": "Candidate taxonomy — provisional; choose the best-supported intent. You may use NEW:<snake_case> if none fits."
+  },
+  "allowed": {
+    "intents": [
+      "service_status_delay_enquiry",
+      "journey_disruption_complaint",
+      "chitchat_non_support",
+      "praise_positive_feedback",
+      "ticket_booking_query",
+      "seat_reservation_issue",
+      "customer_service_complaint",
+      "delay_repay_refund_claim",
+      "first_class_catering_issue",
+      "onboard_wifi_issue",
+      "unclear_or_media_only"
+    ],
+    "should_escalate": [
+      "yes",
+      "no"
+    ],
+    "resolution_types": [
+      "information_provided",
+      "self_service",
+      "troubleshooting",
+      "refund",
+      "compensation",
+      "feedback_acknowledged",
+      "clarification_requested",
+      "escalated",
+      "unresolved",
+      "other"
+    ],
+    "confidence": [
+      "high",
+      "medium",
+      "low"
+    ],
+    "new_intent_pattern": "NEW:<snake_case>"
+  },
+  "label_definitions": {
+    "gold_intent": "The primary customer-support intent of the incoming message (the customer's main request, judged from their own words).",
+    "gold_should_escalate": "yes = route to a human; no = safe for THIS project's support AI to auto-handle. The AI can only reply on Twitter using evidence from past VirginTrains replies: it has no live train data, cannot look up bookings or accounts, cannot issue refunds or compensation, and cannot take operational action.",
+    "gold_resolution_type": "The type of handling that would appropriately resolve the request (not necessarily what the brand actually did).",
+    "gold_confidence": "Optional: how sure you are of this label.",
+    "human_notes": "Free text. Required when gold_intent is NEW:<name> (explain why no candidate intent fits)."
+  },
+  "resolution_type_definitions": {
+    "information_provided": "answer with general information (policy, how things work, what to expect)",
+    "self_service": "point to a link, the app, the website, a form or live-updates page",
+    "troubleshooting": "give steps to try (e.g. reconnecting to the wifi)",
+    "refund": "a refund needs to be discussed or processed",
+    "compensation": "compensation or a claim (e.g. Delay Repay) needs to be discussed",
+    "feedback_acknowledged": "thank the customer or acknowledge and pass on their feedback",
+    "clarification_requested": "ask the customer for missing information before anything else can be done",
+    "escalated": "a person must take over: account/booking lookup, DM, Customer Relations, formal complaint, another operator, staff action",
+    "unresolved": "nothing reasonable can resolve it (no actionable request, or outside what the brand can do)",
+    "other": "none of the above fits"
+  },
+  "leakage_checks_all_zero": {
+    "golden_in_train_or_dev": 0,
+    "case_ids": 0,
+    "customers": 0,
+    "conversations": 0,
+    "groups": 0,
+    "source_tweets": 0,
+    "context_tweets": 0,
+    "opening_texts": 0,
+    "train_dev_customers": 0
+  },
+  "notes": [
+    "Human columns start blank and are written only by scripts/label_golden_eval.py (audited).",
+    "No candidate intent, cluster, historical resolution label or agent output is stored in the pack or shown to the labeler.",
+    "Golden cases are never used for retrieval, prompts, thresholds or taxonomy changes; final evaluation only."
+  ]
+}

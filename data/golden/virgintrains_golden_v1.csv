@@ -1,0 +1,1129 @@
+case_id,labeling_order,first_customer_message,conversation,first_timestamp,source_tweet_ids,conversation_id,gold_intent,gold_should_escalate,gold_resolution_type,gold_confidence,human_notes
+case_1640406,1,@VirginTrains can I use off peak ticket on peak train tomorrow as trains cancelled today?,"[CUSTOMER 1640406] @VirginTrains can I use off peak ticket on peak train tomorrow as trains cancelled today?
+[AGENT 1640405] @501514 Yes, you can ^MM https://t.co/HMDZ33U0qo",2017-11-05 22:35:12+00:00,"[1640406, 1640405]",conv_1640406,,,,,
+case_803442,2,"@VirginTrains Hi, your delayrepay online form isn't working you can't enter a date...?","[CUSTOMER 803442] @VirginTrains Hi, your delayrepay online form isn't working you can't enter a date...?
+[AGENT 803441] @311466 Have you tried from another device, Sara? ^MM",2017-10-12 16:20:13+00:00,"[803442, 803441]",conv_803442,,,,,
+case_756996,3,@VirginTrains You are a joke.. I forgive the fact that I missed my meetings but to be treated like shit by one of your dick managers.. 😡😡🖕,"[CUSTOMER 756996] @VirginTrains You are a joke.. I forgive the fact that I missed my meetings but to be treated like shit by one of your dick managers.. 😡😡🖕
+[AGENT 756995] @300911 Can you please DM us with more detail please. ^PA",2017-10-11 18:35:02+00:00,"[756996, 756995]",conv_756996,,,,,
+case_642803,4,"@VirginTrains have any coaches arrived, seen various tweets saying on route, imminent arrival. No other info available","[CUSTOMER 642803] @VirginTrains have any coaches arrived, seen various tweets saying on route, imminent arrival. No other info available
+[AGENT 642802] @272598 Which station are you at Derek? ^BT
+[CUSTOMER 642801] @VirginTrains Preston with hundreds of others
+[AGENT 642800] @272598 Taxis and mini buses have also been ordered for customers at Preston. ^BT
+[CUSTOMER 642798] @VirginTrains Doesn’t answer the question it’s just a repeat. When will these arrive?
+[AGENT 642796] @272598 We don't have an ETA at the moment for these unfortunately. ^BT
+[CUSTOMER 642797] @VirginTrains Would be good if a member of your team found this out, shouldn’t be difficult, only a phone call..
+[AGENT 642799] @272598 They have been ordered but due to traffic we cannot give an ETA unfortunately. ^BT",2017-11-22 20:49:19+00:00,"[642803, 642802, 642801, 642800, 642798, 642796, 642797, 642799]",conv_642803,,,,,
+case_2396788,5,"@VirginTrains Just had a lovely journey on the 0930 Euston to Glasgow, got off at Lancaster. James at Euston and Katie the train manager were very helpful at short notice with my wheelchair and great reps for your company.","[CUSTOMER 2396788] @VirginTrains Just had a lovely journey on the 0930 Euston to Glasgow, got off at Lancaster. James at Euston and Katie the train manager were very helpful at short notice with my wheelchair and great reps for your company.
+[AGENT 2396786] @689847 Great to hear Stuart, I'll get this passed on. ^PA
+[CUSTOMER 2396787] @VirginTrains Good, many thanks!",2017-11-14 12:45:05+00:00,"[2396788, 2396786, 2396787]",conv_2396788,,,,,
+case_2196804,6,@VirginTrains  what is the meaning of this ? https://t.co/E42XIGly4V,"[CUSTOMER 2196804] @VirginTrains what is the meaning of this ? https://t.co/E42XIGly4V
+[AGENT 2196802] @642687 Not sure what happened there. Have you tried to refresh the page and attempt it again? ^SB
+[CUSTOMER 2196803] @VirginTrains thank you for your learned advice. 40 mins later, your site has decided to function and I've lost the will to live..",2017-11-09 23:47:56+00:00,"[2196804, 2196802, 2196803]",conv_2196804,,,,,
+case_1325195,7,@VirginTrains any idea how long the Euston line will be blocked for?,"[CUSTOMER 1325195] @VirginTrains any idea how long the Euston line will be blocked for?
+[AGENT 1325194] @387805 We are awaiting an update as to when the line will reopen. The station team would be best to advise further ^MM",2017-10-27 11:07:47+00:00,"[1325195, 1325194]",conv_1325195,,,,,
+case_491221,8,@VirginTrains please can you advise when your peak train times are today?,"[CUSTOMER 491221] @VirginTrains please can you advise when your peak train times are today?
+[AGENT 491220] @232027 From where to where sorry? ^MW
+[CUSTOMER 491219] @VirginTrains Sorry from Euston to Manchester
+[AGENT 491217] @232027 It's now until 18:44 ^MW
+[CUSTOMER 491218] @VirginTrains Thank you 👍🏽",2017-12-01 16:33:51+00:00,"[491221, 491220, 491219, 491217, 491218]",conv_491221,,,,,
+case_1394159,9,"@VirginTrains appalling situation of non flushing wc's, no water, broken dryers &amp; most horrendous sewer smell nxt to buffett car!","[CUSTOMER 1394159] @VirginTrains appalling situation of non flushing wc's, no water, broken dryers &amp; most horrendous sewer smell nxt to buffett car!
+[AGENT 1394158] @444234 Oh no, are you able to switch coaches at all, Jono? ^MW",2017-10-28 13:58:57+00:00,"[1394159, 1394158]",conv_1394159,,,,,
+case_1615687,10,"@VirginTrains chaos at Euston. My sister was told to go to Marylebone, but then her train departed almost on time. How to get a refund?","[CUSTOMER 1615687] @VirginTrains chaos at Euston. My sister was told to go to Marylebone, but then her train departed almost on time. How to get a refund?
+[AGENT 1615686] @495509 Please claim via our Delay Repay form here - https://t.co/o5biAbZvY5 ^MM
+[CUSTOMER 1615684] @VirginTrains Unacceptable. That would be rejected as the train went 'on time' according to you. She was told to go away and incurred extra costs.
+[CUSTOMER 1615685] @VirginTrains Your Euston staff shouldn't be telling people the trains aren't running when they are
+[AGENT 1615682] @495509 Your sister can escalate this further with Customer Relations via the online complaints link - https://t.co/t20UbyOCSn ^MM
+[CUSTOMER 1615683] @VirginTrains Thank you",2017-11-05 13:36:37+00:00,"[1615687, 1615686, 1615684, 1615685, 1615682, 1615683]",conv_1615687,,,,,
+case_2694776,11,@VirginTrains I don’t think I have ever actually got forward facing seats despite requesting them on every journey...am I missing something?!,"[CUSTOMER 2694776] @VirginTrains I don’t think I have ever actually got forward facing seats despite requesting them on every journey...am I missing something?!
+[AGENT 2694774] @757315 Sorry to hear this, Ellen, are you currently onboard now? ^HP
+[CUSTOMER 2694775] @VirginTrains Yes, on the London-Glasgow...facing backwards! Not the end of the world but would like to know how I can try to ensure facing seats in the future!
+[AGENT 2694778] @757315 1/2 Apologies Ellen, our forward facing seats seem to get booked up pretty quickly, but if you'd like to message us next time
+[AGENT 2694777] @757315 2/2 we can check these and book one for you ^HP
+[CUSTOMER 2694779] @VirginTrains Ok, who should I message? On the way down we were sitting next to unreserved forward facing seats!
+[AGENT 2694780] @757315 We can book seats here if you let us know the service you're on? ^MW",2017-11-19 17:46:04+00:00,"[2694776, 2694774, 2694775, 2694778, 2694777, 2694779, 2694780]",conv_2694776,,,,,
+case_2139962,12,@VirginTrains hi! I had an issue trying to collect my tickets. Can anyone help me??,"[CUSTOMER 2139962] @VirginTrains hi! I had an issue trying to collect my tickets. Can anyone help me??
+[AGENT 2139961] @629345 We can try, what's the exact issue? ^MW",2017-10-19 09:10:48+00:00,"[2139962, 2139961]",conv_2139962,,,,,
+case_2232487,13,So @VirginTrains got a new voice in the toilets. Shit myself not in the place I’d planned to.,"[CUSTOMER 2232487] So @VirginTrains got a new voice in the toilets. Shit myself not in the place I’d planned to.
+[AGENT 2232485] @651371 Oh dear, I hope you've managed to clean yourself up 😉 ^PA
+[CUSTOMER 2232486] @VirginTrains All sorted bro. Give coach B a wide birth though.",2017-11-10 18:04:17+00:00,"[2232487, 2232485, 2232486]",conv_2232487,,,,,
+case_1179984,14,@VirginTrains Can I still collect my tickets from the station if I lost my bank card that I paid with? I travel on Friday and just realised!,"[CUSTOMER 1179984] @VirginTrains Can I still collect my tickets from the station if I lost my bank card that I paid with? I travel on Friday and just realised!
+[AGENT 1179983] @397504 Hi Eve. Can you send us a DM with your booking details ^RD https://t.co/hhfk9c3ylv",2017-10-24 21:52:20+00:00,"[1179984, 1179983]",conv_1179984,,,,,
+case_2884600,15,@VirginTrains @127472 you’ve just tried charging me £102 to change my ticket from 13:30 nom peak train from London to Lancaster to 11:30 non peak train London to Lancaster. How? Why? What difference does it make to you for that charge!? Difference more me is getting home,"[CUSTOMER 2884600] @VirginTrains @127472 you’ve just tried charging me £102 to change my ticket from 13:30 nom peak train from London to Lancaster to 11:30 non peak train London to Lancaster. How? Why? What difference does it make to you for that charge!? Difference more me is getting home
+[AGENT 2884599] @800160 @127472 What type of ticket is your original ticket Georgia? ^BT
+[CUSTOMER 2884597] @VirginTrains @127472 It states 13:30 however that’s why I asked (where most wouldn’t) if possible to change as the price for this ticket was same as 11:30. Surely just an admin process but no got told it’s the cost of new ticket plus the admin charge.
+[AGENT 2884595] @800160 @127472 What type of ticket do you have? Is this an advance ticket to travel today? ^BT
+[CUSTOMER 2884596] @VirginTrains @127472 Yes. https://t.co/nTTYWRBFBp
+[CUSTOMER 2884598] @VirginTrains @127472 Yes",2017-11-28 11:17:06+00:00,"[2884600, 2884599, 2884597, 2884595, 2884596, 2884598]",conv_2884600,,,,,
+case_596572,16,@VirginTrains amazing performance from train manager on 16.50 from BNS this eve. Got all the tickets checked and food served before we’d crossed the M25 👏,"[CUSTOMER 596572] @VirginTrains amazing performance from train manager on 16.50 from BNS this eve. Got all the tickets checked and food served before we’d crossed the M25 👏
+[AGENT 596571] @261399 Glad to hear it ^MW",2017-12-03 18:15:04+00:00,"[596572, 596571]",conv_596572,,,,,
+case_2607464,17,Hey @VirginTrains I’m sure the automated voice in your loos is fun and quirky to most folk.....unless they have a heart condition!!!!,"[CUSTOMER 2607464] Hey @VirginTrains I’m sure the automated voice in your loos is fun and quirky to most folk.....unless they have a heart condition!!!!
+[AGENT 2607463] @737608 We'll pass on your comments, Julie ^CB",2017-11-21 10:30:05+00:00,"[2607464, 2607463]",conv_2607464,,,,,
+case_1408708,18,Thank you SO MUCH to the @VirginTrains employee man who leant me his charger this evening so I could get home safe 💕 #moderndaysuperhero,"[CUSTOMER 1408708] Thank you SO MUCH to the @VirginTrains employee man who leant me his charger this evening so I could get home safe 💕 #moderndaysuperhero
+[AGENT 1408706] @259079 Which service was this on please, Amelia? ^PH
+[CUSTOMER 1408707] @VirginTrains 22:10 to Preston I think!
+[AGENT 1408709] @259079 Thanks! 😁 ^PH",2017-11-01 22:32:42+00:00,"[1408708, 1408706, 1408707, 1408709]",conv_1408708,,,,,
+case_1626430,19,@VirginTrains I’m on a train from Glasgow to Preston and we are now at standstill - what’s going on?,"[CUSTOMER 1626430] @VirginTrains I’m on a train from Glasgow to Preston and we are now at standstill - what’s going on?
+[AGENT 1626427] @498028 Which service, Jasmin? ^MM
+[CUSTOMER 1626428] @VirginTrains Going to London Euston
+[CUSTOMER 1626432] @498029 @VirginTrains I’m now going from Preston to Manc to then go to London fml
+[CUSTOMER 1626429] @VirginTrains A bunch of us who had to get off the train at Preston need to get the 7.35 from Manchester pic - please can you hold the train for 5 mins?",2017-11-05 18:30:18+00:00,"[1626430, 1626427, 1626428, 1626432, 1626429]",conv_1626430,,,,,
+case_1634744,20,@VirginTrains thanks you wankers over an hour and no information ✊️💦💦💦💦,"[CUSTOMER 1634744] @VirginTrains thanks you wankers over an hour and no information ✊️💦💦💦💦
+[AGENT 1634743] @500068 Apologies for the disruption to your journey tonight. Where are you travelling from/to? ^KS",2017-11-05 20:55:57+00:00,"[1634744, 1634743]",conv_1634744,,,,,
+case_581702,21,@VirginTrains Hi! Is the 17:05 Euston to Liverpool lime street still running ? Thanks,"[CUSTOMER 581702] @VirginTrains Hi! Is the 17:05 Euston to Liverpool lime street still running ? Thanks
+[AGENT 581700] @257091 Hi, this service is booked to run ^HP
+[CUSTOMER 581701] @VirginTrains Thank you HP",2017-12-03 12:06:39+00:00,"[581702, 581700, 581701]",conv_581702,,,,,
+case_2667822,22,London bound @VirginTrains 💞 #HappySunday https://t.co/l3O7CMWdXb,"[CUSTOMER 2667822] London bound @VirginTrains 💞 #HappySunday https://t.co/l3O7CMWdXb
+[AGENT 2667821] @751515 Have a great day, Suz! ^MW
+[CUSTOMER 2667820] @VirginTrains Thank you! Wishing you a great day also. #HappySunday
+[AGENT 2667819] @751515 Thanksssss! ^MW",2017-11-19 10:08:20+00:00,"[2667822, 2667821, 2667820, 2667819]",conv_2667822,,,,,
+case_1961858,23,"@VirginTrains Hi. I've got tickets for a journey on the 19th December, and I'm wondering if it's possible to change the seat reserved. Booked through your website, but didn't realise I could change them before I booked.","[CUSTOMER 1961858] @VirginTrains Hi. I've got tickets for a journey on the 19th December, and I'm wondering if it's possible to change the seat reserved. Booked through your website, but didn't realise I could change them before I booked.
+[AGENT 1961857] @581784 Hi Alex, could you DM us with your booking info and more detail on this please and we'll take a look? Thanks ^HP",2017-11-18 21:20:00+00:00,"[1961858, 1961857]",conv_1961858,,,,,
+case_676703,24,"@VirginTrains I'm due to get the 13:35 from Chester to Euston, is this affected by flooding at Holyhead?","[CUSTOMER 676703] @VirginTrains I'm due to get the 13:35 from Chester to Euston, is this affected by flooding at Holyhead?
+[AGENT 676701] @281421 This may be, yes. Please drop us a tweet a little closer to the departure time and we can let you know further information ^LC
+[CUSTOMER 676702] @VirginTrains any update on this? 🙂
+[AGENT 676704] @281421 Yes, this service is showing as still running as normal ^LC
+[CUSTOMER 676705] @VirginTrains fab thank you!",2017-11-23 11:13:35+00:00,"[676703, 676701, 676702, 676704, 676705]",conv_676703,,,,,
+case_739555,25,@VirginTrains why do your trains always smell so bad? 😫,"[CUSTOMER 739555] @VirginTrains why do your trains always smell so bad? 😫
+[AGENT 739554] @296875 Oh no, have you reported this to staff onboard? ^PA
+[CUSTOMER 739553] @VirginTrains There is no staff to be seen anywhere
+[AGENT 739552] @296875 Which service is it? ^PA
+[CUSTOMER 739551] @VirginTrains The 13:50 from Birmingham new street to London Euston
+[AGENT 739550] @296875 They should be in or around coach C. ^PA",2017-10-11 12:41:17+00:00,"[739555, 739554, 739553, 739552, 739551, 739550]",conv_739555,,,,,
+case_587652,26,@VirginTrains unhappy customer.    Understand the 1h delay #WatfordJunction. Where is the 150GBP 1st class service we paid for? 🤔,"[CUSTOMER 587652] @VirginTrains unhappy customer. Understand the 1h delay #WatfordJunction. Where is the 150GBP 1st class service we paid for? 🤔
+[AGENT 587653] @258829 Sorry you haven't received this service today Gemma, you can claim for the difference between a first class and standard class ticket here https://t.co/gAOzpBR4vA ^BT
+[CUSTOMER 587650] @VirginTrains Apparently, we can reclaim the ticket back...but still waiting for a previous refund from a delayed train on 27/10 😢
+[AGENT 587651] @258829 We can look into this for you. If you have your VT reference number? ^BT
+[CUSTOMER 587647] @VirginTrains Thanks! Booking reference 2337751617 from 27/10, and 2344007790 for today. Have to buy snacks in cash, as there won't any food provided.
+[AGENT 587645] @258829 Did you not receive a VT reference number after logging this? ^BT
+[CUSTOMER 587646] @VirginTrains How does a VT ref look like? Don't think I got one, I'm afraid. Got a confirmation email when requesting the refund. https://t.co/1qj3GhGy4l
+[AGENT 587648] @258829 I see, drop us a DM tomorrow with your email address and we'll check this for you, Gemma ^MW
+[CUSTOMER 587649] @VirginTrains Sure. Thanks",2017-12-03 15:25:19+00:00,"[587652, 587653, 587650, 587651, 587647, 587645, 587646, 587648, 587649]",conv_587652,,,,,
+case_683385,27,"@VirginTrains hey, booked my train to Glasgow for next month, now you guys have put on the sale with much cheaper tickets, can I re-book?","[CUSTOMER 683385] @VirginTrains hey, booked my train to Glasgow for next month, now you guys have put on the sale with much cheaper tickets, can I re-book?
+[AGENT 683384] @151162 We wouldn't be able to offer a refund on tickets under these circumstances I'm afraid Gully ^CB",2017-11-23 12:01:51+00:00,"[683385, 683384]",conv_683385,,,,,
+case_453772,28,@VirginTrains I am unable to book tickets online for travel tomorrow? Its not working via the website or the app. Ridiculously bad service,"[CUSTOMER 453772] @VirginTrains I am unable to book tickets online for travel tomorrow? Its not working via the website or the app. Ridiculously bad service
+[AGENT 453771] @222682 Hi Kim, we are looking into this ^OL
+[CUSTOMER 453768] @VirginTrains I don't think I should have to pay more for tickets on the day at the station because your system isn't working
+[AGENT 453763] @222682 Hi Kim, i have been through booking that specific journey and got to the payment screen without issue ^OL
+[CUSTOMER 453765] @VirginTrains https://t.co/98fLC6pQCX
+[CUSTOMER 453764] @VirginTrains https://t.co/CsKv51yRx6
+[CUSTOMER 453767] @VirginTrains https://t.co/U6LTQLaIOT
+[CUSTOMER 453766] @VirginTrains I have tried to book 3 different ways
+[AGENT 453770] @222682 Hi Kim, I am unsure why this is happening. I will assign this to a member of the team to look into tomorrow morning ^OL
+[AGENT 453769] @222682 HI Kim, unfortunately these seats aren't able to be booked as they are for they wheelchair spaces. We're working to make this a little clearer on the website. Apologies for the inconvenience. ^LC",2017-11-30 22:19:40+00:00,"[453772, 453771, 453768, 453763, 453765, 453764, 453767, 453766, 453770, 453769]",conv_453772,,,,,
+case_690119,29,@VirginTrains £17.50 single from eus to pre jan 13th @ 17:43 but basically double the price thereafter when #pnefc come bk from millwall 🤔😡,"[CUSTOMER 690119] @VirginTrains £17.50 single from eus to pre jan 13th @ 17:43 but basically double the price thereafter when #pnefc come bk from millwall 🤔😡
+[AGENT 690117] @284932 Can you see Advance tickets available to book yet? ^MW
+[CUSTOMER 690118] @VirginTrains My exact screen view. So probably not. When are they released? https://t.co/DE1X3wNxuU
+[AGENT 690120] @284932 That would be the Advance options available ^MW
+[CUSTOMER 690121] @VirginTrains Why basically double the price when they are both off peak though?
+[AGENT 690122] @284932 Off-Peak tickets are more flexible tickets, so would be more expensive, however the Advance are only valid for specific trains ^HP
+[CUSTOMER 690123] @VirginTrains Both advance options- see normal booking screen. Same option, £20 more expensive when thousands of fans of team you sponsor are travelling. https://t.co/0NQ6jYW9LN
+[AGENT 690124] @284932 It may be that the cheaper Advance tier have already sold out as these tickets are released in stages ^HP
+[CUSTOMER 690125] @VirginTrains Advanced tickets only released yesterday apparently 🤔",2017-10-24 13:10:05+00:00,"[690119, 690117, 690118, 690120, 690121, 690122, 690123, 690124, 690125]",conv_690119,,,,,
+case_28579,30,@VirginTrains  Wifi so good it actually timed out while I was trying to pay for it this morning!,"[CUSTOMER 28579] @VirginTrains Wifi so good it actually timed out while I was trying to pay for it this morning!
+[AGENT 28577] @122256 Sorry to hear this. Did you make the payment for the Wi-Fi? ^LC
+[CUSTOMER 28578] @VirginTrains Yes eventually my payment went through",2017-11-01 10:45:04+00:00,"[28579, 28577, 28578]",conv_28579,,,,,
+case_2577892,31,"Still absolutely buzzing that I got return tickets between Edinburgh and home for £11, thank u @VirginTrains ur saving my poor student ass xxx","[CUSTOMER 2577892] Still absolutely buzzing that I got return tickets between Edinburgh and home for £11, thank u @VirginTrains ur saving my poor student ass xxx
+[AGENT 2577891] @730899 You are welcome! ^MW",2017-11-26 20:38:04+00:00,"[2577892, 2577891]",conv_2577892,,,,,
+case_2854544,32,@VirginTrains very disappointed again with customer services for the second time in a row. I wish I could speak to @127472 and offer some ideas to help with customer service options as the staff I have spoken to have been nothing but rude and unhelpful!!!,"[CUSTOMER 2854544] @VirginTrains very disappointed again with customer services for the second time in a row. I wish I could speak to @127472 and offer some ideas to help with customer service options as the staff I have spoken to have been nothing but rude and unhelpful!!!
+[AGENT 2854541] @793498 @127472 Not great to hear, Tom :( Is there anything we can help with? ^HP
+[CUSTOMER 2854543] @VirginTrains @127472 Virgin need to overhaul dealing with emergencies better and also give your ‘representatives’ more powers, be able to transfer to other areas instead of making me call other numbers to be put to the same department and be on hold for 30mins, have a system that 1/2
+[CUSTOMER 2854542] @VirginTrains @127472 Can issue log numbers that customers can have in case it’s required and if you are told to call back you can issue this number to make calls quicker. It’s simple things that make a huge difference, also additional training may also be a good idea, as the person I was talking 2/3
+[CUSTOMER 2854540] @VirginTrains @127472 3/3 too was huffing and puffing down the phone. Wasn’t impressed and couldn’t answer my questions. Based on what was said to me, the whole of Virgin West Coastall operate on a different system which I find hard to believe, but if he is correct then maybe look at using one system
+[AGENT 2854539] @793498 @127472 We'll be sure to pass this on, Tom. If there is anything else we can help with, feel free to drop us a DM and we can assist as much as possible ^MW",2017-11-27 20:27:32+00:00,"[2854544, 2854541, 2854543, 2854542, 2854540, 2854539]",conv_2854544,,,,,
+case_2639881,33,"@VirginTrains Hello I'm on the 18:15 from Birmingham to edinburgh there has been a few announcements but I can't hear any of them because of a lot of drunk aussies in my carriage, can you fill me in? I have a friend coming to pick me up from haymarket so need to know!","[CUSTOMER 2639881] @VirginTrains Hello I'm on the 18:15 from Birmingham to edinburgh there has been a few announcements but I can't hear any of them because of a lot of drunk aussies in my carriage, can you fill me in? I have a friend coming to pick me up from haymarket so need to know!
+[AGENT 2639880] @745004 What do you need to know? ^PA
+[CUSTOMER 2639879] @VirginTrains The train stopped for ages, I'm guessing their are delays? Do you know when the train will get in? These lads are so rowdy &amp; have music on.
+[CUSTOMER 2639878] @VirginTrains I know it's not virgin's fault but it's a long journey and it's only getting worse!
+[AGENT 2639877] @745004 Really sorry, it's currently 32 minutes behind schedule. ^PA",2017-11-17 21:33:04+00:00,"[2639881, 2639880, 2639879, 2639878, 2639877]",conv_2639881,,,,,
+case_583235,34,".@VirginTrains need to stop apologising at #Euston . They, .@115793 and .@LondonMidland are pulling a blinder getting these trains away, especially with the overhead damage. #firstclassservice","[CUSTOMER 583235] .@VirginTrains need to stop apologising at #Euston . They, .@115793 and .@LondonMidland are pulling a blinder getting these trains away, especially with the overhead damage. #firstclassservice
+[AGENT 583234] @257542 @115793 @LondonMidland Thanks for your feedback, Josh, we really appreciate it and thanks for your patience during this busy time ^HP",2017-12-03 13:30:18+00:00,"[583235, 583234]",conv_583235,,,,,
+case_2590829,35,Great work @VirginTrains no buffet or trolley service on a 3hr journey?  Even @121513 can sort that shit out #shambles,"[CUSTOMER 2590829] Great work @VirginTrains no buffet or trolley service on a 3hr journey? Even @121513 can sort that shit out #shambles
+[AGENT 2590827] @733815 @121513 Which service are you on, Ben? ^MW
+[CUSTOMER 2590828] @VirginTrains @121513 The 7pm Bristol TM to MCR Pic.. no warning on the screen, even the conductor was embarrassed - said it wasn’t his dept. What say you?
+[AGENT 2590830] @733815 @121513 That would be a @121428 service today, Ben ^MW
+[OTHER-AGENT 2590833] @VirginTrains @733815 @121513 Apologies for that Ben, not all our services have catering on board as it's subject to avail. ^RS
+[CUSTOMER 2590832] @VirginTrains My bad, I’ll give you the benefit on this. On the Virgin MCR - EUS on weds. Hoping for at least a decent bacon butty on that one!
+[AGENT 2590839] @733815 🥓 ^MW
+[CUSTOMER 2590834] @733816 @VirginTrains @121513 @121428 Really? You are ‘always surprised’ by this? Get out more son. Get a hobby, or a girlfriend.
+[CUSTOMER 2590835] @733816 @VirginTrains @121513 @121428 I bet I could name all three of your hobbies",2017-10-30 19:44:39+00:00,"[2590829, 2590827, 2590828, 2590830, 2590833, 2590832, 2590839, 2590834, 2590835]",conv_2590829,,,,,
+case_163788,36,"Was meant to get the 7:29 @VirginTrains from York to Edinburgh but the connecting train to York was late so I will miss it. The next York to Edinburgh train is the 7:33 (late, 7:45) @121428, can I use my VT advance ticket on this CC service?","[CUSTOMER 163788] Was meant to get the 7:29 @VirginTrains from York to Edinburgh but the connecting train to York was late so I will miss it. The next York to Edinburgh train is the 7:33 (late, 7:45) @121428, can I use my VT advance ticket on this CC service?
+[AGENT 163787] @153899 @121428 As you were on a @120576 service you will be best to speak with the team there. ^BT",2017-11-24 19:22:08+00:00,"[163788, 163787]",conv_163788,,,,,
+case_2727745,37,@VirginTrains 1st class weekend service never informed that refreshments only obtained from buffet bar! Lancaster to Glasgow. Returning just met the rudest customer assistant in the 1st class lounge Glasgow!! #coulddobetter #badcustomerservice,"[CUSTOMER 2727745] @VirginTrains 1st class weekend service never informed that refreshments only obtained from buffet bar! Lancaster to Glasgow. Returning just met the rudest customer assistant in the 1st class lounge Glasgow!! #coulddobetter #badcustomerservice
+[AGENT 2727743] @764885 Sorry to hear of your experience Sue, are you able to expand further? Please DM if you want to. ^PA
+[CUSTOMER 2727744] @VirginTrains I was listened to via my DM, my experience/issue was acknowledged. After a long time spent giving details I am now left feeling I wasted my time as I’m unsure anything was solved or will be solved! #icantgetnosatisfaction! #weekendtrains #1stclassis2ndclass
+[AGENT 2727746] @764885 We're sorry to hear this, Sue. This would be passed on to their management team but unfortunately due to data protection, we wouldn't be able to pass on the details of the outcome ^HP
+[CUSTOMER 2727747] @VirginTrains The service we received or didn’t receive on our initial journey seems to have been forgotten?
+[AGENT 2743889] @764885 This can be escalated further with Customer Relations via the online complaints link https://t.co/t20UbyOCSn ^MM
+[CUSTOMER 2743890] @VirginTrains Would have been nice to be given this information sooner. Escalation it is then #fingers crossed",2017-11-20 13:40:23+00:00,"[2727745, 2727743, 2727744, 2727746, 2727747, 2743889, 2743890]",conv_2727745,,,,,
+case_120376,38,"@VirginTrains thank you for getting us home last night from Carlisle to Telford, just seen pictures. No wonder it took 6 Hours. You were amazing","[CUSTOMER 120376] @VirginTrains thank you for getting us home last night from Carlisle to Telford, just seen pictures. No wonder it took 6 Hours. You were amazing
+[AGENT 120375] @142733 Thank You Kim! We're sorry you were caught up in the disruption and we're glad you made it home safely. Please don't forget to claim delay repay via this link https://t.co/v2F1XYIfEP ^JH",2017-11-23 22:47:03+00:00,"[120376, 120375]",conv_120376,,,,,
+case_990527,39,@VirginTrains any reason the 1424 York to LKX cancelled? No reason given at station. Hope tickets valid on next service ?,"[CUSTOMER 990527] @VirginTrains any reason the 1424 York to LKX cancelled? No reason given at station. Hope tickets valid on next service ?
+[AGENT 990526] @354635 Sounds like you're travelling with @120576 so we'll pass you over to the team ^MM",2017-10-22 13:12:07+00:00,"[990527, 990526]",conv_990527,,,,,
+case_1419429,40,@VirginTrains your cross country to Plymouth this evening was late but to be fair it was (thank god) warm and the staff on it were lush.,"[CUSTOMER 1419429] @VirginTrains your cross country to Plymouth this evening was late but to be fair it was (thank god) warm and the staff on it were lush.
+[AGENT 1419427] @449956 Its not ours, it's @121428 's service ^OL
+[OTHER-AGENT 1419428] @VirginTrains @449956 Glad it was a comfortable journey, albeit late Amelia. Have a good evening. ^PF",2017-11-30 22:28:32+00:00,"[1419429, 1419427, 1419428]",conv_1419429,,,,,
+case_1270688,41,@VirginTrains sort out your reservations please before passengers get on the train. I’ve been moved twice already. #takingthepiss,"[CUSTOMER 1270688] @VirginTrains sort out your reservations please before passengers get on the train. I’ve been moved twice already. #takingthepiss
+[AGENT 1270687] @160025 Hi John, sorry to hear that :/ We'll be sure to pass your comments on to our Fleet team ^HP",2017-10-26 14:16:16+00:00,"[1270688, 1270687]",conv_1270688,,,,,
+case_1179047,42,@397309 @124429 @50091 @VirginTrains I'm not able to download my train tickets says only on day of services?,"[CUSTOMER 1179047] @397309 @124429 @50091 @VirginTrains I'm not able to download my train tickets says only on day of services?
+[AGENT 1179045] @397308 @397309 @124429 @50091 Hi Helen. Have you downloaded the App? ^RD
+[CUSTOMER 1179046] @VirginTrains Yes I have? It's part downloaded tickets to mobile for 1 per person were 6. Can I add them to another device #help thank u
+[AGENT 1179048] @397308 You will need to speak with our after sales team in the morning on 0344 556 5650. They are open from 08:00 ^RD",2017-10-24 21:37:45+00:00,"[1179047, 1179045, 1179046, 1179048]",conv_1179049,,,,,
+case_533783,43,"@VirginTrains 10.20 Euston to Manchester. Please tell your 1st class attendant I have a child, not the plague.","[CUSTOMER 533783] @VirginTrains 10.20 Euston to Manchester. Please tell your 1st class attendant I have a child, not the plague.
+[AGENT 533782] @243647 Can you explain further please? ^BT",2017-12-02 11:33:06+00:00,"[533783, 533782]",conv_533783,,,,,
+case_1126088,44,@VirginTrains no reservations in system on 1515 Manchester to London. May be worth mentioning.,"[CUSTOMER 1126088] @VirginTrains no reservations in system on 1515 Manchester to London. May be worth mentioning.
+[AGENT 1126086] @385514 Sorry to hear that, Robin, we'll pass this back to our Fleet team. Have you been able to get your seat now? ^HP
+[CUSTOMER 1126087] @VirginTrains I don't have reservation so chose floor as safest spot.
+[AGENT 1126089] @385514 Oh no :( Coach C is the unreserved coach on this service so there may be space in there ^HP",2017-10-15 14:12:02+00:00,"[1126088, 1126086, 1126087, 1126089]",conv_1126088,,,,,
+case_1323722,45,@VirginTrains What’s the point in 1st class without Wi-fi?,"[CUSTOMER 1323722] @VirginTrains What’s the point in 1st class without Wi-fi?
+[AGENT 1323721] @428902 Hi Michael. What service are you travelling on today? ^BT
+[CUSTOMER 1323713] @VirginTrains 0800 Glasgow to Euston. I’ve spoken to the train Manager and operator who have tried to fix it without success.
+[AGENT 1323711] @428902 1/2Have you disconnected from the WiFi and reconnected, then searched for https://t.co/1JEOSVPtGN into your browser's URL bar
+[AGENT 1323720] @428902 2/2 this should reconnect. If not you would need to speak with the WiFi support team on 03300881271. ^BT
+[CUSTOMER 1323712] @VirginTrains Yes. Tried all of the suggestions on offer. Here’s the result. https://t.co/6bG0LZhXaw
+[CUSTOMER 1863453] @VirginTrains Lasts got max 3 minutes and cuts out again. Abysmal really.
+[AGENT 1323714] @428902 Sorry about your experience with the WiFi. However the support team are best to speak to regarding this. ^BT
+[CUSTOMER 1323715] @VirginTrains The onboard staff are talking with them, but it’s still an issue. Never happens on the East Coast line. A refund might be nice.
+[CUSTOMER 1323716] @VirginTrains still nothing https://t.co/QsxJW1sVbr
+[AGENT 1323718] @428902 1/2 Sorry to hear of your experience today Michael. Refunds are all processed through the company who supply the WiFi, ^BT
+[AGENT 1323717] @428902 2/2 they can be contacted here 03300881271. ^BT
+[CUSTOMER 1323719] @VirginTrains Do they also refund tickets? Wi-fi is part of what you offer in 1st class and clearly haven’t delivered today. Hugely frustrated.",2017-10-18 08:09:09+00:00,"[1323722, 1323721, 1323713, 1323711, 1323720, 1323712, 1863453, 1323714, 1323715, 1323716, 1323718, 1323717, 1323719]",conv_1323722,,,,,
+case_135287,46,Fancy new screens on this @VirginTrains pendolino 8.11 Crewe to Manchester  - plus the train manager should be a radio announcer! https://t.co/bb8qyajrao,"[CUSTOMER 135287] Fancy new screens on this @VirginTrains pendolino 8.11 Crewe to Manchester - plus the train manager should be a radio announcer! https://t.co/bb8qyajrao
+[AGENT 135286] @146473 They look good don't they, great to hear about the Train Manager. ^PA",2017-11-24 08:57:23+00:00,"[135287, 135286]",conv_135287,,,,,
+case_2411741,47,"Kmt booked a first class ticket only for my seat that was allocated, was also allocated to someone else so now we have tickets for the same seat cc: @VirginTrains","[CUSTOMER 2411741] Kmt booked a first class ticket only for my seat that was allocated, was also allocated to someone else so now we have tickets for the same seat cc: @VirginTrains
+[AGENT 2411740] @693360 Really sorry to hear this, Thawhid, which service are you travelling on? ^HP
+[CUSTOMER 2411738] @VirginTrains 16:30, London Kings Cross to Edinburgh Waverley. I suppose people just sat in available seats anyway but not something you'd expect for a first class service
+[AGENT 2411736] @693360 Sounds like one for @120576 ^MM
+[OTHER-AGENT 2411737] @VirginTrains @693360 Sorry to hear that, have you managed to find another seat? ^MS
+[CUSTOMER 2411739] @120576 @VirginTrains I have indeed",2017-11-14 16:27:08+00:00,"[2411741, 2411740, 2411738, 2411736, 2411737, 2411739]",conv_2411741,,,,,
+case_150720,48,Could I ask for anymore than a trip to Scotland on @VirginTrains listening to the new @1711 album! #FridayFeelingِ @150387 #AsOne,"[CUSTOMER 150720] Could I ask for anymore than a trip to Scotland on @VirginTrains listening to the new @1711 album! #FridayFeelingِ @150387 #AsOne
+[AGENT 150719] @150386 @1711 @150387 Have a great trip :) ^MM",2017-11-24 15:41:57+00:00,"[150720, 150719]",conv_150720,,,,,
+case_2129899,49,Have to say Horsham 2 Birmingham international today @VirginTrains @121513 perfectly on time both ways today under 3 hours,"[CUSTOMER 2129899] Have to say Horsham 2 Birmingham international today @VirginTrains @121513 perfectly on time both ways today under 3 hours
+[AGENT 2129898] @626943 @121513 Great to hear Neil 😀 ^HP",2017-11-08 19:12:06+00:00,"[2129899, 2129898]",conv_2129899,,,,,
+case_166715,50,Nothing quite as #discombobulating as hearing #WillFerrell's voice as you sit down on a @VirginTrains #train #toilet. #TGIF #DaddysHome2,"[CUSTOMER 166715] Nothing quite as #discombobulating as hearing #WillFerrell's voice as you sit down on a @VirginTrains #train #toilet. #TGIF #DaddysHome2
+[AGENT 166714] @154735 Did you not like our new toilet announcements? ^BT",2017-11-24 20:15:05+00:00,"[166715, 166714]",conv_166715,,,,,
+case_1743996,51,@VirginTrains hi there my train was delayed by 1 hour 20 minutes on Sunday. I Still haven’t received a response to my email,"[CUSTOMER 1743996] @VirginTrains hi there my train was delayed by 1 hour 20 minutes on Sunday. I Still haven’t received a response to my email
+[AGENT 1743995] @525994 Sorry to hear that, do you mean your delay repay claim, Chards? ^MW
+[CUSTOMER 1743988] @VirginTrains Yes I made a delay and repay claim but no one has come back to me yet
+[AGENT 1743986] @525994 Our Customer Resolutions team aim to respond within 14 days, 28 max, so you should hear back from the team shortly ^HP
+[CUSTOMER 1743987] @VirginTrains Ok thank you. I thought it was supposed to be an almost instant refund which is what it says on your website
+[AGENT 1743990] @525994 1/2 I'm afraid our automatic delay repay isn't always in place when services are severely disrupted, apologies. Did you make
+[AGENT 1743989] @525994 2/2 a manual Delay Repay claim via our form? https://t.co/k8cP66J6pg ^HP
+[CUSTOMER 1743991] @VirginTrains Yes I did . When will I hear back?
+[AGENT 1743992] @525994 Thanks, our Customer Resolutions team aim to respond within 14 days, 28 max, so you should hear back shortly ^HP
+[CUSTOMER 1743993] @VirginTrains A month. That’s not really automatic is it? False advertising
+[AGENT 1743994] @525994 It depends on certain things for it to qualify for automatic. ^PA",2017-11-07 14:31:22+00:00,"[1743996, 1743995, 1743988, 1743986, 1743987, 1743990, 1743989, 1743991, 1743992, 1743993, 1743994]",conv_1743996,,,,,
+case_2181072,52,Can I get a refund for pay as you go WiFi @VirginTrains? Paid £10 for 2 devices and having to post this on 3G as neither are working. Trying to do some work! Thanks,"[CUSTOMER 2181072] Can I get a refund for pay as you go WiFi @VirginTrains? Paid £10 for 2 devices and having to post this on 3G as neither are working. Trying to do some work! Thanks
+[AGENT 2181070] @639079 Really sorry to hear you're having issues with the Wi-Fi, Nina, is the problem with connection or speed? ^HP
+[CUSTOMER 2181071] @VirginTrains Both - when it does connect it’s slow but I have to keep reconnecting too! It’s not worth the money that’s for sure. Thanks
+[CUSTOMER 2181067] @VirginTrains Both... when it does connect it’s really slow but need to keep reconnecting too. In this day &amp; age it should be better and there should be more seats with plugs too. Thanks
+[AGENT 2181065] @639079 Apologies Nina, can you please try forgetting the network in your settings, reconnect &amp; follow https://t.co/1JEOSVPtGN ^HP
+[CUSTOMER 2181066] @VirginTrains Yes that’s what I did every time it stopped working and I wanted to reconnect - during my 2 hr journey I did it about 15 times!! Like I said - not worth paying for it so I would like a refund. Thanks
+[AGENT 2181068] @639079 Apologies for the inconvenience caused, Nina, you can claim a refund by contacting __email__ ^HP
+[CUSTOMER 2181069] @VirginTrains Thanks",2017-11-09 16:54:28+00:00,"[2181072, 2181070, 2181071, 2181067, 2181065, 2181066, 2181068, 2181069]",conv_2181072,,,,,
+case_1637281,53,@VirginTrains can I get a refund for my 21:05 train leaving Wolverhampton to London Euston. I have another train and haven’t left,"[CUSTOMER 1637281] @VirginTrains can I get a refund for my 21:05 train leaving Wolverhampton to London Euston. I have another train and haven’t left
+[AGENT 1637279] @500742 Hi there, are you taking another service instead now or are you travelling on the delayed train? Thanks ^HP
+[CUSTOMER 1637280] @VirginTrains Traveling on a delayed service",2017-11-05 21:41:55+00:00,"[1637281, 1637279, 1637280]",conv_1637281,,,,,
+case_2898384,54,@VirginTrains just paid £5 for your WiFi and now there’s no internet access to send my email. Grrr,"[CUSTOMER 2898384] @VirginTrains just paid £5 for your WiFi and now there’s no internet access to send my email. Grrr
+[AGENT 2898385] @803007 Oh no, sorry to hear this, Jeanette. Have you been able to connect to the network at all since purchasing your pass? ^HP
+[CUSTOMER 2898382] @VirginTrains Just this https://t.co/ebbQoYhSdw
+[AGENT 2898380] @803007 Apologies, can you please try forgetting the network in your settings, reconnect &amp; follow https://t.co/1JEOSVPtGN and let us know if this works for you? ^HP
+[CUSTOMER 2898381] @VirginTrains It’s come back now but bit late as just pulling into Euston. How do I get a refund as this has been pretty rubbish ?
+[AGENT 2898383] @803007 Sorry to hear this, Jeanette. You can apply for a refund by contacting __email__ ^HP",2017-11-28 17:02:16+00:00,"[2898384, 2898385, 2898382, 2898380, 2898381, 2898383]",conv_2898384,,,,,
+case_2119810,55,@virgintrains cant remember the last time I enjoyed at seat service and today your catering can't take cards very poor,"[CUSTOMER 2119810] @virgintrains cant remember the last time I enjoyed at seat service and today your catering can't take cards very poor
+[AGENT 2119808] @624678 Which service are you on, Mike? ^MW
+[CUSTOMER 2119809] @VirginTrains 05 40 Edinburgh to London
+[AGENT 2119811] @624678 That would be a @120576 service today, Mike ^MW
+[CUSTOMER 2119813] @VirginTrains @120576 yes a trolley joined at Newcastle but still no ability to take cards
+[OTHER-AGENT 2119812] @VirginTrains @624678 Sorry to hear this Mike - this is likely due to a technical issue. ^KM",2017-10-19 05:55:47+00:00,"[2119810, 2119808, 2119809, 2119811, 2119813, 2119812]",conv_2119810,,,,,
+case_1396354,56,@VirginTrains 1st class to London. No food. No wifi. Thoughts,"[CUSTOMER 1396354] @VirginTrains 1st class to London. No food. No wifi. Thoughts
+[AGENT 1396353] @444709 Oh no, which service is this exactly? ^MW
+[CUSTOMER 1396352] @VirginTrains 3.10 from Birmingham
+[AGENT 1396351] @444709 I see, are you struggling to connect to the Wi-Fi or with speed? ^MW
+[CUSTOMER 1396347] @VirginTrains Simply no WiFi. Was told 20 mins ago it would be reset. Silence.
+[AGENT 1396345] @444709 I see, might be worth a call to the support team on 0330 088 1271, Jason. They should be able to assist further ^MW
+[CUSTOMER 1396346] @VirginTrains How does that really help? I’m on the train. Service incredibly poor. I don’t expect to spend 20 mins on the phone.
+[AGENT 1396348] @444709 We realise it's not great, Jason. Many apologies for the issues today, were you looking to make a complaint? ^MW
+[CUSTOMER 1396349] @VirginTrains I thought this was a complaint
+[AGENT 1396350] @444709 We can be sure to log your comments, however if you wanted a reply to this you would need to submit formally ^MW",2017-10-28 14:56:38+00:00,"[1396354, 1396353, 1396352, 1396351, 1396347, 1396345, 1396346, 1396348, 1396349, 1396350]",conv_1396354,,,,,
+case_638694,57,"@VirginTrains been on hold for ages. Need to cancel my tickets. Purchased two singles for £120, pal bought return for £83. This wasn’t clear online. Help.","[CUSTOMER 638694] @VirginTrains been on hold for ages. Need to cancel my tickets. Purchased two singles for £120, pal bought return for £83. This wasn’t clear online. Help.
+[AGENT 638692] @271480 Sorry to hear this, our Aftersales line is open until 10pm so it may be worth trying again later. Alternatively, you can reach the team on Live Chat here: https://t.co/PAMNyrwzCC ^HP
+[CUSTOMER 638693] @VirginTrains Thank you. Time does live chat close?
+[AGENT 638695] @271480 No problem, they're online until 10pm ^HP
+[CUSTOMER 638696] @VirginTrains I’ve literally been waiting.....for this https://t.co/Rw3oADcWek
+[AGENT 638697] @271480 Sorry no one is available to chat with at the moment. The only way this team can be contacted are on the phone or live chat. Can you refresh the page and see if this works? ^BT",2017-11-22 20:06:52+00:00,"[638694, 638692, 638693, 638695, 638696, 638697]",conv_638694,,,,,
+case_1507970,58,@VirginTrains and I'm really expected to be able to recall the exact times of a journey that happened a month ago... 1/2 https://t.co/RcglETqrfo,"[CUSTOMER 1507970] @VirginTrains and I'm really expected to be able to recall the exact times of a journey that happened a month ago... 1/2 https://t.co/RcglETqrfo
+[AGENT 1507968] @469997 Hey, do you have the booking reference number for the journey.. This may tell you? ^MW
+[CUSTOMER 1507969] @VirginTrains No booking reference... Tickets bought on day of travel at booking office...
+[AGENT 1507971] @469997 I see, do you know a rough time of day as here's not a huge amount of trains on that route? ^MW
+[CUSTOMER 1507972] @VirginTrains Roughly 9/9.30pm
+[AGENT 1507974] @469997 Sounds like the 21:24 by the sounds of it, Becci, might be worth emailing back to say that one ^MW
+[CUSTOMER 1510747] @VirginTrains Great, thank you for your help and quick reply
+[AGENT 1510746] @469997 No problem, enjoy your evening/morning 😃 ^MW",2017-10-16 23:41:29+00:00,"[1507970, 1507968, 1507969, 1507971, 1507972, 1507974, 1510747, 1510746]",conv_1507970,,,,,
+case_113994,59,How are we ever going to encourage people to live outside of major cities (because we can't exactly afford houses in London) when we don't even have infrastructure to enable mobile working (not just expensive but also terrible network) on popular train journeys?! @VirginTrains,"[CUSTOMER 113994] How are we ever going to encourage people to live outside of major cities (because we can't exactly afford houses in London) when we don't even have infrastructure to enable mobile working (not just expensive but also terrible network) on popular train journeys?! @VirginTrains
+[AGENT 113992] @141321 Can you explain a little further, Heena? ^MM
+[CUSTOMER 113993] @VirginTrains Terrible network and almost always a non-existing wifi service (which still costs!). There's literally better service on the underground than London-Manchester.
+[AGENT 113995] @141321 Did you try disconnecting from the WiFi, reconnecting and typing https://t.co/1JEOSVPtGN into your browser's URL bar, when experiencing issues? ^BT",2017-11-23 21:07:28+00:00,"[113994, 113992, 113993, 113995]",conv_113994,,,,,
+case_2223606,60,Credit where it’s due @VirginTrains. Time and patience shown to customers today on the 1.20pm from Euston To Man Picc. Lots to learn for @GWRHelp #greatservice,"[CUSTOMER 2223606] Credit where it’s due @VirginTrains. Time and patience shown to customers today on the 1.20pm from Euston To Man Picc. Lots to learn for @GWRHelp #greatservice
+[AGENT 2223605] @649314 Great to hear Adrian. ^PA",2017-11-10 15:06:53+00:00,"[2223606, 2223605]",conv_2223606,,,,,
+case_1353034,61,When your @VirginTrains is seriously delayed and then beam cuts out 😭 https://t.co/JqWA4ILLNL,"[CUSTOMER 1353034] When your @VirginTrains is seriously delayed and then beam cuts out 😭 https://t.co/JqWA4ILLNL
+[AGENT 1353035] @154282 1/2 Sorry Hannah. Have you tried disconnecting from the WiFi, reconnecting and
+[AGENT 1353033] @154282 2/2 typing https://t.co/1JEOSVPtGN into your browser's URL bar? ^BT",2017-10-27 18:22:36+00:00,"[1353034, 1353035, 1353033]",conv_1353034,,,,,
+case_2271389,62,@VirginTrains tweet my thoughts? Couldn’t because WiFi is awful - had to turn it off and use 4G to tweet. Happens every single journey.,"[CUSTOMER 2271389] @VirginTrains tweet my thoughts? Couldn’t because WiFi is awful - had to turn it off and use 4G to tweet. Happens every single journey.
+[AGENT 2271388] @660834 Have you tried disconnecting from the WiFi, reconnecting and typing https://t.co/1JEOSVPtGN into your browser's URL bar? ^BT
+[CUSTOMER 2271387] @VirginTrains Yes ‘server can’t be found’ not to worry, I’ll have a beer and a sleep!
+[AGENT 2271386] @660834 Sorry Pete! Enjoy your nap 😄 ^BT",2017-11-11 12:15:02+00:00,"[2271389, 2271388, 2271387, 2271386]",conv_2271389,,,,,
+case_1205572,63,@VirginTrains If the train has been 'declassified' does this mean I can get money back as I paid for first class?,"[CUSTOMER 1205572] @VirginTrains If the train has been 'declassified' does this mean I can get money back as I paid for first class?
+[AGENT 1205571] @403158 Have you not received the First Class service then? ^MW
+[CUSTOMER 1205570] @VirginTrains Well, queuing for 20 minutes for food, no wifi and no hot drinks served throughout the journey... Not the best
+[AGENT 1205569] @403158 I see, please make a claim for this here - https://t.co/89qwHxYKiq ^MW",2017-11-10 12:19:35+00:00,"[1205572, 1205571, 1205570, 1205569]",conv_1205572,,,,,
+case_1035449,64,"Thanks @VirginTrains for the journey into London today, always wondered what it must be like to travel by train in India #mightaswellallsitontheroof","[CUSTOMER 1035449] Thanks @VirginTrains for the journey into London today, always wondered what it must be like to travel by train in India #mightaswellallsitontheroof
+[AGENT 1035448] @364924 Which service was this, Blair? ^CB",2017-11-25 10:59:58+00:00,"[1035449, 1035448]",conv_1035449,,,,,
+case_583221,65,@VirginTrains I'm booked onto the 14:00 from Euston to New Street - will my seat reservation still be valid?,"[CUSTOMER 583221] @VirginTrains I'm booked onto the 14:00 from Euston to New Street - will my seat reservation still be valid?
+[AGENT 583220] @257538 Hi Kimberley, due to the level of disruption across our services today, it's likely that resrvations may not be in place, but this will be announced onboard. If this is the case, you can claim compensation for this here: https://t.co/IcTC75a1kl ^HP",2017-12-03 13:31:19+00:00,"[583221, 583220]",conv_583221,,,,,
+case_1434565,66,@virgintrains your App is useless. It does not give full ticket options. Can’t by open return tickets.... Can’t use it!!!,"[CUSTOMER 1434565] @virgintrains your App is useless. It does not give full ticket options. Can’t by open return tickets.... Can’t use it!!!
+[AGENT 1434563] @453076 You can purchase them, but need to select outward and return journey then select the open return. ^PA
+[CUSTOMER 1434564] @VirginTrains Well I’m here at Euston and your staff can’t and I can’t on your App #useless
+[AGENT 1434566] @453076 If you DM us we can help. ^PA
+[CUSTOMER 1434567] @VirginTrains Had to buy physical ticket !!! Your staff suggested to use Trainline App!! Just wasted 30 frustrating minutes
+[AGENT 1434568] @453076 Sorry for that Ian, I'll get this fed back for you. ^PA
+[CUSTOMER 1434569] @VirginTrains Thanks - You will be losing loads of money. Im pretty technology literate!",2017-11-02 13:28:29+00:00,"[1434565, 1434563, 1434564, 1434566, 1434567, 1434568, 1434569]",conv_1434565,,,,,
+case_2576131,67,@VirginTrains Hi! Looking to pre-book at your Lancaster car park (27th-30th December) can you please advise if this is possible? It's advertised on your website but it's not listed in the drop down box for pre-booking (see below). Thanks. https://t.co/ylrq9TKD7l,"[CUSTOMER 2576131] @VirginTrains Hi! Looking to pre-book at your Lancaster car park (27th-30th December) can you please advise if this is possible? It's advertised on your website but it's not listed in the drop down box for pre-booking (see below). Thanks. https://t.co/ylrq9TKD7l
+[AGENT 2576130] @730453 Theres no reason for it not to be, the station will be open. ^PA
+[CUSTOMER 2576128] @VirginTrains Thanks for your response. Think there may be a problem with your website if so? Won't let me select ""Lancaster"" station when seeking to pre-book.
+[AGENT 2576126] @730453 Hi Joshua, just tried this myself and seems to work. Can you try a different device? ^BT
+[CUSTOMER 2576127] @VirginTrains Have tried 3! Were you able to search for Lancaster? Does it show availability for those dates?
+[AGENT 2576129] @730453 Ahh I see, when I put those dates in it doesn't work, which means there is no availability to pre book parking. ^BT",2017-11-16 21:12:49+00:00,"[2576131, 2576130, 2576128, 2576126, 2576127, 2576129]",conv_2576131,,,,,
+case_2899912,68,"@VirginTrains great to see a vegan option on your lunch/dinner menu in first class, but please please add some more vegan snacks &amp; breakfast options! I'm getting bored of the salad now 🥗 #vegan #veganfood","[CUSTOMER 2899912] @VirginTrains great to see a vegan option on your lunch/dinner menu in first class, but please please add some more vegan snacks &amp; breakfast options! I'm getting bored of the salad now 🥗 #vegan #veganfood
+[AGENT 2899910] @220482 Hi Kimmy, we will be sure to pass your feedback on around this. ^LC
+[CUSTOMER 2899911] @VirginTrains Thank you! Appreciate this!! 😘",2017-11-28 17:39:10+00:00,"[2899912, 2899910, 2899911]",conv_2899912,,,,,
+case_509179,69,@VirginTrains running late from London - probably not their fault. But then abandoned Shropshire passengers in Wolverhampton. Poor show.,"[CUSTOMER 509179] @VirginTrains running late from London - probably not their fault. But then abandoned Shropshire passengers in Wolverhampton. Poor show.
+[AGENT 509176] @236961 Afraid so due to the issues earlier today, Teresa ^MW
+[CUSTOMER 509178] @VirginTrains Little advice given. Have had to get Taxi to Telford. Not impressed.
+[CUSTOMER 509177] @VirginTrains Just come back from holiday in Ecuador where transport better !but also why I am tired and really not impressed",2017-12-01 22:13:54+00:00,"[509179, 509176, 509178, 509177]",conv_509179,,,,,
+case_2694734,70,Sitting on the floor thanks to @VirginTrains making a cock up with the reservation/IT system. Just how I want to end a trip away 🙄🙄,"[CUSTOMER 2694734] Sitting on the floor thanks to @VirginTrains making a cock up with the reservation/IT system. Just how I want to end a trip away 🙄🙄
+[AGENT 2694733] @504725 Apologies again Adam, you can claim compensation for this here: https://t.co/krnpUt1rgO ^HP",2017-11-19 17:53:40+00:00,"[2694734, 2694733]",conv_2694734,,,,,
+case_2982026,71,"The ticket man on this train is sound - a frighteningly good service on this cold Halloween evening @VirginTrains 
+
+⭐️⭐️⭐️⭐️⭐️","[CUSTOMER 2982026] The ticket man on this train is sound - a frighteningly good service on this cold Halloween evening @VirginTrains ⭐️⭐️⭐️⭐️⭐️
+[AGENT 2982025] @822469 Sounds splendid this evening! Great to hear ^CB",2017-10-31 20:59:45+00:00,"[2982026, 2982025]",conv_2982026,,,,,
+case_574385,72,@VirginTrains #WatfordJunction. My 0820 from Man Picc to London is cancelled!!! Supposed to be visiting family. What’s the solution Virgin?,"[CUSTOMER 574385] @VirginTrains #WatfordJunction. My 0820 from Man Picc to London is cancelled!!! Supposed to be visiting family. What’s the solution Virgin?
+[AGENT 574383] @255097 There is no service from Manchester until later today. ^OL
+[CUSTOMER 574384] @VirginTrains When?
+[AGENT 574386] @255097 Services won't be running until around midday I'm afraid due to emergency repairs having to be carried out to overhead wiring. Really sorry for the inconvenience caused ^HP
+[CUSTOMER 574387] @VirginTrains Thank you for the reply. I have a fixed advance ticket. Could I use it next Sunday instead ?
+[AGENT 574389] @255097 1/2 No problem John. Really sorry but we wouldn't be able to validate this for use next Sunday, however, you can claim a refund due to the cancellation of your service. Alternatively, we have ticket acceptance in place with @242596 &amp; @120576 so you
+[AGENT 574388] @255097 2/2 can take an alternative route using your ticket with these operators ^HP",2017-12-03 06:51:29+00:00,"[574385, 574383, 574384, 574386, 574387, 574389, 574388]",conv_574385,,,,,
+case_139190,73,"@VirginTrains So the 18.50 from bham to Rugby was delayed, diverted, packed and no first class table service. Hardly first class!? #Firstclass? #Refund","[CUSTOMER 139190] @VirginTrains So the 18.50 from bham to Rugby was delayed, diverted, packed and no first class table service. Hardly first class!? #Firstclass? #Refund
+[AGENT 139189] @147366 Sorry for your experience, Richard. This can be escalated further with Customer Relations via the online complaints link - https://t.co/t20UbyOCSn ^MM
+[CUSTOMER 139188] @VirginTrains Well it happened again this morning...again i can only assume true to the morning’s train disruption. You really need to sort out your first class offering... having experienced the advertising and brand positioning, the actual service is not measuring up #badbrandexperience
+[AGENT 139187] @147366 Apologies Richard. Do please get in touch through the link provided so we can look in to this ^CB",2017-11-23 18:43:25+00:00,"[139190, 139189, 139188, 139187]",conv_139190,,,,,
+case_577577,74,@VirginTrains I’m sat in a first class seat on Leeds to London 9:05am then as I asked about upgrading I was told that I could stay here until we get to Doncaster where I might be told to move as there was more first class passengers joining! Even though the seat is not reserved??,"[CUSTOMER 577577] @VirginTrains I’m sat in a first class seat on Leeds to London 9:05am then as I asked about upgrading I was told that I could stay here until we get to Doncaster where I might be told to move as there was more first class passengers joining! Even though the seat is not reserved??
+[AGENT 577575] @255959 Hi Craig, are you on a @120576 service? ^HP
+[CUSTOMER 577576] @VirginTrains @120576 Hi, all is good now and I’ve just been allowed to purchase an upgrade and stay in my seat! 😅😏 thx #",2017-12-03 09:26:14+00:00,"[577577, 577575, 577576]",conv_577577,,,,,
+case_41983,75,"@VirginTrains can someone contact me ASAP, I’ve been trying daily to contact you about compensation payments but constantly on hold","[CUSTOMER 41983] @VirginTrains can someone contact me ASAP, I’ve been trying daily to contact you about compensation payments but constantly on hold
+[AGENT 41981] @125258 Which number are you contacting, Jay? ^MM
+[CUSTOMER 41982] @VirginTrains 03457225333 it’s been over a month I have a reference number from email convos but have had no update - VTN 171002BKZY
+[AGENT 41984] @125258 The East Coast Team would be best to advise further, so we'll pass you over to them @120576 ^MM",2017-11-01 15:36:14+00:00,"[41983, 41981, 41982, 41984]",conv_41983,,,,,
+case_636177,76,@VirginTrains my daughter and her boyfriend are stuck at Carlisle station and no one knows what's going on is this good enough in 2017? 😔,"[CUSTOMER 636177] @VirginTrains my daughter and her boyfriend are stuck at Carlisle station and no one knows what's going on is this good enough in 2017? 😔
+[AGENT 636176] @270847 Sorry to hear this Nigel. What service is your daughter on? ^BT
+[CUSTOMER 636175] @VirginTrains She's coming back to barrow in furness from Edinburgh
+[AGENT 636174] @270847 Do you know which service she caught from Edinburgh? ^BT
+[CUSTOMER 636171] @VirginTrains I'm sorry I don't know but I rang her a couple of minutes ago and there was an announcement being made on the train but her phone cut off!
+[AGENT 636168] @270847 Staff onboard will be best to advise. At the moment the line between Preston/Lancaster is blocked due to flooding which is causing congestion. ^BT
+[CUSTOMER 636170] @VirginTrains They have now terminated the train and they should have got on another train to Lancaster but didn't because of what staff said was a mistake communication now they and a lot more people are stuck on Carlisle station!
+[CUSTOMER 636169] @VirginTrains My daughter has now got on a train to Lancaster so she's happy thanks for getting this sorted! 😀
+[AGENT 636172] @270847 Thanks for letting us know ^MW
+[CUSTOMER 636173] @VirginTrains No problem!",2017-11-22 19:05:57+00:00,"[636177, 636176, 636175, 636174, 636171, 636168, 636170, 636169, 636172, 636173]",conv_636177,,,,,
+case_1045169,77,Woman at @VirginTrains Euston lounge immediately said 'excellent beard!' as I checked in. Glad I resisted the urge to shave it off earlier.,"[CUSTOMER 1045169] Woman at @VirginTrains Euston lounge immediately said 'excellent beard!' as I checked in. Glad I resisted the urge to shave it off earlier.
+[AGENT 1045168] @367099 Good work. ^PA https://t.co/zZ8MyWSFz4
+[CUSTOMER 1045171] @VirginTrains there're compliments and then there's thinking I'm an actual child https://t.co/XZwgO0rDVz
+[AGENT 1047503] @367099 Embrace the youthfulness while you can. ^PA
+[CUSTOMER 1047502] @VirginTrains It's my birthday tomorrow so I definitely am!
+[AGENT 1047501] @367099 Happy Birthday for tomorrow. ^PA",2017-10-23 10:07:48+00:00,"[1045169, 1045168, 1045171, 1047503, 1047502, 1047501]",conv_1045169,,,,,
+case_2878428,78,"@VirginTrains - 05.34 from Sandwell &amp; Dudley to London Euston.... excellent train manager and team... ‘First Class, Service... #Great start to my working week.","[CUSTOMER 2878428] @VirginTrains - 05.34 from Sandwell &amp; Dudley to London Euston.... excellent train manager and team... ‘First Class, Service... #Great start to my working week.
+[AGENT 2878427] @730990 Great to hear Carolyn! We will be sure to pass this feedback on. ^BT",2017-11-28 07:07:13+00:00,"[2878428, 2878427]",conv_2878428,,,,,
+case_1212006,79,@VirginTrains seriously wish you would announce where toilets are. I have severe anxiety so terrified of looking for them. :/,"[CUSTOMER 1212006] @VirginTrains seriously wish you would announce where toilets are. I have severe anxiety so terrified of looking for them. :/
+[AGENT 1212004] @404478 Which service are you on today? ^MW
+[CUSTOMER 1212005] @VirginTrains 11.17-2.33 Glasgow to London Euston.
+[CUSTOMER 1212008] @VirginTrains I got on at Preston.
+[AGENT 1212007] @404478 Can't find that train, are you sure that's the correct time off Glasgow? ^MW
+[AGENT 1212009] @404478 A, B, C and E Coaches have toilets ^MW
+[CUSTOMER 1212010] @VirginTrains Fantastic! Thank you :) E is my closest. Much appreciated ❤️
+[AGENT 1212011] @404478 No worries at all ^MW",2017-10-25 12:28:10+00:00,"[1212006, 1212004, 1212005, 1212008, 1212007, 1212009, 1212010, 1212011]",conv_1212006,,,,,
+case_2719875,80,"#quietcoach@virgintrain when I told a passenger to keep her voice down, she totally ignored me!","[CUSTOMER 2719875] #quietcoach@virgintrain when I told a passenger to keep her voice down, she totally ignored me!
+[CUSTOMER 2719874] @VirginTrains
+[AGENT 2719873] @763233 Anything we can help with? ^BT",2017-11-20 08:51:48+00:00,"[2719875, 2719874, 2719873]",conv_2719875,,,,,
+case_1295264,81,"@VirginTrains late, packed and then you turn the air con on 🙄 like really. I was enjoying my trip until then 🤷🏾‍♀️ #itsfreezing #autum","[CUSTOMER 1295264] @VirginTrains late, packed and then you turn the air con on 🙄 like really. I was enjoying my trip until then 🤷🏾‍♀️ #itsfreezing #autum
+[AGENT 1295262] @422792 Sorry about the delay Aleka. Have you spoke to a member onboard regarding the air con? ^BT
+[CUSTOMER 1295263] @VirginTrains been looking for one for ages but it's the 19:40 to ManPic hopefully they'll get the message - we look like eskimos ❄️⛄️
+[CUSTOMER 1295261] @VirginTrains 😳 found a guard and he asked us what he wanted us to do as we'll be there in 20minutes #poorservice totally disappointed
+[AGENT 1295260] @422792 Sorry about this Aleka, please accept our apologies for your experience today. ^BT
+[CUSTOMER 1295265] @VirginTrains we made it #happydays https://t.co/1j5IPnuhk7
+[AGENT 1365761] @422792 Great to hear Aleka! Apologies for the inconvenience caused today. Have a good weekend ^HP",2017-10-27 20:14:05+00:00,"[1295264, 1295262, 1295263, 1295261, 1295260, 1295265, 1365761]",conv_1295264,,,,,
+case_2572327,82,Love it when @VirginTrains take my money then say ive not booked anything😊,"[CUSTOMER 2572327] Love it when @VirginTrains take my money then say ive not booked anything😊
+[CUSTOMER 2572326] @VirginTrains @VirginTrains 😡😡
+[AGENT 2572325] @729425 Sorry Em, can you explain further please? ^BT
+[CUSTOMER 2572324] @VirginTrains Took my money out instantly yet havnt’t received a confirmation email and it says i dont have an account on the website
+[AGENT 2572323] @729425 I can see my colleague has DM you in regards to this. ^BT",2017-11-16 15:22:43+00:00,"[2572327, 2572326, 2572325, 2572324, 2572323]",conv_2572327,,,,,
+case_2394560,83,@VirginTrains  So this is what you get now for £106 from York to Kings Cross 2 and a half hours of urine stench sitting on a freezing cold floor. An absolute joke! #virginrail #virgintrains https://t.co/TPyiFYNDqQ,"[CUSTOMER 2394560] @VirginTrains So this is what you get now for £106 from York to Kings Cross 2 and a half hours of urine stench sitting on a freezing cold floor. An absolute joke! #virginrail #virgintrains https://t.co/TPyiFYNDqQ
+[AGENT 2394558] @689350 Looks like you're travelling with @120576 ^MM
+[CUSTOMER 2394559] @VirginTrains @120576 And it's pretty clear nobody cares at @VirginTrains or @120576",2017-11-26 17:31:49+00:00,"[2394560, 2394558, 2394559]",conv_2394560,,,,,
+case_701183,84,@VirginTrains about to be on my way to Birmingham from Liverpool meant to be getting a train from new street to Watford junction at 19:30 my Trainline app says it’s cancelled what’s going on????,"[CUSTOMER 701183] @VirginTrains about to be on my way to Birmingham from Liverpool meant to be getting a train from new street to Watford junction at 19:30 my Trainline app says it’s cancelled what’s going on????
+[AGENT 701181] @287385 There has been a points failure near Birmingham and trains may terminate and restart at International. However, the delays for this shouldn't be too bad ^MW
+[CUSTOMER 701182] @VirginTrains Will I still make my connections? https://t.co/Trky99X5in
+[AGENT 701184] @287385 That could be tough. However, you will be allowed on the next service if you miss that connection, Klara ^MW
+[CUSTOMER 701186] @VirginTrains Okay, thank you!
+[CUSTOMER 701185] @VirginTrains Do you know what train I can catch and from where to Watford Junction? Would I be able to get a london midlands train or would I need to buy a new ticket?
+[AGENT 701187] @287385 Where are you travelling from? And when would you be travelling? ^BT
+[CUSTOMER 701188] @VirginTrains Traveling from Birmingham New Street, I was booked for the 19:30 train tonight but it’s cancelled so anything after half past seven
+[AGENT 701189] @287385 The next available service with us will be the 20:10, however I do advise speaking with station staff regarding the next available service. ^BT",2017-11-23 17:18:49+00:00,"[701183, 701181, 701182, 701184, 701186, 701185, 701187, 701188, 701189]",conv_701183,,,,,
+case_1495430,85,"@VirginTrains are the worst train service.  I have been trying to make a claim for my entitled refund for 2 months, no reply. Disgusted","[CUSTOMER 1495430] @VirginTrains are the worst train service. I have been trying to make a claim for my entitled refund for 2 months, no reply. Disgusted
+[AGENT 1495429] @467221 Hi Liv, sorry to hear this. Can we take your VT case reference number please? ^HP",2017-11-03 11:35:33+00:00,"[1495430, 1495429]",conv_1495430,,,,,
+case_2614729,86,@VirginTrains any chance of heating in Carriage L 1st class (12:03 from Inverkeithing to Londons Kings X)? It's decidedly chilly.,"[CUSTOMER 2614729] @VirginTrains any chance of heating in Carriage L 1st class (12:03 from Inverkeithing to Londons Kings X)? It's decidedly chilly.
+[AGENT 2614726] @739135 The @120576 team may be able to help with this one ^CB
+[OTHER-AGENT 2614727] @VirginTrains @739135 If you speak with our on-board team, they should be able to help with this Liz! ^KM
+[CUSTOMER 2614728] @VirginTrains @120576 I have asked and was told the guard would be informed. No action as yet I'm afraid.",2017-11-17 13:41:08+00:00,"[2614729, 2614726, 2614727, 2614728]",conv_2614729,,,,,
+case_587637,87,@VirginTrains  It’s also an hour longer than my journey time on the app. Please advise why on both counts. Thanks,"[CUSTOMER 587637] @VirginTrains It’s also an hour longer than my journey time on the app. Please advise why on both counts. Thanks
+[AGENT 587635] @258827 Sorry Anne, can you explain further please? ^BT
+[CUSTOMER 587636] @VirginTrains @VirginTrains We are in the 14.56 Bridgend to Paddington. When I booked via your website it didn’t give me reserved seats. All other legs of the journey we had seats allocated. Once getting on the train most seats are reserved and we have struggled to get seats and not together.
+[AGENT 587638] @258827 Did you book Advance tickets, Anne? ^MW
+[CUSTOMER 587639] @VirginTrains Yes",2017-12-03 15:52:06+00:00,"[587637, 587635, 587636, 587638, 587639]",conv_587637,,,,,
+case_846159,88,"Get on the train, start towards Euston then we stop. We start moving again....backwards! Random! Lol where are we going @VirginTrains","[CUSTOMER 846159] Get on the train, start towards Euston then we stop. We start moving again....backwards! Random! Lol where are we going @VirginTrains
+[AGENT 846157] @321115 What service are you on Carrie? ^BT
+[CUSTOMER 846158] @VirginTrains London South Parkway to Euston. We must have started in the wrong direction for some reason. No problem we are on way now :)
+[CUSTOMER 846160] @VirginTrains Oops Liverpool south parkway lol",2017-10-13 12:51:33+00:00,"[846159, 846157, 846158, 846160]",conv_846159,,,,,
+case_2453681,89,The woman at wolves train station was nothing but rude to me on Saturday morning @VirginTrains I know it’s 5:40 in the morning but urghh,"[CUSTOMER 2453681] The woman at wolves train station was nothing but rude to me on Saturday morning @VirginTrains I know it’s 5:40 in the morning but urghh
+[AGENT 2453678] @426822 Would you like to make a complaint, Katherine? ^MW
+[CUSTOMER 2453677] @VirginTrains I don’t want her to get into too much trouble but a little please try not to be rude to customers who are in trouble..
+[CUSTOMER 2453680] @VirginTrains She could see I was very worried about my friends ticket and she refused to serve us until she had served the person behind us..
+[CUSTOMER 2453679] @VirginTrains Then when I said that’s fine but our train is in 10 mins she just went well that’s hardly my problem! Usually everyone is so lovely!
+[AGENT 2453676] @426822 That's fair enough ^MW
+[AGENT 2453711] @426822 We can see why you're annoyed at this ^MW",2017-10-29 18:51:51+00:00,"[2453681, 2453678, 2453677, 2453680, 2453679, 2453676, 2453711]",conv_2453681,,,,,
+case_607817,90,"@VirginTrains have given us a great idea for company vehicles. Our Business Development Manager, Dave, would love this! https://t.co/EltQCnpfCQ","[CUSTOMER 607817] @VirginTrains have given us a great idea for company vehicles. Our Business Development Manager, Dave, would love this! https://t.co/EltQCnpfCQ
+[AGENT 607816] @264470 Get Dave one :) ^PA",2017-11-22 12:09:47+00:00,"[607817, 607816]",conv_607817,,,,,
+case_1257231,91,@VirginTrains please stop cancelling the 8.15 Manchester Piccadilly to London. You keep making me late for work!! Thanks,"[CUSTOMER 1257231] @VirginTrains please stop cancelling the 8.15 Manchester Piccadilly to London. You keep making me late for work!! Thanks
+[AGENT 1257229] @414618 Sorry to hear that, this was due to an incident yesterday, many apologies, Graham ^MW
+[CUSTOMER 1257230] @VirginTrains You've cancelled the 8.15am train AGAIN!!!!! Can't even claim compensation because your next train is 20 mins :(
+[AGENT 1257232] @414618 Sadly this is due to a fault with the train. Apologies for any inconvenience caused by this ^CB
+[CUSTOMER 1257233] @VirginTrains Can I claim compensation for repeated cancellations even though the delay each time is only 20-25 mins?
+[AGENT 1257234] @414618 We wouldn't be able to guarantee any compensation for this, but you can escalate further here: https://t.co/Y1oEGs79Qo ^CB
+[CUSTOMER 1257235] @VirginTrains Thanks for that. Much appreciated!",2017-10-26 07:17:24+00:00,"[1257231, 1257229, 1257230, 1257232, 1257233, 1257234, 1257235]",conv_1257231,,,,,
+case_2314695,92,@VirginTrains @127472 Why oh why do the automatic doors on your trains not recognise when someone is standing in the way 😭#bruisedarm #everytime,"[CUSTOMER 2314695] @VirginTrains @127472 Why oh why do the automatic doors on your trains not recognise when someone is standing in the way 😭#bruisedarm #everytime
+[CUSTOMER 2314694] @VirginTrains @127472 I'm ok but it could actually quite hurt people who are frailer/holding luggage and can't push the button quick enough to open it again. Do you think you could look into this?
+[AGENT 2314693] @257305 @127472 Which service did this happen on exactly? ^MW
+[CUSTOMER 2314692] @VirginTrains @127472 It happened on the 17:10 from Coventry to London Euston however I get Virgin Trains most weekends to travel from London up and down the country and it happens the majority of times I travel.
+[AGENT 2314691] @257305 @127472 There should be a sensor at the bottom of the door opening, Hannah. Can you remember if your feet were in the opening or behind/in front of it? ^MW
+[CUSTOMER 2314689] @VirginTrains @127472 We would have been standing in the door as people have to queue to get on and off the trains. Most doors would hit the person and open again but your doors just keep closing where the injurys happen.
+[AGENT 2314688] @257305 @127472 I see, do you know the exact Coach you were in at the time? ^MW
+[CUSTOMER 2314690] @VirginTrains @127472 We were in coach E however as I've said, this happens on all of your trains I have been on.
+[AGENT 2314716] @257305 @127472 I see, sorry about this again, Hannah. We are very glad to hear you haven't been hurt by this issue ^MW",2017-11-12 19:14:05+00:00,"[2314695, 2314694, 2314693, 2314692, 2314691, 2314689, 2314688, 2314690, 2314716]",conv_2314695,,,,,
+case_1624246,93,"@VirginTrains hi, we’re on the 18:51 from Cov to Euston, not delayed as yet but do you advise we take an alternative route (w/ Chiltern)?","[CUSTOMER 1624246] @VirginTrains hi, we’re on the 18:51 from Cov to Euston, not delayed as yet but do you advise we take an alternative route (w/ Chiltern)?
+[AGENT 1624247] @497484 1/2 Hi Emma, we would suggest keeping an eye on Live Updates nearer the time https://t.co/BfJTAJxMA7 to see how this service is
+[AGENT 1624245] @497484 2/2 running, but you can travel via an alternative route if you wish ^HP",2017-11-05 17:48:03+00:00,"[1624246, 1624247, 1624245]",conv_1624246,,,,,
+case_2721257,94,Back in Great Britain and got Great Service from @VirginTrains this morning. @133079 way off the pace in comparison.,"[CUSTOMER 2721257] Back in Great Britain and got Great Service from @VirginTrains this morning. @133079 way off the pace in comparison.
+[AGENT 2721256] @763520 @133079 Thanks for the feedback Richard! Which service did you travel on today? ^BT
+[CUSTOMER 2721255] @VirginTrains @133079 Wakefield to London - great service
+[AGENT 2721254] @763520 @133079 Hi, this is one for @120576 to help with. ^PA",2017-11-20 09:49:57+00:00,"[2721257, 2721256, 2721255, 2721254]",conv_2721257,,,,,
+case_2683282,95,@VirginTrains Can I expect a refund when I've paid for reservations but the reservation system isn't working? Currently sitting in the aisle next to the toilet for this reason,"[CUSTOMER 2683282] @VirginTrains Can I expect a refund when I've paid for reservations but the reservation system isn't working? Currently sitting in the aisle next to the toilet for this reason
+[AGENT 2683280] @754749 Hi Mike, sorry to hear this, which service are you travelling on today? ^HP
+[CUSTOMER 2683281] @VirginTrains The 2.20pm from Penrith to London Euston",2017-11-19 14:54:45+00:00,"[2683282, 2683280, 2683281]",conv_2683282,,,,,
+case_1233243,96,"@VirginTrains Hi, do anytime return tickets need to be booked in advance? What if I am after a particular train and it is fully booked?","[CUSTOMER 1233243] @VirginTrains Hi, do anytime return tickets need to be booked in advance? What if I am after a particular train and it is fully booked?
+[AGENT 1233249] @409238 (1/2) Anytime tickets can be booked on the day of travel, if you require a seat reservation you can still purchase... ^JH
+[AGENT 1233241] @409238 (2/2) anytime tickets &amp; reverse a seat on specific service or purchase advance tickets fixed to a specific service ^JH
+[CUSTOMER 1233242] @VirginTrains My outbound service is on the morning of the same day I want to return. Can I reserve my open return seats at the time of travelling out?
+[AGENT 1233245] @409238 (1/2) The booking office can assist in booking your return reservation however this would depend on the availability... ^JH
+[AGENT 1233244] @409238 (2/2) if you know what service you would like to travel back on we can seek to book it for you ^JH
+[CUSTOMER 1233246] @VirginTrains Yes please. How do I get in touch?
+[AGENT 1233247] @409238 Please drop us a DM including your booking / collection ref &amp; journey details &amp; we'll take a look ^JH
+[CUSTOMER 1233248] @VirginTrains Thanks, will do :)",2017-10-16 01:21:49+00:00,"[1233243, 1233249, 1233241, 1233242, 1233245, 1233244, 1233246, 1233247, 1233248]",conv_1233243,,,,,
+case_2958035,97,@VirginTrains Joseph the train manager on the 19.23 from Euston to Wolverhampton is a credit to your company. Very professional and courteous. Excellent,"[CUSTOMER 2958035] @VirginTrains Joseph the train manager on the 19.23 from Euston to Wolverhampton is a credit to your company. Very professional and courteous. Excellent
+[AGENT 2958034] @816450 Great to hear this. Thank you for sharing with us! ^CB",2017-11-29 19:34:32+00:00,"[2958035, 2958034]",conv_2958035,,,,,
+case_1451167,98,@VirginTrains Can't you put more trains on from Manchester to London on 16/12 considering there is a big football match on the day at 17:30?,"[CUSTOMER 1451167] @VirginTrains Can't you put more trains on from Manchester to London on 16/12 considering there is a big football match on the day at 17:30?
+[AGENT 1451166] @456758 It's not always possible to run additional services sadly. We'll pass on your comments ^CB",2017-11-02 17:13:43+00:00,"[1451167, 1451166]",conv_1451167,,,,,
+case_1274375,99,@VirginTrains hi. On the 16:02 from cov to bhm. Need a diff train ticket. Which coach is ticket collector likely to be please?Ta. I'm in F,"[CUSTOMER 1274375] @VirginTrains hi. On the 16:02 from cov to bhm. Need a diff train ticket. Which coach is ticket collector likely to be please?Ta. I'm in F
+[AGENT 1274373] @418301 Coach C, Naina ^MM
+[CUSTOMER 1274374] @VirginTrains Thank you !",2017-10-26 15:13:30+00:00,"[1274375, 1274373, 1274374]",conv_1274375,,,,,
+case_1750736,100,"@VirginTrains  been sat on the 17:10 train at Euston to Chester... have to wait until 19:10, plz could I have an access code for free wifi?","[CUSTOMER 1750736] @VirginTrains been sat on the 17:10 train at Euston to Chester... have to wait until 19:10, plz could I have an access code for free wifi?
+[AGENT 1750733] @527569 I'm afraid not, Claire. Apologies for the delays. Please claim here - https://t.co/U1CZXZES1t ^MW
+[CUSTOMER 1750734] @VirginTrains 😩😩😩😩😩😩😩😩
+[CUSTOMER 1750735] @VirginTrains Worst customer service ever 😑",2017-11-07 18:00:48+00:00,"[1750736, 1750733, 1750734, 1750735]",conv_1750736,,,,,
+case_1627524,101,@VirginTrains your trains have been nothing but a joke today stuck with 5 kids on a train over a hour late to were I should be,"[CUSTOMER 1627524] @VirginTrains your trains have been nothing but a joke today stuck with 5 kids on a train over a hour late to were I should be
+[AGENT 1627522] @498280 Which service are you on, Byron? ^MM
+[CUSTOMER 1627523] @VirginTrains Wat was ment to be the 1045 to Glasgow from Euston
+[AGENT 1627525] @498280 Sorry to hear about your experience while travelling, Byron. Please claim via our Delay Repay form here - https://t.co/v2F1XYIfEP ^MM",2017-11-05 14:59:55+00:00,"[1627524, 1627522, 1627523, 1627525]",conv_1627524,,,,,
+case_1287833,102,"@VirginTrains Hi! Just a quick one, travelling MKC-MAN tomorrow afternoon - hoping to get the 1450, would it be possible to get a seat res?","[CUSTOMER 1287833] @VirginTrains Hi! Just a quick one, travelling MKC-MAN tomorrow afternoon - hoping to get the 1450, would it be possible to get a seat res?
+[AGENT 1287831] @421216 Can you DM us your booking reference? 😃 ^MM
+[CUSTOMER 1287832] @VirginTrains Have done, thank you ^MM!",2017-10-26 19:13:02+00:00,"[1287833, 1287831, 1287832]",conv_1287833,,,,,
+case_2986665,103,@VirginTrains have we got problems north of Lancaster ? 557 from Crewe been sitting at Lancaster for a while now ?,"[CUSTOMER 2986665] @VirginTrains have we got problems north of Lancaster ? 557 from Crewe been sitting at Lancaster for a while now ?
+[AGENT 2986663] @823525 Which time service are you on, Andy? ^LC
+[CUSTOMER 2986664] @VirginTrains 557 out of Crewe to Glasgow - becomes 654 out of Lancaster
+[AGENT 2986666] @823525 We do have some signalling issues causing delays but they should only be 20 minutes at the most. Are you now on the move? ^LC
+[CUSTOMER 2986667] @VirginTrains No - been sitting here for nearly an hour - That’s going to give me a problem with my pre booked advance return this afternoon - what can I do ?",2017-11-30 07:06:23+00:00,"[2986665, 2986663, 2986664, 2986666, 2986667]",conv_2986665,,,,,
+case_1507678,104,Hiya I’m on the 13:17 Preston to Euston and I’m sat in coach B. It’s not saying if the seats are available or reserved? @VirginTrains,"[CUSTOMER 1507678] Hiya I’m on the 13:17 Preston to Euston and I’m sat in coach B. It’s not saying if the seats are available or reserved? @VirginTrains
+[AGENT 1507676] @469929 Hi Peter. Sounds like the reservation system is down. As the train manager walks through the train, they can confirm. ^BT
+[CUSTOMER 1507677] @VirginTrains Ok, thank you for the swift response!",2017-11-03 13:37:22+00:00,"[1507678, 1507676, 1507677]",conv_1507678,,,,,
+case_978896,105,"@VirginTrains Hi! Ticket m/c @ Edinburgh sold me peak ticket for off peak journey. Was advised to contact you for refund, can you help?","[CUSTOMER 978896] @VirginTrains Hi! Ticket m/c @ Edinburgh sold me peak ticket for off peak journey. Was advised to contact you for refund, can you help?
+[AGENT 978891] @352159 Morning, who advised you to contact us, Michelle? Refunds must be done at the point of purchase ^LC
+[CUSTOMER 978894] @VirginTrains Ticket office @ Glasgow. Unable to got to visit office @ Edinburgh as was booked on service back to Grantham, no time to go to office... 1/2
+[CUSTOMER 978893] @VirginTrains They advised me to get conductor to write time on rtn portion (which I did) to prove I travelled off peak.
+[CUSTOMER 978895] @VirginTrains Purchased ticket 0858, receipt time stamped 0900. Day RTN Edinburgh/Glasgow. Travelled 0915, rtnd 1415. and was booked on 1530 south.
+[CUSTOMER 978892] @VirginTrains Live down south so can't visit Edinburgh ticket office!
+[AGENT 978897] @352159 If you could log the details here https://t.co/Yasgrtzt1O we can get this looked into, Michelle ^LC
+[CUSTOMER 978898] @VirginTrains Will do, thank you! :-)",2017-10-14 08:25:52+00:00,"[978896, 978891, 978894, 978893, 978895, 978892, 978897, 978898]",conv_978896,,,,,
+case_108401,106,"@VirginTrains thanks for doing your best to keep the guesswork as to when I will get home. Delayed and now slow, into rugby by 20.00 my arse.","[CUSTOMER 108401] @VirginTrains thanks for doing your best to keep the guesswork as to when I will get home. Delayed and now slow, into rugby by 20.00 my arse.
+[AGENT 108400] @140063 Which service are you on today? ^BT",2017-11-23 19:37:32+00:00,"[108401, 108400]",conv_108401,,,,,
+case_498209,107,@VirginTrains just seen your email about strikes on 22nd and you aren't running trains to chester and North Wales. How I am supposed to get home for Christmas please?,"[CUSTOMER 498209] @VirginTrains just seen your email about strikes on 22nd and you aren't running trains to chester and North Wales. How I am supposed to get home for Christmas please?
+[AGENT 498207] @233923 Alternatively routes and ticket acceptance will be added to the website once approved ^MM
+[CUSTOMER 498208] @VirginTrains Okay. Thank you",2017-12-01 18:18:31+00:00,"[498209, 498207, 498208]",conv_498209,,,,,
+case_1506857,108,@VirginTrains hi can you tell me how much it would cost to upgrade to first class on the train on day of travel?,"[CUSTOMER 1506857] @VirginTrains hi can you tell me how much it would cost to upgrade to first class on the train on day of travel?
+[AGENT 1506856] @469730 This can depend on a lot of things. If you DM us your booking reference we can take a look for you. ^BT https://t.co/hhfk9c3ylv",2017-11-03 13:18:21+00:00,"[1506857, 1506856]",conv_1506857,,,,,
+case_1763905,109,"@VirginTrains 17:30 Glasgow to Euston stopped at Crewe. Driver says “waiting for train crew, I have no info “. Not good enough!","[CUSTOMER 1763905] @VirginTrains 17:30 Glasgow to Euston stopped at Crewe. Driver says “waiting for train crew, I have no info “. Not good enough!
+[AGENT 1763903] @530650 They will have been delayed on earlier late running services sorry. ^PA
+[CUSTOMER 1763904] @VirginTrains Thanks for reply, but is this service ever leaving or am I staying the night in Kroo?
+[AGENT 1763906] @530650 It will be running, but we don't have a time yet. ^PA
+[CUSTOMER 1763908] @VirginTrains 30 mins till we get a train manager?? I’ve got another 1.5hrs to travel when I get to London
+[CUSTOMER 1763907] @VirginTrains At least your updates are slightly more accurate than the ones from #southernfail I suppose
+[CUSTOMER 1763909] @VirginTrains Paid for the wifi on original service. Access code I was given when I purchased isn’t working on the 21:24 connecting service we all took
+[AGENT 1763910] @530650 What issues are you having? Is it not connecting? ^PA
+[CUSTOMER 1763911] @VirginTrains Yep. Not connecting. Are access details network (ie. train)-specific?
+[AGENT 1763912] @530650 Apologies, could you please try forgetting the network in your settings, reconnect &amp; follow https://t.co/1JEOSVPtGN ^HP",2017-11-07 21:10:20+00:00,"[1763905, 1763903, 1763904, 1763906, 1763908, 1763907, 1763909, 1763910, 1763911, 1763912]",conv_1763905,,,,,
+case_1732752,110,"@VirginTrains, if a passenger happens not to hear aannouncement about the food brought round, good response isn't gruff ""Well, I heard it!""","[CUSTOMER 1732752] @VirginTrains, if a passenger happens not to hear aannouncement about the food brought round, good response isn't gruff ""Well, I heard it!""
+[AGENT 1732750] @523393 Sorry to hear this. What service were you on? Did you catch the member of staffs name? ^BT
+[CUSTOMER 1732749] @VirginTrains On the GLC-EUS 12:00 - no name and I don't especially want specific staff in trouble, but maybe some general training...?
+[AGENT 1732747] @523393 We will be sure to pass this on! ^BT
+[CUSTOMER 1732748] @VirginTrains Thanks.
+[CUSTOMER 1732751] @VirginTrains It's possible it was an attempt at humour, but it didn't come across as such.
+[AGENT 1732761] @523393 Ooooo! Sorry! Clearly I'm no good at taking the hint 🤦🏻‍♀️ ^BT
+[CUSTOMER 1732762] @VirginTrains No, I meant the member of staff's comment might have been an attempt at humour. Sorry I was unclear.
+[AGENT 1732763] @523393 I see, no worries! Seems like we were both confused 😂 ^BT",2017-11-07 12:41:05+00:00,"[1732752, 1732750, 1732749, 1732747, 1732748, 1732751, 1732761, 1732762, 1732763]",conv_1732752,,,,,
+case_2416896,111,Whoever this @VirginTrains conductor guy is his witty banter on the tannoy is top class 😂😂 x,"[CUSTOMER 2416896] Whoever this @VirginTrains conductor guy is his witty banter on the tannoy is top class 😂😂 x
+[AGENT 2416894] @694577 What service are you on Heather? If you wish to pass your comments on you can do so here https://t.co/n3ms6zvlp7 ^BT
+[CUSTOMER 2416895] @VirginTrains The 10:38 Glasgow to London. I will do thanks x",2017-10-29 13:24:03+00:00,"[2416896, 2416894, 2416895]",conv_2416896,,,,,
+case_1255839,112,@VirginTrains I wont be getting on one of your trains ever again in my life. You’ve made me potentially miss out on my dream job. Your staff,"[CUSTOMER 1255839] @VirginTrains I wont be getting on one of your trains ever again in my life. You’ve made me potentially miss out on my dream job. Your staff
+[CUSTOMER 1255837] @VirginTrains are absolutely appalling. The service and behaviour I just recieved was abysmal. When does your customer service line open so I can get a
+[AGENT 1255836] @414446 Could you explain a little further in DM please? ^MW https://t.co/hhfk9c3ylv
+[CUSTOMER 1255835] @VirginTrains Ive dm’d you can I get my refund asap thanks.
+[AGENT 1255834] @414446 We will reply ASAP ^MW",2017-10-26 06:58:42+00:00,"[1255839, 1255837, 1255836, 1255835, 1255834]",conv_1255839,,,,,
+case_638798,113,1st class ticket. Ended up standing in a vestibule. Flooding on the line but announcement mistakenly told us not to get on Oxenholme train and to switch trains. It would have got us home by now. @VirginTrains https://t.co/Rn55OsOtlp,"[CUSTOMER 638798] 1st class ticket. Ended up standing in a vestibule. Flooding on the line but announcement mistakenly told us not to get on Oxenholme train and to switch trains. It would have got us home by now. @VirginTrains https://t.co/Rn55OsOtlp
+[AGENT 638796] @271502 Sorry to see this Tom, please accept our apologies. You can claim for this delay here https://t.co/v2F1XYIfEP^BT
+[CUSTOMER 638797] @VirginTrains Cheers. Have done.",2017-11-22 19:45:39+00:00,"[638798, 638796, 638797]",conv_638798,,,,,
+case_2009355,114,@VirginTrains I'm trying to book a ticket but on national rail site it says £15.85 but when it opens onto the virgin website it says £50.90?,"[CUSTOMER 2009355] @VirginTrains I'm trying to book a ticket but on national rail site it says £15.85 but when it opens onto the virgin website it says £50.90?
+[AGENT 2009353] @594159 Which ticket is it, can you send us screen shots please. ^PA
+[CUSTOMER 2009354] @VirginTrains https://t.co/NHolV5lb5j
+[AGENT 2009356] @594159 The ticket on our site is that an Off Peak or Advance? ^PA
+[CUSTOMER 2009357] @VirginTrains off peak, but when I press buy now on national rail it opens to that on your site
+[AGENT 2009358] @594159 The ticket on National Rail is an Advance ticket, I'm not sure why it changes it to Off Peak on ours though. ^PA
+[CUSTOMER 2009359] @VirginTrains so I can't get it for £15.85?
+[AGENT 2009361] @594159 What date are you looking to travel? ^PA
+[CUSTOMER 2009362] @VirginTrains Tomorrow, 19th
+[AGENT 2009360] @594159 Sorry I've just looked it may be that those tickets have sold out now. ^PA
+[AGENT 2009363] @594159 The cheapest I can find is £23.10. ^PA https://t.co/lGqyo4pyN0
+[CUSTOMER 2009364] @VirginTrains Okay thank you i'll look into it :)",2017-10-18 20:25:53+00:00,"[2009355, 2009353, 2009354, 2009356, 2009357, 2009358, 2009359, 2009361, 2009362, 2009360, 2009363, 2009364]",conv_2009355,,,,,
+case_482898,115,@VirginTrains what is going on with the heating on the 13.00 Edinburgh - LKX???,"[CUSTOMER 482898] @VirginTrains what is going on with the heating on the 13.00 Edinburgh - LKX???
+[AGENT 482896] @229852 Hi Thomas, we'll pass this over to @120576 for you as this is their service ^HP
+[CUSTOMER 482897] @VirginTrains @120576 I've tweeted them too but just a solution to the problem would be grand.",2017-12-01 14:00:58+00:00,"[482898, 482896, 482897]",conv_482898,,,,,
+case_1432710,116,@VirginTrains Is there any storm disruption anticipated london to manchester? Has Ophelia gone?,"[CUSTOMER 1432710] @VirginTrains Is there any storm disruption anticipated london to manchester? Has Ophelia gone?
+[AGENT 1432708] @298622 We're not expecting any issues at all, Christine ^MW
+[CUSTOMER 1432709] @VirginTrains Thank you.",2017-10-16 19:00:47+00:00,"[1432710, 1432708, 1432709]",conv_1432710,,,,,
+case_2826979,117,@VirginTrains Awaiting response on 2 seperate customer queries/complaints...,"[CUSTOMER 2826979] @VirginTrains Awaiting response on 2 seperate customer queries/complaints...
+[AGENT 2826977] @787430 Hi Vicky, could you DM the VT references please? ^LC
+[CUSTOMER 2826978] @VirginTrains Thanks will do",2017-11-27 10:46:56+00:00,"[2826979, 2826977, 2826978]",conv_2826979,,,,,
+case_482870,118,"Hi @VirginTrains can you let me know which ""Other Operators Services"" I can get from London to Edinburgh on 22nd December, or can I switch to a Glasgow service instead?","[CUSTOMER 482870] Hi @VirginTrains can you let me know which ""Other Operators Services"" I can get from London to Edinburgh on 22nd December, or can I switch to a Glasgow service instead?
+[AGENT 482869] @229844 Hi there, please keep an eye on our website here: https://t.co/PjanfpevzM for further updates on this ^HP
+[CUSTOMER 482868] @VirginTrains Thanks, thats where I was looking but Virgin operate a monopoly on London-Edinburgh so I don't know which other rail operator I can go with. Is there one I'm not aware of?
+[AGENT 482867] @229844 We'll be providing further updates on this shortly so please keep an eye on the page. Thanks ^HP",2017-12-01 13:55:19+00:00,"[482870, 482869, 482868, 482867]",conv_482870,,,,,
+case_2605366,119,Needed a wee at Estonia but didn't have 30p on me. Now have 97 10p coins in my pocket. Thanks @VirginTrains!,"[CUSTOMER 2605366] Needed a wee at Estonia but didn't have 30p on me. Now have 97 10p coins in my pocket. Thanks @VirginTrains!
+[AGENT 2605364] @737149 🤔 You're welcome? ^MW
+[CUSTOMER 2605365] @VirginTrains Euston. I had to get a tenner out and use the change machine, which gave me £10 of 10p coins, so I could spend 30p too use the loo.
+[AGENT 2605367] @737149 That's a bit awkward then 😞 ^MW
+[CUSTOMER 2605368] @VirginTrains I'm on the train now. Can I pay for wifi access in 10ps??
+[AGENT 2605369] @737149 Sorry Sam, drop us a DM please? ^MW https://t.co/hhfk9c3ylv",2017-10-30 20:15:16+00:00,"[2605366, 2605364, 2605365, 2605367, 2605368, 2605369]",conv_2605366,,,,,
+case_2687600,120,@VirginTrains What does the service tend to be like on Easter Monday? Planning a journey for 2nd April next year but dont know whether trains run on easter Mondays or not?,"[CUSTOMER 2687600] @VirginTrains What does the service tend to be like on Easter Monday? Planning a journey for 2nd April next year but dont know whether trains run on easter Mondays or not?
+[AGENT 2687599] @755699 They will run but may be subject to engineering works, Ollie. However, we should know more early next year ^MW",2017-11-19 13:29:59+00:00,"[2687600, 2687599]",conv_2687600,,,,,
+case_845657,121,"@VirginTrains
+Not resolving my issues after 6 calls over 2 months, with seat reservations. Please DM me, being told completely mixed messages from different ppl. If you can give me a UK contact centre please to resolve","[CUSTOMER 845657] @VirginTrains Not resolving my issues after 6 calls over 2 months, with seat reservations. Please DM me, being told completely mixed messages from different ppl. If you can give me a UK contact centre please to resolve
+[AGENT 845656] @321009 Hi Charlie. Our UK-based Customer Resolutions team can be reached through LiveChat here: https://t.co/YB2X8iaeb7 ^CB",2017-11-25 10:16:49+00:00,"[845657, 845656]",conv_845657,,,,,
+case_650857,122,Late @VirginTrains back to Manchester from London after the @269539. Congratulations to all the winners! 😴,"[CUSTOMER 650857] Late @VirginTrains back to Manchester from London after the @269539. Congratulations to all the winners! 😴
+[AGENT 650856] @274778 @269539 Sorry for the late running tonight, Elle ^MW
+[CUSTOMER 650855] @VirginTrains @269539 Ah I meant late train Home as in time, not delay 😊 whoops!
+[AGENT 650854] @274778 @269539 Ah that's good to hear, Elle :) Enjoy your journey ^HP",2017-11-22 21:13:01+00:00,"[650857, 650856, 650855, 650854]",conv_650857,,,,,
+case_99689,123,"Frequent @GWRHelp passenger thoroughly enjoying rare excursion on @VirginTrains  Comfort, warmth, lighting, food. Take over franchise please","[CUSTOMER 99689] Frequent @GWRHelp passenger thoroughly enjoying rare excursion on @VirginTrains Comfort, warmth, lighting, food. Take over franchise please
+[AGENT 99688] @137823 @GWRHelp Welcome onboard, Carolyn. Great to hear that you're enjoying your experience :) ^HP",2017-11-30 17:07:54+00:00,"[99689, 99688]",conv_99689,,,,,
+case_509190,124,"@VirginTrains Can't think of a better way to spend a Friday than turning up to Euston, finding out all trains are delayed indefinitely, giving up and going home, then being told I have to pay £10 for a refund. Thanks!","[CUSTOMER 509190] @VirginTrains Can't think of a better way to spend a Friday than turning up to Euston, finding out all trains are delayed indefinitely, giving up and going home, then being told I have to pay £10 for a refund. Thanks!
+[AGENT 509189] @236964 You should have been able to claim a full refund due to these issues ^MW
+[CUSTOMER 509188] @VirginTrains I was told full refund minus £10 on the phone
+[AGENT 509187] @236964 I see, might be worth asking to speak to a manager about this ^MW",2017-12-01 22:08:20+00:00,"[509190, 509189, 509188, 509187]",conv_509190,,,,,
+case_1215881,125,"@VirginTrains I’m due to get a train at 21:07 from Euston to Liverpool, any idea what I should do? I’ve checked out of my hotel already","[CUSTOMER 1215881] @VirginTrains I’m due to get a train at 21:07 from Euston to Liverpool, any idea what I should do? I’ve checked out of my hotel already
+[AGENT 1215879] @405310 Hi Lee, we are expecting services to resume so we'd advise checking Live Updates here: https://t.co/tIQGkPAP0K ^HP
+[CUSTOMER 1215880] @VirginTrains Thanks a lot, will do",2017-10-25 17:10:44+00:00,"[1215881, 1215879, 1215880]",conv_1215881,,,,,
+case_970385,126,8.05am on a Sunday and the @VirginTrains quiet coach is already abuzz with noise for this 3 hour journey.,"[CUSTOMER 970385] 8.05am on a Sunday and the @VirginTrains quiet coach is already abuzz with noise for this 3 hour journey.
+[AGENT 970383] @350272 Which service are you on today? ^LC
+[CUSTOMER 970384] @VirginTrains 8:15 from Euston to Liverpool. It quietens down sometimes.",2017-10-22 07:06:38+00:00,"[970385, 970383, 970384]",conv_970385,,,,,
+case_1894754,127,"My train from Newcastle to LKX was delayed by more than two hours on 1/10/17, but I still haven't received my compensation 😔 @VirginTrains https://t.co/w557kq4SQz","[CUSTOMER 1894754] My train from Newcastle to LKX was delayed by more than two hours on 1/10/17, but I still haven't received my compensation 😔 @VirginTrains https://t.co/w557kq4SQz
+[AGENT 1894752] @502132 Hi there. This would be one for our friends at @120576 ^BT
+[OTHER-AGENT 1894753] @VirginTrains @502132 Sorry to hear this - do you have a Customer Reference Number (beginning with VTN)? ^KM
+[CUSTOMER 1894755] @120576 @VirginTrains Hi @120576 no, I don't. Sorry. Is there anything else I can give?",2017-10-18 12:19:56+00:00,"[1894754, 1894752, 1894753, 1894755]",conv_1894754,,,,,
+case_1750708,128,@VirginTrains how do you recommend getting from Euston to Lime Street?,"[CUSTOMER 1750708] @VirginTrains how do you recommend getting from Euston to Lime Street?
+[AGENT 1750706] @527560 You can go from @120576 to Leeds then @242596 to Liverpool from there ^MW
+[CUSTOMER 1750705] @VirginTrains @120576 @242596 Can I go via York too?
+[AGENT 1750703] @527560 @120576 @242596 That's not a route we're aware of Damian ^MW
+[CUSTOMER 1750704] @VirginTrains @120576 @242596 KingsX to York, York to Picc, Picc to Liverpool - gets in same time to Liverpool
+[CUSTOMER 1750707] @VirginTrains @120576 @242596 Can I use Northern Rail services or just TPE?
+[AGENT 1756552] @527560 @120576 @242596 Either yes ^MW
+[CUSTOMER 1756553] @VirginTrains @120576 @242596 Thanks",2017-11-07 17:33:02+00:00,"[1750708, 1750706, 1750705, 1750703, 1750704, 1750707, 1756552, 1756553]",conv_1750708,,,,,
+case_2737737,129,"@127472, I’m having a lovely journey north, celebrating my @767110 #chartership and enjoying the fabulous @VirginTrains prosecco. And mini cheddars, obviously! https://t.co/TRtu1mTYZo","[CUSTOMER 2737737] @127472, I’m having a lovely journey north, celebrating my @767110 #chartership and enjoying the fabulous @VirginTrains prosecco. And mini cheddars, obviously! https://t.co/TRtu1mTYZo
+[AGENT 2737735] @767109 @127472 @767110 Congratulations, Victoria! Enjoy the Mini Cheddar and the prosecco :) ^MM
+[CUSTOMER 2737736] @VirginTrains @127472 @767110 thank you. If you could just get Richard to reply - you would actually make my century ;0D x",2017-11-20 20:15:34+00:00,"[2737737, 2737735, 2737736]",conv_2737737,,,,,
+case_2123030,130,"@VirginTrains Hello, if my train was delayed 90 minutes and I had a single advance ticket will I be refunded automatically or do I need to fill out a form?","[CUSTOMER 2123030] @VirginTrains Hello, if my train was delayed 90 minutes and I had a single advance ticket will I be refunded automatically or do I need to fill out a form?
+[AGENT 2123029] @625419 Hi Jack, which service were you travelling on please? :) ^HP",2017-11-08 15:38:24+00:00,"[2123030, 2123029]",conv_2123030,,,,,
+case_503201,131,@VirginTrains what’s the latest with trains? Need to plan a route!,"[CUSTOMER 503201] @VirginTrains what’s the latest with trains? Need to plan a route!
+[AGENT 503200] @235250 Live Updates can be found via https://t.co/d45VzNRAer ^MM",2017-12-01 19:57:11+00:00,"[503201, 503200]",conv_503201,,,,,
+case_2392346,132,"@virgintrains why can’t connect to your WiFi on my phone!? Paid £5, selecting ‘virgintrainswifi’ but am not getting a link to put my pswrd!?","[CUSTOMER 2392346] @virgintrains why can’t connect to your WiFi on my phone!? Paid £5, selecting ‘virgintrainswifi’ but am not getting a link to put my pswrd!?
+[AGENT 2392345] @688951 Try https://t.co/1JEOSVPtGN ^PA
+[CUSTOMER 2392344] @VirginTrains https://t.co/52rFMmP6SK
+[AGENT 2392343] @688951 Oh no, try calling WiFi Support and they can assist, you can get them on 0330 088 1271 ^PA
+[CUSTOMER 2392342] @VirginTrains I’m an hour into my journey now with an hour left to go. By the time this is sorted it will be too late. Refund please?
+[AGENT 2392341] @688951 You can contact __email__ for a refund. ^PA",2017-11-14 10:29:42+00:00,"[2392346, 2392345, 2392344, 2392343, 2392342, 2392341]",conv_2392346,,,,,
+case_2530791,133,"So not only are train prices an absolute rip off, but @virgintrains won't let me buy the tickets on the National Rail site. Bring back BR","[CUSTOMER 2530791] So not only are train prices an absolute rip off, but @virgintrains won't let me buy the tickets on the National Rail site. Bring back BR
+[AGENT 2530789] @720389 The National Rail site won't retail tickets. It would take you to the train operators website ^CB
+[CUSTOMER 2530790] @VirginTrains yes, which then says the ticket isn't available, so here, have this one which is almost twice as expensive instead.
+[AGENT 2530792] @720389 If you want to find our cheapest available fares I'd recommend using the Best Fare Finder: https://t.co/SF3a5zlzUV ^CB
+[CUSTOMER 2530794] @VirginTrains Which doesn't recognise Skipton or even Leeds as train stations. Seriously, this is such an appalling user experience.
+[CUSTOMER 2530793] @VirginTrains How can Virgin justify £40 there, and £130 back? Are you just making it up as you go along?
+[AGENT 2530795] @720389 You'd need to speak with @120576 as they're better suited for the services on that route ^CB
+[OTHER-AGENT 2530796] @VirginTrains @720389 When are you due to travel? ^KM
+[CUSTOMER 2530797] @120576 @VirginTrains Booked a later train at extra cost, but annoyed 10:59 service from Battle to Skipton on Nat Rail not available on Virgin site.
+[CUSTOMER 2530798] @120576 @VirginTrains The website also went wrong a number of times, which wasn't helpful.
+[OTHER-AGENT 2530799] @720389 @VirginTrains If you send over details of exactly what went wrong, I can pass these to our Web Team to investigate. ^KM",2017-10-30 10:36:01+00:00,"[2530791, 2530789, 2530790, 2530792, 2530794, 2530793, 2530795, 2530796, 2530797, 2530798, 2530799]",conv_2530791,,,,,
+case_747228,134,On @VirginTrains stuck at Hemel due to trespassers on track.,"[CUSTOMER 747228] On @VirginTrains stuck at Hemel due to trespassers on track.
+[AGENT 747227] @298627 Sorry for the delay. ^PA",2017-10-11 16:52:12+00:00,"[747228, 747227]",conv_747228,,,,,
+case_532939,135,"@VirginTrains I've been trying to contact PAX for 2 months now re lost luggage, but no one answers or returns my voicemail... Does this company even exist?!","[CUSTOMER 532939] @VirginTrains I've been trying to contact PAX for 2 months now re lost luggage, but no one answers or returns my voicemail... Does this company even exist?!
+[AGENT 532936] @243276 Hi there, sorry to hear this, can we ask which number you have contacted please? ^HP
+[CUSTOMER 532937] @VirginTrains 03331031031 - 01707373734 - 0344 8110133 - 02073878699 - 02073878699 .... all on multiple occasions! It's been a long process...!!!
+[CUSTOMER 532938] @VirginTrains Can you advise of an alternative to 01707373734 please?
+[AGENT 532940] @243276 Thanks, our Lost Property line is: 03331 031 031 option 1, 3 so they may be able to help further ^HP",2017-12-02 11:02:29+00:00,"[532939, 532936, 532937, 532938, 532940]",conv_532939,,,,,
+case_900171,136,Impossible scenes at Euston station the second the platform gets announced! People are crazy @VirginTrains,"[CUSTOMER 900171] Impossible scenes at Euston station the second the platform gets announced! People are crazy @VirginTrains
+[AGENT 900169] @333707 It can get a bit chaotic Fran, hope you made it to the train. ^PA
+[CUSTOMER 900170] @VirginTrains There were a few almost-fights, ha! Was wondering if you’re handing out freebies but it’s just seats 😂
+[AGENT 900172] @333707 I imagine it was like this 🤣 ^PA https://t.co/pZLFg0jbrh
+[CUSTOMER 900173] @VirginTrains Exactly like THIS 💪🏼",2017-11-17 19:21:27+00:00,"[900171, 900169, 900170, 900172, 900173]",conv_900171,,,,,
+case_1205971,137,Please advise @VirginTrains are reservations on Saturday services a thing of the past? I'm having trouble booking seats in January. :(,"[CUSTOMER 1205971] Please advise @VirginTrains are reservations on Saturday services a thing of the past? I'm having trouble booking seats in January. :(
+[AGENT 1205970] @403218 Drop us a DM with the journey details and we'll take a look for you, Justin ^MW",2017-10-25 08:45:09+00:00,"[1205971, 1205970]",conv_1205971,,,,,
+case_813046,138,This is how you travel by virgin now !!!!! Shame on you @VirginTrains https://t.co/cLAdWmk2Hj,"[CUSTOMER 813046] This is how you travel by virgin now !!!!! Shame on you @VirginTrains https://t.co/cLAdWmk2Hj
+[AGENT 813047] @313738 Sorry to see that, which service are you on? ^PA
+[CUSTOMER 813048] @VirginTrains We are on the 9.07 from dundee with my grandson for his birthday treat
+[AGENT 813055] @313738 This sounds like it's one for @120576 to help with. ^PA
+[CUSTOMER 813042] @VirginTrains Ok can you tag them in this as don’t have their Twitter address
+[AGENT 813040] @313738 I already have :) ^PA
+[CUSTOMER 813041] @VirginTrains Thanks was supposed to be a birthday treat 😱
+[AGENT 813043] @313738 Have you spoken to @120576 ^PA
+[CUSTOMER 813044] @VirginTrains @120576 Pa? Have sent an email to customer service
+[AGENT 813045] @313738 @120576 I meant did you tweet them because it's their service. ^PA",2017-11-25 09:35:52+00:00,"[813046, 813047, 813048, 813055, 813042, 813040, 813041, 813043, 813044, 813045]",conv_813046,,,,,
+case_602048,139,"Got to say your Staff onboard tonight was an absolute disgrace,attitude stank and was very unhelpful at a very stressful time @VirginTrains","[CUSTOMER 602048] Got to say your Staff onboard tonight was an absolute disgrace,attitude stank and was very unhelpful at a very stressful time @VirginTrains
+[AGENT 602046] @133690 Were you looking to make a complaint, JW? ^MW
+[CUSTOMER 602047] @VirginTrains Yes!!",2017-12-03 20:29:40+00:00,"[602048, 602046, 602047]",conv_602048,,,,,
+case_2777034,140,"@VirginTrains please send me the link to access the WiFi connection page on Virgin West Coast trains - have got my code, am onboard, and there is no link/WiFi not working or loading log in page 😤","[CUSTOMER 2777034] @VirginTrains please send me the link to access the WiFi connection page on Virgin West Coast trains - have got my code, am onboard, and there is no link/WiFi not working or loading log in page 😤
+[AGENT 2777033] @775911 Please try https://t.co/1JEOSVPtGN ^MM",2017-11-21 15:13:37+00:00,"[2777034, 2777033]",conv_2777034,,,,,
+case_2129830,141,Now I’ve got #280characters probably a good time to continue my story. Also delayed massively by @VirginTrains so let’s be honest I have some time!,"[CUSTOMER 2129830] Now I’ve got #280characters probably a good time to continue my story. Also delayed massively by @VirginTrains so let’s be honest I have some time!
+[AGENT 2129829] @626929 Sorry to hear that, Charlotte, which service are you on please? ^HP
+[CUSTOMER 2129828] @VirginTrains It was the 4.15 from Leeds. We’re on our way now. Just been a bit of a pain. Staff kept us updated though.
+[AGENT 2129826] @626929 Apologies Charlotte, it sounds like you're on a @120576 service. Glad to hear you're on the move now ^HP
+[OTHER-AGENT 2129827] @VirginTrains @626929 Glad to hear you're back on the move Charlotte. Really sorry for the delay this evening. ^MS",2017-11-08 19:30:32+00:00,"[2129830, 2129829, 2129828, 2129826, 2129827]",conv_2129830,,,,,
+case_1844537,142,Trains delays are pap however the staff at @VirginTrains in Euston today have been absolutely wonderful. Well done and thank you! 👏🏻,"[CUSTOMER 1844537] Trains delays are pap however the staff at @VirginTrains in Euston today have been absolutely wonderful. Well done and thank you! 👏🏻
+[AGENT 1844536] @552600 Thanks so much for your feedback, Lauren, we really appreciate it 😊 ^HP",2017-11-07 21:50:19+00:00,"[1844537, 1844536]",conv_1844537,,,,,
+case_1949966,143,driver and staff esp Steve on  16.33 to Bkpl u did a g8 job keeping us informed in circs  @VirginTrains pass on thx &amp; thoughts❤️ #Bletchley,"[CUSTOMER 1949966] driver and staff esp Steve on 16.33 to Bkpl u did a g8 job keeping us informed in circs @VirginTrains pass on thx &amp; thoughts❤️ #Bletchley
+[AGENT 1949965] @579218 Thanks for your feedback Lisa :) ^HP
+[CUSTOMER 1949964] @VirginTrains Well deserved they did a fab job, kept calm and patient running up and down making sure everyone was updated xx
+[AGENT 1949963] @579218 Brilliant, that's great to hear ^BH",2017-11-07 22:06:06+00:00,"[1949966, 1949965, 1949964, 1949963]",conv_1949966,,,,,
+case_2683258,144,Very thankful for my seat booking on the 2pm Newcastle to London. Packed with standing passengers ~ unsafe I’d say!! @VirginTrains,"[CUSTOMER 2683258] Very thankful for my seat booking on the 2pm Newcastle to London. Packed with standing passengers ~ unsafe I’d say!! @VirginTrains
+[AGENT 2683256] @754745 Hi Lesley, it sounds like you're travelling with @120576 today ^HP
+[CUSTOMER 2683257] @VirginTrains @120576 I am indeed!",2017-11-19 15:09:06+00:00,"[2683258, 2683256, 2683257]",conv_2683258,,,,,
+case_680303,145,"@VirginTrains: register for wifi
+Me: enters Virginmedia email
+@Virgintrains: email must be valid
+Me: do you know something I don't? 🤔","[CUSTOMER 680303] @VirginTrains: register for wifi Me: enters Virginmedia email @Virgintrains: email must be valid Me: do you know something I don't? 🤔
+[AGENT 680302] @282325 That is odd! Are you making sure it's entered correctly? ^CB",2017-11-23 08:13:28+00:00,"[680303, 680302]",conv_680303,,,,,
+case_799171,146,"Train was just cancelled,money ‘can’t be refunded’ and not told when to expect the next train @VirginTrains! (1/2)","[CUSTOMER 799171] Train was just cancelled,money ‘can’t be refunded’ and not told when to expect the next train @VirginTrains! (1/2)
+[AGENT 799170] @310501 Hi there, what type of ticket do you have please? ^HP",2017-10-27 14:30:27+00:00,"[799171, 799170]",conv_799171,,,,,
+case_2106621,147,@VirginTrains cup of tea around £3 but the assistant tells me ‘we don’t have fresh milk spare for you only those shit cartons’!!!! 😕,"[CUSTOMER 2106621] @VirginTrains cup of tea around £3 but the assistant tells me ‘we don’t have fresh milk spare for you only those shit cartons’!!!! 😕
+[AGENT 2106620] @621727 Oh dear Jules. Not what we like to hear. What service are you travelling on today? ^BT
+[CUSTOMER 2106618] @VirginTrains The 9:32 from Berwick to Edinburgh which I do every day.
+[AGENT 2106616] @621727 I see, we'll make @120576 aware of this for you, Jules ^MW
+[OTHER-AGENT 2106617] @VirginTrains @621727 I'm sorry to hear this Jules. We'll feed this back to the catering team. ^JC
+[CUSTOMER 2106619] @120576 @VirginTrains Thank you!",2017-11-08 09:41:26+00:00,"[2106621, 2106620, 2106618, 2106616, 2106617, 2106619]",conv_2106621,,,,,
+case_2545480,148,"@VirginTrains Wonderful train manager on the 19.17 Euston to Manc Picc train, doing his best to get everyone from the cancelled 18.57 train into a seat and openly explaining the compensation procedures 👏🏼👏🏼👏🏼","[CUSTOMER 2545480] @VirginTrains Wonderful train manager on the 19.17 Euston to Manc Picc train, doing his best to get everyone from the cancelled 18.57 train into a seat and openly explaining the compensation procedures 👏🏼👏🏼👏🏼
+[AGENT 2545479] @723509 Glad to hear it, please pass on some praise here - https://t.co/YWKM1ZQRwd ^MW",2017-11-26 20:24:11+00:00,"[2545480, 2545479]",conv_2545480,,,,,
+case_2358121,149,@VirginTrains I'm teaching a class on social media at #Drexel @92110 College of Business.  Any tips for my students on how brands should use social media?,"[CUSTOMER 2358121] @VirginTrains I'm teaching a class on social media at #Drexel @92110 College of Business. Any tips for my students on how brands should use social media?
+[AGENT 2358119] @681105 @92110 1. Don't say naughty words. 2. Respond timely. 3. Find out as much information as possible to help. 4. You don't always have to take yourself seriously (well we don't!) 5. Have fun with it! ^CB
+[CUSTOMER 2358120] @VirginTrains @92110 Thanks! Have a great lunch! https://t.co/Zo6g1wvk0o",2017-11-13 19:54:36+00:00,"[2358121, 2358119, 2358120]",conv_2358121,,,,,
+case_136342,150,"@VirginTrains Your cleaner at Stockport is psychic. In the door, sign the sheet and straight back out again. https://t.co/ZauWxsyNXR","[CUSTOMER 136342] @VirginTrains Your cleaner at Stockport is psychic. In the door, sign the sheet and straight back out again. https://t.co/ZauWxsyNXR
+[AGENT 136340] @146729 Oh dear, have you spoken to station staff regarding this? ^PA
+[CUSTOMER 136341] @VirginTrains Sorry, I had a train to catch!
+[AGENT 136343] @146729 I'll get it reported. ^PA",2017-11-24 09:13:14+00:00,"[136342, 136340, 136341, 136343]",conv_136342,,,,,
+case_1409489,151,"It's almost time to leave London and head back to the North West, First Class of course. #tnwbbontour https://t.co/7JGhJye2qX","[CUSTOMER 1409489] It's almost time to leave London and head back to the North West, First Class of course. #tnwbbontour https://t.co/7JGhJye2qX
+[CUSTOMER 1409488] It would be awfully rude not to have a cheeky tipple on the way back towards the North West! #tnwbbontour https://t.co/4Yr9LSYyFx
+[CUSTOMER 1409483] Dining at 125 MPH... A creamy Mushroom Stroganoff for dinner courtesy of @VirginTrains. 😋 #tnwbbontour https://t.co/H1E5D7PmRy
+[AGENT 1409482] @318864 Looking good! ^MW
+[CUSTOMER 1409484] @VirginTrains Wowzers, strawberry trifle for afters. They're going to have to role me off this train! 😋 #tnwbbontour https://t.co/owu5Fuztrp
+[AGENT 1414601] @318864 That is a lovely little pot, enjoy! ^MW
+[CUSTOMER 1414600] @VirginTrains What pot? It's already gone! 😂 ^TH
+[AGENT 1414598] @318864 You didn't save me any? ^MW
+[CUSTOMER 1414599] @VirginTrains Maybe next time! 😉 ^TH",2017-10-16 16:33:25+00:00,"[1409489, 1409488, 1409483, 1409482, 1409484, 1414601, 1414600, 1414598, 1414599]",conv_1409489,,,,,
+case_52614,152,"@VirginTrains  on a broken down 19:15 Leeds to London for 25 minutes with no sign of moving, no ETA.Not a happy customer!","[CUSTOMER 52614] @VirginTrains on a broken down 19:15 Leeds to London for 25 minutes with no sign of moving, no ETA.Not a happy customer!
+[AGENT 52612] @127839 The @120576 team may be able to advise further ^CB
+[CUSTOMER 52613] @VirginTrains @120576 Still waiting for news on ETA to London!",2017-11-01 18:16:35+00:00,"[52614, 52612, 52613]",conv_52614,,,,,
+case_539571,153,Hi @VirginTrains I wondered if you could help it’s my mums 60th birthday and her 40th wedding anniversary I am taking her and my daughter  to London for the day next Sat 9th Dec I wondered if Virgin Trains would upgrade her in honour of her milestones? Or mark it in some way ?,"[CUSTOMER 539571] Hi @VirginTrains I wondered if you could help it’s my mums 60th birthday and her 40th wedding anniversary I am taking her and my daughter to London for the day next Sat 9th Dec I wondered if Virgin Trains would upgrade her in honour of her milestones? Or mark it in some way ?
+[AGENT 539569] @245130 We'd be unable to offer an upgrade from here, Jane. We'd advise speaking to the team onboard ^MM
+[CUSTOMER 539570] @VirginTrains Thank you ... are you able to tell me the name of the Train Manager on the day or contact him on the day on my behalf ?
+[AGENT 539572] @245130 Unfortunately we wouldn't have this information at the moment, however, if you drop us a message on the day we will do our best to get in touch with them for you ^HP
+[CUSTOMER 539573] @VirginTrains Thank you",2017-12-02 14:37:34+00:00,"[539571, 539569, 539570, 539572, 539573]",conv_539571,,,,,
+case_1573957,154,Why does Stockport station have 5x the bike parking of Manchester's main stations? Piccadilly was just redeveloped! #wtf @VirginTrains? https://t.co/C5AbHZAggg,"[CUSTOMER 1573957] Why does Stockport station have 5x the bike parking of Manchester's main stations? Piccadilly was just redeveloped! #wtf @VirginTrains? https://t.co/C5AbHZAggg
+[AGENT 1573955] @485101 Hi there, we'll pass your comments on in regards to this ^HP",2017-11-04 14:09:39+00:00,"[1573957, 1573955]",conv_1573957,,,,,
+case_1364937,155,@VirginTrains why pay for ALL DAY first class return tickets when you don’t run after a certain time and making me pay for more tickets?How?,"[CUSTOMER 1364937] @VirginTrains why pay for ALL DAY first class return tickets when you don’t run after a certain time and making me pay for more tickets?How?
+[AGENT 1364934] @437792 Hi Louie, which service have you purchased tickets for? ^HP
+[CUSTOMER 1364935] @VirginTrains The first class RETURN tickets were through @123241 at 12.20 with no knowledge of any delays despite YOURSELVES tweeting at 11.40..1/2
+[CUSTOMER 1364936] @VirginTrains That there were delays on the Virgin Trains. Didn’t get on the train until 4.00pm when I had plans in Manchester to see family and friends.
+[AGENT 1364939] @437792 1/2 Sorry to hear that, Louie :( We'll tag @123241 in this so they're aware, but you can claim compensation for your
+[AGENT 1364938] @437792 2/2 delay via our online form here: https://t.co/2VHUFzKkEK ^HP
+[CUSTOMER 1364940] @VirginTrains I will quite happily fill in the form but it can’t give me back the shocking day I’ve had with trains and tickets. I always travel.. 1/2
+[CUSTOMER 1364941] @VirginTrains First class with Virgin and I’ve never had problems before. I’m really disappointed and I’m gutted I’ve lost a substantial amount of money.
+[AGENT 1364942] @437792 We're so sorry, Louie, please do use the link above to claim compensation for this ^HP
+[CUSTOMER 1364943] @VirginTrains I’ve sent the compensation form off. Thanks for your help. I will be in touch.
+[AGENT 1364944] @437792 No problem at all, Louie, apologies again. Hope you have a good weekend ^HP",2017-10-27 21:27:40+00:00,"[1364937, 1364934, 1364935, 1364936, 1364939, 1364938, 1364940, 1364941, 1364942, 1364943, 1364944]",conv_1364937,,,,,
+case_1465633,156,"@VirginTrains kicked off 17.10 eus to nun, told to get on a train but not stopping at nun. How do I get home? Staff don’t seem to know","[CUSTOMER 1465633] @VirginTrains kicked off 17.10 eus to nun, told to get on a train but not stopping at nun. How do I get home? Staff don’t seem to know
+[AGENT 1465631] @300629 Where are you now, Pete? ^MW
+[CUSTOMER 1465632] @VirginTrains On a train to Liverpool, the one we were told to get on
+[AGENT 1514738] @300629 I see, please follow the staff advising you of this, Pete. Please claim for the delay here - https://t.co/lQNMdz5odX ^MW
+[CUSTOMER 1465630] @VirginTrains The lady in the shop thinks I should go to Stafford and get train back? The TM is not available.
+[AGENT 1465629] @300629 We would advise you to follow the staff's advice on this one, Pete ^MW
+[CUSTOMER 1514739] @VirginTrains There has been no announcement from the TM no one knows what’s happening...
+[AGENT 1514740] @300629 All lines have now reopened so there shouldn't be any further issues, Pete ^MW
+[CUSTOMER 1465628] @VirginTrains Can you help me with connecting train times please? Found TM he was not at all helpful and keen to get away from me, not acceptable
+[AGENT 1465627] @300629 We can, what's your connecting train, Pete? ^MW
+[CUSTOMER 1465626] @VirginTrains I don’t know! All I know is being told to get off at Stafford and get train home from there.
+[AGENT 1465625] @300629 So Stafford to Nuneaton? ^MW
+[CUSTOMER 1465624] @VirginTrains Yes please. Seems ridiculous train we are on can’t make an extra stop. Lots of unhappy passengers.
+[AGENT 1465623] @300629 Ok, and are you still on the 17:10 or a different service now? ^MW
+[CUSTOMER 1465622] @VirginTrains The 17.10 was cancelled at Watford, we were told to get on Liverpool train but not told anything further after that.
+[AGENT 1465621] @300629 Right, so which train are you on now exactly? ^MW
+[CUSTOMER 1465620] @VirginTrains A train from London to Liverpool. We have just left rugby. How do you not know what’s going on? Everyone from 17.10 is on this train!
+[AGENT 1465619] @300629 It looks like you would connect with the 19:50 from Stafford to Nuneaton from there, Pete ^MW
+[CUSTOMER 1465618] @VirginTrains How does that work when I don’t have a ticket north of Nuneaton? Really poor you couldn’t make an extra stop sooner.
+[AGENT 1465617] @300629 Not sure how you mean, Pete, I thought you were travelling to Nuneaton? ^MW
+[CUSTOMER 1465616] @VirginTrains My ticket is London to Nuneaton. It doesn’t allow me travel between Stafford and Nuneaton. Will the TM on that train know what’s happening?
+[AGENT 1465614] @300629 Can we see your ticket please? ^MW
+[CUSTOMER 1465615] @VirginTrains Sure, just DM’d to you",2017-11-03 18:22:28+00:00,"[1465633, 1465631, 1465632, 1514738, 1465630, 1465629, 1514739, 1514740, 1465628, 1465627, 1465626, 1465625, 1465624, 1465623, 1465622, 1465621, 1465620, 1465619, 1465618, 1465617, 1465616, 1465614, 1465615]",conv_1465633,,,,,
+case_1276707,157,@VirginTrains I paid £30 in a taxi to get too my football match on time. Do I get some money back? Bear in mind I paid £60 for a return.,"[CUSTOMER 1276707] @VirginTrains I paid £30 in a taxi to get too my football match on time. Do I get some money back? Bear in mind I paid £60 for a return.
+[AGENT 1276706] @418835 This can be escalated further with Customer Relations via the online complaints link - https://t.co/t20UbyOCSn ^MM",2017-10-26 15:49:06+00:00,"[1276707, 1276706]",conv_1276707,,,,,
+case_506321,158,@VirginTrains excellent service on the delayed 20:23 Chester to Holyhead (17:10 off Euston) from Adrian in 1st class. Credit to the company and makes the delay less painful :-),"[CUSTOMER 506321] @VirginTrains excellent service on the delayed 20:23 Chester to Holyhead (17:10 off Euston) from Adrian in 1st class. Credit to the company and makes the delay less painful :-)
+[AGENT 506319] @236163 Please feel free to praise him here - https://t.co/N7mFDHVJkA ^MW
+[CUSTOMER 506320] @VirginTrains Sorry. My tweets have been passed on in the past. Thanks for tge link. Have used it accordingly :-)",2017-12-01 21:16:37+00:00,"[506321, 506319, 506320]",conv_506321,,,,,
+case_24677,159,@VirginTrains great service on the 0840 from Eus to Man this morning. Smiles and porridge to get my day started.,"[CUSTOMER 24677] @VirginTrains great service on the 0840 from Eus to Man this morning. Smiles and porridge to get my day started.
+[AGENT 24676] @121329 Great to hear Bill 😀 ^PA",2017-11-01 09:16:51+00:00,"[24677, 24676]",conv_24677,,,,,
+case_1349622,160,I as many others paid for a reserved seat on your Manchester - Euston service I did not received the service that I paid for @VirginTrains,"[CUSTOMER 1349622] I as many others paid for a reserved seat on your Manchester - Euston service I did not received the service that I paid for @VirginTrains
+[AGENT 1349623] @434723 1/2 Sorry about this. Some services didn't have reservations available due to the disruption caused earlier today. Please
+[AGENT 1349621] @434723 2/2 accept our apologies for this. ^BT",2017-10-27 17:24:43+00:00,"[1349622, 1349623, 1349621]",conv_1349622,,,,,
+case_2763164,161,"@VirginTrains Hi there, I’ve just noticed that for some reason I’ve been charged twice &amp; have 2 return journeys Liverpool - London this Friday to Monday. 
+I only bought 1 return journey. It’s only me travelling. How do I get the 2nd lot refunded? I certainly didn’t buy twice!!","[CUSTOMER 2763164] @VirginTrains Hi there, I’ve just noticed that for some reason I’ve been charged twice &amp; have 2 return journeys Liverpool - London this Friday to Monday. I only bought 1 return journey. It’s only me travelling. How do I get the 2nd lot refunded? I certainly didn’t buy twice!!
+[AGENT 2763162] @772972 Hi, sorry to hear that, has the money actually gone from the account or just pending? ^PA
+[CUSTOMER 2763163] @VirginTrains It’s actually gone, that was how I spotted something wrong, then I checked my tickets to see there the duplication. Thinking back I recall an “oops something went wrong with your booking, try again” type message, but it must have actually gone through that 1st time. 😔
+[AGENT 2763165] @772972 I would speak to your bank first and they may be able to request it back if not then please speak to Aftersales on 0344 556 5650 or https://t.co/PAMNyrwzCC ^PA
+[CUSTOMER 2763166] @VirginTrains Thanks. I’ll give that a try.",2017-11-21 08:00:03+00:00,"[2763164, 2763162, 2763163, 2763165, 2763166]",conv_2763164,,,,,
+case_1150564,162,@VirginTrains Hello! Are you expecting any delays related to Ophelia from GLC to EUS tomorrow morning?,"[CUSTOMER 1150564] @VirginTrains Hello! Are you expecting any delays related to Ophelia from GLC to EUS tomorrow morning?
+[AGENT 1150562] @390747 Not at the moment, Cecile. Drop us a message in the morning and we'll take another look for you ^MW
+[CUSTOMER 1150563] @VirginTrains Thanks!",2017-10-15 17:13:42+00:00,"[1150564, 1150562, 1150563]",conv_1150564,,,,,
+case_2831248,163,"Hi, @VirginTrains. I submitted a refund request 17 days ago and haven't yet received a response (except the initial auto-reply). Can you help?","[CUSTOMER 2831248] Hi, @VirginTrains. I submitted a refund request 17 days ago and haven't yet received a response (except the initial auto-reply). Can you help?
+[AGENT 2831246] @788332 It can take up to 28 days to process. ^PA
+[CUSTOMER 2831247] @VirginTrains That's fine, but the auto-reply said that I'd receive a reference number within a week. Do I need to chase this up to make sure the request has gone through?
+[AGENT 2831249] @788332 Can I take your email address and I'll have a look. ^PA",2017-11-27 13:01:11+00:00,"[2831248, 2831246, 2831247, 2831249]",conv_2831248,,,,,
+case_597615,164,@VirginTrains please start to enforce quiet coaches! Why did I pay for a quiet journey to listen to someone watching a tv show #grrr,"[CUSTOMER 597615] @VirginTrains please start to enforce quiet coaches! Why did I pay for a quiet journey to listen to someone watching a tv show #grrr
+[AGENT 597613] @228029 The Train Manager can have a word or make an announcement if you make them aware, Tom ^MW
+[CUSTOMER 597614] @VirginTrains Alas the train was a bit too busy to try and find the train manager but next time I will bear that information in mind thanks",2017-12-03 18:47:05+00:00,"[597615, 597613, 597614]",conv_597615,,,,,
+case_1388910,165,@VirginTrains awful journey Birmingham Int to Euston train cancelled next packed no seats even though reserved.,"[CUSTOMER 1388910] @VirginTrains awful journey Birmingham Int to Euston train cancelled next packed no seats even though reserved.
+[AGENT 1388909] @443109 If you have to stand but had seats reserved please get in touch so we can compensate you for this: https://t.co/gdZoJxTMsk ^CB",2017-10-28 10:37:35+00:00,"[1388910, 1388909]",conv_1388910,,,,,
+case_2892671,166,En route to see the @110904 set ahead of our Leeds gig tomorrow.  1st class on @VirginTrains tucking into a sausage roll with a knife &amp; fork oozing style!,"[CUSTOMER 2892671] En route to see the @110904 set ahead of our Leeds gig tomorrow. 1st class on @VirginTrains tucking into a sausage roll with a knife &amp; fork oozing style!
+[AGENT 2892669] @801791 @110904 Have a great journey but sounds like you're on @120576 ^PA
+[CUSTOMER 2892670] @VirginTrains @120576 We are indeed. My bad. Can’t fault the service whatsoever though.
+[OTHER-AGENT 2892672] @801791 @VirginTrains Very glad to hear it Simon! Enjoy your journey today! ^JC",2017-11-28 15:06:35+00:00,"[2892671, 2892669, 2892670, 2892672]",conv_2892671,,,,,
+case_2117105,167,"I just received an email stating I'm due compensation. Amazingly, this is legit (train service last night) and will happen automatically with zero clicking or filling in of forms. Thanks @VirginTrains.","[CUSTOMER 2117105] I just received an email stating I'm due compensation. Amazingly, this is legit (train service last night) and will happen automatically with zero clicking or filling in of forms. Thanks @VirginTrains.
+[AGENT 2117104] @623990 No problem Ewald, glad to hear this is being resolved quickly for you :) ^HP",2017-11-08 13:34:00+00:00,"[2117105, 2117104]",conv_2117105,,,,,
+case_413912,168,".@VirginTrains I'm usually a huge fan of your service, but no seats left on 1957 to Manchester. And this corridor *really* smells bad. #2ndtimeinaweek https://t.co/HO1yZO7h19","[CUSTOMER 413912] .@VirginTrains I'm usually a huge fan of your service, but no seats left on 1957 to Manchester. And this corridor *really* smells bad. #2ndtimeinaweek https://t.co/HO1yZO7h19
+[AGENT 413910] @213769 Sorry to see that Michael, have you spoken to staff for assistance in finding a seat? ^PA
+[CUSTOMER 413911] @VirginTrains Yeah, no luck for me or the fella crouching on the floor next to me...
+[CUSTOMER 413909] @VirginTrains And sorry, that should've been 1857 to Manchester.
+[AGENT 413908] @213769 No problem, I thought you meant that, sorry it's not been great, did you have a seat reservation? ^PA
+[CUSTOMER 413907] @VirginTrains Not sure as my ticket is on my phone. We were told the train was 'declassified' or something when we boarded and could sit anywhere where there is a space.
+[CUSTOMER 413906] @VirginTrains https://t.co/MoigOUn00w
+[AGENT 413905] @213769 It doesn't look like you did, sorry it wasn't great though. ^PA
+[CUSTOMER 413904] @VirginTrains What does having a reservation mean? We still don't have seats, regardless? And I booked a month ago.
+[CUSTOMER 413903] @VirginTrains In fact, looks like I did... https://t.co/ferL57XAE5
+[AGENT 413901] @213769 With a reservation, you would be entitled to claim compensation. ^PA
+[CUSTOMER 413902] @VirginTrains Please see above.",2017-11-17 19:28:53+00:00,"[413912, 413910, 413911, 413909, 413908, 413907, 413906, 413905, 413904, 413903, 413901, 413902]",conv_413912,,,,,
+case_898056,169,"@VirginTrains another overbooked train LDN - Lpool, little kids standing &amp; being pushed over as people fight to get passed #notsafe #greed","[CUSTOMER 898056] @VirginTrains another overbooked train LDN - Lpool, little kids standing &amp; being pushed over as people fight to get passed #notsafe #greed
+[AGENT 898057] @333272 1/2 Not great to hear, Emma. We only retail a certain number of tickets for each service, however, those with open tickets
+[AGENT 898053] @333272 2/2 can travel on numerous services, which can make it difficult to anticipate passenger numbers at times ^HP
+[CUSTOMER 898055] @VirginTrains Well do better. It’s 2017 and this has been happening for years. People have paid £210 for this train to be stood the whole journey. 1/2
+[CUSTOMER 898054] @VirginTrains If there was an emergency on this train no one could get off. It’s frightening. 2/2",2017-10-13 18:53:44+00:00,"[898056, 898057, 898053, 898055, 898054]",conv_898056,,,,,
+case_2632306,170,"Love the ladies on @VirginTrains 17.00 from Euston to Manchester 1st class service tonight, great job 👏","[CUSTOMER 2632306] Love the ladies on @VirginTrains 17.00 from Euston to Manchester 1st class service tonight, great job 👏
+[AGENT 2632305] @743257 Great to hear Lindsay, you can log it here if you like https://t.co/DcgPlHmJFS ^PA",2017-11-17 18:37:48+00:00,"[2632306, 2632305]",conv_2632306,,,,,
+case_1354659,171,@VirginTrains I’m booked on the 20:30 to Liverpool that is cancelled with a time specific train. What can I do? Can I travel tomorrow?,"[CUSTOMER 1354659] @VirginTrains I’m booked on the 20:30 to Liverpool that is cancelled with a time specific train. What can I do? Can I travel tomorrow?
+[AGENT 1354656] @435909 Hi Phill, you can travel tomorrow instead if you wish ^HP
+[CUSTOMER 1354657] @VirginTrains Oh thank you. What do I need to do? I will wa t to go ASAP
+[AGENT 1354660] @435909 You won't be restricted to the time you can travel so you can take the earliest train possible ^HP
+[CUSTOMER 1354661] @VirginTrains Thanks for your advice. I haven’t collected my ticket obviously as the train was cancelled. Should intake my code to customer services?
+[AGENT 1354662] @435909 Ah ok Phil, we would advise speaking to ticket office staff tomorrow as they should be able to assist further ^HP
+[CUSTOMER 1354658] @VirginTrains Thank you very much. Do you think an upgrade is too much to ask? This had cost me a fortune!
+[AGENT 1354663] @435909 Wouldn't be something we could arrange unfortunately Phil. ^BT
+[CUSTOMER 1354664] @VirginTrains Great so move my train by a whole day and offer literally 0 compensation?
+[AGENT 1354665] @435909 You can claim delay repay here Phil https://t.co/zwacC80VAB we just wouldn't be able to offer a refund. ^BT",2017-10-27 18:51:54+00:00,"[1354659, 1354656, 1354657, 1354660, 1354661, 1354662, 1354658, 1354663, 1354664, 1354665]",conv_1354659,,,,,
+case_1309039,172,@VirginTrains My iPhone is currently taking a train trip without me... I've tracked it from BHI to EUS and back. How can I get it home?,"[CUSTOMER 1309039] @VirginTrains My iPhone is currently taking a train trip without me... I've tracked it from BHI to EUS and back. How can I get it home?
+[AGENT 1309038] @220192 Hi Nick. Lost property can be contacted on 03331 031 031 option 1, 3 and can help with this. ^BT",2017-10-16 10:32:10+00:00,"[1309039, 1309038]",conv_1309039,,,,,
+case_1255846,173,Thankyou @VirginTrains very nice doing business with ya...... only wanted off at Preston 🖕🏼 https://t.co/l77CTbAZQE,"[CUSTOMER 1255846] Thankyou @VirginTrains very nice doing business with ya...... only wanted off at Preston 🖕🏼 https://t.co/l77CTbAZQE
+[AGENT 1255844] @414448 Did you have Advance tickets for travel, Westie? ^MW
+[CUSTOMER 1255845] @VirginTrains Dont know purchased for me with open return?I didnt realise London trains were 20mins apart &amp; the first one was totally empty? Embarrassing https://t.co/u0ALZFzAgY
+[AGENT 1255847] @414448 I'm a bit confused 🤔 So have you missed your train or did you board in the end? ^MW
+[CUSTOMER 1255848] @VirginTrains I got on the one 20mins before I should have the guy papped me off at Motherwell to go back to Glasgow miss my 8am train?
+[AGENT 1255849] @414448 Oh, so did you have Advance tickets for the 08:00? If so, this would be why you couldn't catch the earlier service ^MW
+[CUSTOMER 1255850] @VirginTrains Then why was I allowed on it? Joke of a service so now I need to purchase a new ticket?
+[AGENT 1255851] @414448 Did the barrier team not stop you at Glasgow? ^MW
+[CUSTOMER 1255852] @VirginTrains No they didn't &amp; I've just had to purchase a new ticket &amp; now I'll be be two hours late for a very important meeting #BrilliantService🙄
+[AGENT 1255853] @414448 I see, we can only apologies of this happened but the ticket wouldn't be valid on a service other than the booked one ^MW
+[CUSTOMER 1255855] @VirginTrains Don't sweat pet #LovelyStaff at @124107 sorted me out very easily ...... heeds up ppl I'd avoid virgin trains poor customer service 👌🏼
+[CUSTOMER 1255856] @414449 @VirginTrains When I got off a lass I new had seen me when she messaged asked what happened I told her she said it was empty past Preston lol it's a #joke
+[CUSTOMER 1255858] @414449 @VirginTrains I wish I'd learnt to drive lol
+[CUSTOMER 1255860] @414449 @VirginTrains After today it's defo a must lol",2017-10-26 07:09:42+00:00,"[1255846, 1255844, 1255845, 1255847, 1255848, 1255849, 1255850, 1255851, 1255852, 1255853, 1255855, 1255856, 1255858, 1255860]",conv_1255846,,,,,
+case_2108252,174,Sucks that my 16-25 railcard that has saved me sooo much over the years on my travel is coming to an end. How will I afford trains now @VirginTrains 😫🚆🚅,"[CUSTOMER 2108252] Sucks that my 16-25 railcard that has saved me sooo much over the years on my travel is coming to an end. How will I afford trains now @VirginTrains 😫🚆🚅
+[AGENT 2108251] @622054 It's always best to search for our cheapest tickets using the Best Fare Finder: https://t.co/b44bKhk2By ^CB",2017-11-26 12:26:21+00:00,"[2108252, 2108251]",conv_2108252,,,,,
+case_1035355,175,"@VirginTrains book a seat at table and plug and plug doesn’t work, cheers!!!!","[CUSTOMER 1035355] @VirginTrains book a seat at table and plug and plug doesn’t work, cheers!!!!
+[AGENT 1035354] @364902 If you speak to staff, they can reset the power for you. ^PA
+[CUSTOMER 1035351] @VirginTrains Coach F, seat 1, 10.00 train from glasgow London Euston if you staff could fix this, I’d appreciate it
+[AGENT 1035349] @364902 Staff will be walking through during the journey ^CB
+[CUSTOMER 1035350] @VirginTrains Asked, seems like all the coach is same, but nothing back from your staff
+[AGENT 1035352] @364902 Sorry to hear that, you can write in via https://t.co/t20UbyOCSn ^PA
+[CUSTOMER 1035353] @VirginTrains I will",2017-11-25 11:08:11+00:00,"[1035355, 1035354, 1035351, 1035349, 1035350, 1035352, 1035353]",conv_1035355,,,,,
+case_1343962,176,@VirginTrains can you help? X https://t.co/abcXynNhtz,"[CUSTOMER 1343962] @VirginTrains can you help? X https://t.co/abcXynNhtz
+[AGENT 1343963] @433433 1/2 Hi Kimberly, you can upgrade by taking a seat in First Class and waiting for the Train Manager to come through to you
+[AGENT 1343961] @433433 2/2 and they'll be able to advise further on the cost of this ^HP",2017-10-27 16:20:22+00:00,"[1343962, 1343963, 1343961]",conv_1343962,,,,,
+case_2836240,177,@VirginTrains hello.  My wife and I are travelling back from London to Liverpool tonight from celebrating our 20th wedding anniversary.  Any chance of an upgrade to first class?  I am staff?  Please :-),"[CUSTOMER 2836240] @VirginTrains hello. My wife and I are travelling back from London to Liverpool tonight from celebrating our 20th wedding anniversary. Any chance of an upgrade to first class? I am staff? Please :-)
+[AGENT 2836239] @789438 Hi Robbie, happy anniversary to you and your wife :) I'm afraid we can't promise anything on upgrades but we can do our best to contact the Train Manager to see if there's anything they can do. Which service are you travelling on? ^HP
+[CUSTOMER 2836232] @VirginTrains Thanks for the reply. We will be on the 20:07 from Euston to Liverpool, coach A seats 17 and 18. We are still in Brussels now.
+[AGENT 2836230] @789438 Ok, could you please drop us a message when you board the service and we can get the Train Manager to double check to see if there's availability/what they can do for you :) ^HP
+[CUSTOMER 2836231] @VirginTrains Great. Thanks we will:-)
+[CUSTOMER 2836233] @VirginTrains We have boarded the train!
+[AGENT 2836234] @789438 Thanks Robbie, we'll just get a message out to the TM now, where are you sitting please? ^HP
+[CUSTOMER 2836235] @VirginTrains Coach A seats 17 &amp; 18. Thanks
+[AGENT 2836236] @789438 Thanks Robbie, Thanks Robbie - sorry I just realised you sent us that info earlier. I have messaged the TM for you so will let you know as soon as we hear back ^HP
+[CUSTOMER 2836237] @VirginTrains Ok no problem. Thanks.
+[CUSTOMER 2836238] @VirginTrains Thanks for trying. We assume the train manager was very busy as we heard nothing from him. Good journey all the same!",2017-11-27 16:19:41+00:00,"[2836240, 2836239, 2836232, 2836230, 2836231, 2836233, 2836234, 2836235, 2836236, 2836237, 2836238]",conv_2836240,,,,,
+case_1653520,178,"@VirginTrains can I please reserve a seat -12.10pm service today, BHM New street to LDN Euston. aisle seat, next to luggage rack please.","[CUSTOMER 1653520] @VirginTrains can I please reserve a seat -12.10pm service today, BHM New street to LDN Euston. aisle seat, next to luggage rack please.
+[AGENT 1653518] @415278 Could you DM please https://t.co/hhfk9c3ylv
+[CUSTOMER 1653519] @VirginTrains Done",2017-11-06 08:00:41+00:00,"[1653520, 1653518, 1653519]",conv_1653520,,,,,
+case_580366,179,@VirginTrains booked on the 1.57pm today from Euston to Manchester - how congested will this be? We have 2 little kids and seat reservations for 2 adults,"[CUSTOMER 580366] @VirginTrains booked on the 1.57pm today from Euston to Manchester - how congested will this be? We have 2 little kids and seat reservations for 2 adults
+[AGENT 580365] @256709 Services are expected to be busy today due to major disruption on our network, meaning services are subject to delay/cancellation. ^BT",2017-12-03 11:30:28+00:00,"[580366, 580365]",conv_580366,,,,,
+case_2436079,180,@VirginTrains I can't connect to the onboard wifi to use beam 😭,"[CUSTOMER 2436079] @VirginTrains I can't connect to the onboard wifi to use beam 😭
+[AGENT 2436077] @698927 Oh no, you're not trying to pay or login are you, Holly? ^MW
+[CUSTOMER 2436078] @VirginTrains no it just won't connect at all. I'm on an East Coast service any tips?
+[AGENT 2436080] @698927 Ohhhhh, can @120576 assist with this one maybe? ^MW",2017-10-29 14:56:51+00:00,"[2436079, 2436077, 2436078, 2436080]",conv_2436079,,,,,
+case_1135452,181,@VirginTrains can i get any return train with an West Coast Corporate Return ticket? Or is it off peak only?,"[CUSTOMER 1135452] @VirginTrains can i get any return train with an West Coast Corporate Return ticket? Or is it off peak only?
+[AGENT 1135451] @387506 Can we see the ticket please, Samantha? ^MW",2017-10-24 09:10:58+00:00,"[1135452, 1135451]",conv_1135452,,,,,
+case_1326537,182,@VirginTrains at Euston with three children travelling to Carlisle &amp; Lockerbie can you advise how long delay; will seat reservations stand?,"[CUSTOMER 1326537] @VirginTrains at Euston with three children travelling to Carlisle &amp; Lockerbie can you advise how long delay; will seat reservations stand?
+[AGENT 1326535] @429515 Services are facing major delays of up to 60 minutes. I'm afraid due to the disruption we can't guarantee seat reservations
+[CUSTOMER 1326536] @VirginTrains Any update please?
+[CUSTOMER 1326541] @429516 @VirginTrains Thanks Lois, not good end to our holidays
+[AGENT 1326538] @429515 We are awaiting an update as to when the line will reopen. Live Updates can be found via https://t.co/3lMEHeGV1P ^MM
+[CUSTOMER 1326540] @VirginTrains On train now, thank you",2017-10-27 11:32:02+00:00,"[1326537, 1326535, 1326536, 1326541, 1326538, 1326540]",conv_1326537,,,,,
+case_1998775,183,Early start on fab @VirginTrains 6-36 dep Shipley Arrives b4 9am @34465 @463565 Full working day feasible! @59589 @59590,"[CUSTOMER 1998775] Early start on fab @VirginTrains 6-36 dep Shipley Arrives b4 9am @34465 @463565 Full working day feasible! @59589 @59590
+[AGENT 1998774] @590994 @34465 @463565 @59589 @59590 Have a great journey. ^PA",2017-11-02 07:22:06+00:00,"[1998775, 1998774]",conv_1998775,,,,,
+case_2325669,184,@VirginTrains Think I've messed up - got a eticket for this PM on my phone - can I use this for the final part of my journey on Northern Trains?,"[CUSTOMER 2325669] @VirginTrains Think I've messed up - got a eticket for this PM on my phone - can I use this for the final part of my journey on Northern Trains?
+[AGENT 2325668] @673644 Can we see the ticket please? ^MW
+[CUSTOMER 2325667] @VirginTrains Yes... er how do I do that..?
+[AGENT 2325666] @673644 Just drop us a DM with a screenshot maybe? ^MW https://t.co/hhfk9c3ylv",2017-11-13 12:59:46+00:00,"[2325669, 2325668, 2325667, 2325666]",conv_2325669,,,,,
+case_576376,185,How to get from Liverpool to London with no train service to Euston? @VirginTrains @nationalrailenq,"[CUSTOMER 576376] How to get from Liverpool to London with no train service to Euston? @VirginTrains @nationalrailenq
+[AGENT 576374] @255639 @nationalrailenq Hi, we have ticket acceptance in place with @242596 &amp; @120576 so you can travel from Liverpool to Leeds, and then onwards to Kings Cross using your ticket with these operators ^HP
+[CUSTOMER 576375] @VirginTrains @nationalrailenq @242596 @120576 @VirginTrains thanks! Can tickets purchased be used on earlier trains or does it need to be roughly same time stated on ticket?",2017-12-03 08:28:58+00:00,"[576376, 576374, 576375]",conv_576376,,,,,
+case_1648566,186,Huge thanks @VirginTrains conductor Gordon for arranging a taxi from GLC after the delay from EUS made me miss the last connection home.,"[CUSTOMER 1648566] Huge thanks @VirginTrains conductor Gordon for arranging a taxi from GLC after the delay from EUS made me miss the last connection home.
+[AGENT 1648565] @369210 Thanks for your lovely feedback, Heather. We're glad Gordon could help! ^KS",2017-11-05 22:26:12+00:00,"[1648566, 1648565]",conv_1648566,,,,,
+case_165149,187,"@VirginTrains Hello guys! Just tried to buy a ticket but can't send it to my phone, the option is not even there on the website. In the meantime I have two upcoming journeys and also realised that the travel buddy app won't open. What am I doing in this case? Cheers!","[CUSTOMER 165149] @VirginTrains Hello guys! Just tried to buy a ticket but can't send it to my phone, the option is not even there on the website. In the meantime I have two upcoming journeys and also realised that the travel buddy app won't open. What am I doing in this case? Cheers!
+[AGENT 165148] @154280 Travel Buddy apps are related with @120576 and therefore you would need to speak with the team there. ^BT",2017-11-24 19:50:19+00:00,"[165149, 165148]",conv_165149,,,,,
+case_512244,188,"@VirginTrains Help me Vir-Gin-Wan Kenobi, you're my only hope. Friend arrived at Manchester Picadilly around 9.10pm; left wallet in an M&amp;S food bag in Carriage D, seat 39. Been collected by your lovely cleaning staff. Any chance of a reunion?!","[CUSTOMER 512244] @VirginTrains Help me Vir-Gin-Wan Kenobi, you're my only hope. Friend arrived at Manchester Picadilly around 9.10pm; left wallet in an M&amp;S food bag in Carriage D, seat 39. Been collected by your lovely cleaning staff. Any chance of a reunion?!
+[AGENT 512243] @237800 Lost Property can be contacted on 03331 031 031 option 1, 3 ^MM",2017-12-01 22:51:39+00:00,"[512244, 512243]",conv_512244,,,,,
+case_990529,189,"London, we've had a blast! Time to go home now. @VirginTrains  #Shattered #MiniCEO @350813 BYE 👋 https://t.co/KIc59E0TTh","[CUSTOMER 990529] London, we've had a blast! Time to go home now. @VirginTrains #Shattered #MiniCEO @350813 BYE 👋 https://t.co/KIc59E0TTh
+[AGENT 990528] @354636 @350813 Have a great journey, Angela 😃 ^MM",2017-10-22 13:05:42+00:00,"[990529, 990528]",conv_990529,,,,,
+case_1563026,190,@VirginTrains why is my prebooked 10:21 train from Kings Cross actually an East Midlands train..without the free wifi i'd purposely booked?,"[CUSTOMER 1563026] @VirginTrains why is my prebooked 10:21 train from Kings Cross actually an East Midlands train..without the free wifi i'd purposely booked?
+[AGENT 1563024] @482706 Hi Grace, did you book via the @120576 website? ^HP
+[CUSTOMER 1563025] @VirginTrains @120576 yes
+[OTHER-AGENT 1563027] @482706 @VirginTrains Apologies Grace, due to a maintenance issue we've had to swap some trains around today. Sorry for the inconvenience. ^JW
+[CUSTOMER 1563028] @120576 @VirginTrains its appalling, the price you pay for a few extra privileges Virgin Trains offer to be taken away without concern",2017-11-04 10:17:41+00:00,"[1563026, 1563024, 1563025, 1563027, 1563028]",conv_1563026,,,,,
+case_2507024,191,@VirginTrains we might miss our connection at Doncaster to Sheffield (we’re coming from Newcastle on the 20:16). What do we do if we don’t get there in time because of the delay?,"[CUSTOMER 2507024] @VirginTrains we might miss our connection at Doncaster to Sheffield (we’re coming from Newcastle on the 20:16). What do we do if we don’t get there in time because of the delay?
+[AGENT 2507022] @714796 Is that a @120576 service, Chloe ^MW
+[CUSTOMER 2507023] @VirginTrains @120576 The one that is delayed is yes, I’m not sure about the Doncaster to Sheffield Service
+[CUSTOMER 2507016] @VirginTrains @120576 Hellooo??
+[AGENT 2507014] @714796 Maybe @120576 know more? ^MW
+[CUSTOMER 2507015] @VirginTrains @120576 It doesn’t matter who knows more. I just want to know how on earth we’re all going to get home!!!!
+[OTHER-AGENT 2507017] @714796 @VirginTrains Can you send me a screenshot of your ticket details please? We don't run to Sheffield but will look into this. ^PA
+[CUSTOMER 2507018] @120576 @VirginTrains https://t.co/VTBbmOBRVx
+[OTHER-AGENT 2507019] @714796 @VirginTrains If you miss the @121516 service due to our late train your ticket will be valid on the next Northern train to Sheffield. ^PA
+[CUSTOMER 2507020] @120576 @VirginTrains @121516 There are no more trains after that one
+[OTHER-AGENT 2507021] @714796 @VirginTrains @121516 There's the 22.13 train and 23.35. ^PA",2017-11-15 20:26:18+00:00,"[2507024, 2507022, 2507023, 2507016, 2507014, 2507015, 2507017, 2507018, 2507019, 2507020, 2507021]",conv_2507024,,,,,
+case_587670,192,@VirginTrains Can you put live bus times in your stations so its easier for passengers to know their wait for their buses (Crewe especially),"[CUSTOMER 587670] @VirginTrains Can you put live bus times in your stations so its easier for passengers to know their wait for their buses (Crewe especially)
+[AGENT 587669] @122135 We can surely pass this on to the relevant team. ^BT",2017-12-03 15:43:39+00:00,"[587670, 587669]",conv_587670,,,,,
+case_1210418,193,@VirginTrains fantastic customer service from Matt Page today on the Edinburgh-London journey ##smilesallround #employeeoftheyear,"[CUSTOMER 1210418] @VirginTrains fantastic customer service from Matt Page today on the Edinburgh-London journey ##smilesallround #employeeoftheyear
+[AGENT 1210417] @404129 Thanks for passing this on! We'll be sure to let Matt know. Have a great day 😃 ^BT",2017-10-25 11:41:35+00:00,"[1210418, 1210417]",conv_1210418,,,,,
+case_2896826,194,Gotta love when you ask to be put forward facing every time and @VirginTrains always put you backwards 🤮🤢,"[CUSTOMER 2896826] Gotta love when you ask to be put forward facing every time and @VirginTrains always put you backwards 🤮🤢
+[AGENT 2896825] @733511 Do you select other preferences? Also have you tried the seat picket section of the booking? ^PA
+[CUSTOMER 2896824] @VirginTrains Yes I did... At least my plug works!
+[AGENT 2896823] @733511 It will always try to get all of your preferences but isn't always possible. ^PA",2017-11-28 16:35:53+00:00,"[2896826, 2896825, 2896824, 2896823]",conv_2896826,,,,,
+case_2479857,195,@VirginTrains Why supply outlets to charge my phone and none of them work?!! #FirstWorldProblems,"[CUSTOMER 2479857] @VirginTrains Why supply outlets to charge my phone and none of them work?!! #FirstWorldProblems
+[AGENT 2479855] @708679 Oh no! Sorry to hear that Joe. Have you mentioned this to the onboard team? They'd try to reset the power where they can ^CB
+[CUSTOMER 2479856] @VirginTrains Sorted the electric now pal. What’s with the WiFi not working? Is this franchise run by medieval England LTD?
+[AGENT 2479858] @708679 If you're having issues please forget the network and switch off WiFi then reconnect and load https://t.co/1JEOSVPtGN ^CB",2017-10-31 21:47:31+00:00,"[2479857, 2479855, 2479856, 2479858]",conv_2479857,,,,,
+case_2282069,196,@VirginTrains Me and two of my work colleagues are booked on the 1800 hrs train to Edinburgh. Can we upgrade to First Class on any deal?,"[CUSTOMER 2282069] @VirginTrains Me and two of my work colleagues are booked on the 1800 hrs train to Edinburgh. Can we upgrade to First Class on any deal?
+[AGENT 2282068] @663314 Where are you travelling too? ^MM
+[CUSTOMER 2282066] @VirginTrains We are about to travel to Edinburgh from KingsCross @ 1800 already paid .
+[AGENT 2282065] @663314 This is one for @120576 ^MM
+[CUSTOMER 2282067] @VirginTrains Sorry are you able to pass on to WC ?
+[AGENT 2282160] @663314 We've passed it on :) ^MM
+[CUSTOMER 2282161] @VirginTrains Thank you 👍 we are happy to pay for an upgrade. Just want to have a nice relaxing trip tonight.",2017-11-26 15:41:31+00:00,"[2282069, 2282068, 2282066, 2282065, 2282067, 2282160, 2282161]",conv_2282069,,,,,
+case_2931738,197,Sick and tired of waiting for @VirginTrains you said you were calling back but it’s just lie upon lie #terribleservice #disappointed,"[CUSTOMER 2931738] Sick and tired of waiting for @VirginTrains you said you were calling back but it’s just lie upon lie #terribleservice #disappointed
+[AGENT 2931736] @810880 What number did you call to request a call back? ^BT
+[CUSTOMER 2931737] @VirginTrains Hi, where should I dm my number to? Thanks.
+[AGENT 2931739] @810880 Sorry, I asked which number you called to request the call back? ^BT
+[CUSTOMER 2931740] @VirginTrains I spoke to Chiraj on the online messenger service yesterday and he guaranteed someone would call back within 3 hours.
+[AGENT 2931741] @810880 Was this the number you called 03331031031? ^BT
+[CUSTOMER 2931742] @VirginTrains As I said, I was on the Online Messenger and Chirag garaunteed I would get a phone call back, after providing my number
+[AGENT 2931743] @810880 Can you please DM us your contact details and I will pass these over to the Customer Resolutions team for them to look into? ^BT
+[CUSTOMER 2931744] @VirginTrains I have just DM’d you my contact details. Can I expect a call this morning to resolve this? Thanks.",2017-11-29 08:07:31+00:00,"[2931738, 2931736, 2931737, 2931739, 2931740, 2931741, 2931742, 2931743, 2931744]",conv_2931738,,,,,
+case_2781481,198,"Shared carriage with drunken, very loud, foul-mouthed group of Celtic fans who thought their behaviour was acceptable. They were p*ssed at Carlisle, yet, every time they went to the on-board shop to buy more drink, they got served!!! Not pleasant (delayed) journey @VirginTrains","[CUSTOMER 2781481] Shared carriage with drunken, very loud, foul-mouthed group of Celtic fans who thought their behaviour was acceptable. They were p*ssed at Carlisle, yet, every time they went to the on-board shop to buy more drink, they got served!!! Not pleasant (delayed) journey @VirginTrains
+[AGENT 2781480] @776809 Sorry to hear this Sue, has a member of the onboard team been made aware of this? As they would be best to speak with. ^BT",2017-11-21 16:48:46+00:00,"[2781481, 2781480]",conv_2781481,,,,,
+case_479163,199,@VirginTrains I really do think you need to tell passengers when a train is running even a few minutes late. As a result I've missed my connection. Now got to wait an hour. Which means late to pick kids up. But I could have got off at a different stop if I'd known we were late.,"[CUSTOMER 479163] @VirginTrains I really do think you need to tell passengers when a train is running even a few minutes late. As a result I've missed my connection. Now got to wait an hour. Which means late to pick kids up. But I could have got off at a different stop if I'd known we were late.
+[AGENT 479161] @228875 Really sorry to hear that, Justin, which service were you travelling on today? ^HP
+[CUSTOMER 479159] @VirginTrains 1040 Euston to Wilmslow. Had to get a cab.
+[CUSTOMER 479162] @VirginTrains 10.40 Euston to Wilmslow. Was supposed to arrive 1226. Missed the 12.31 to Chelford. Could have got off at Crewe had I have known and got to Chelford from there.
+[AGENT 479157] @228875 Apologies for the inconvenience caused, Justin, this was due to a late running service ahead of this train. We'll be sure to pass your comments on about this ^HP
+[CUSTOMER 479158] @VirginTrains Yes, the reason isn't the issue. It's the fact I've just had to pay £16 to get a taxi as a result of no one on the train making that announcement.
+[AGENT 479160] @228875 So sorry to hear this, Justin, we'll be sure to pass your comments on about this ^HP",2017-12-01 12:38:53+00:00,"[479163, 479161, 479159, 479162, 479157, 479158, 479160]",conv_479163,,,,,
+case_1406920,200,.@VirginTrains denying a family inc 7yr old with seat reservations from boarding their booked train 19.33 from Liverpool. What gives?,"[CUSTOMER 1406920] .@VirginTrains denying a family inc 7yr old with seat reservations from boarding their booked train 19.33 from Liverpool. What gives?
+[AGENT 1406921] @447013 1/2 Sorry to hear this Frank, this was due to LM not running services from Liverpool Lime Street today. Services were extremely
+[AGENT 1406919] @447013 2/2 busy. Please accept our apologies for this. ^BT
+[CUSTOMER 1406915] @VirginTrains But we had a seat reservation. How hard is that to comprehend. Are you saying you gave our seats to others who didn't have reservations?
+[AGENT 1406912] @447013 There was a queuing system at Liverpool Lime Street and unfortunately it was under a first come first serve basis there. ^BT
+[CUSTOMER 1406913] @VirginTrains You're still ignoring the fact we had seat reservations. The queue was only letting on travellers to London. Absolute joke
+[AGENT 1406916] @447013 We know it's not great, please claim compensation for not getting a seat here - https://t.co/9ade9SMxcw ^MW
+[CUSTOMER 1406914] @VirginTrains Thanks. We're currently on a hot coach to Crewe. We need to get to Stafford but have been told that we need to sort that out for ourselves?!
+[AGENT 1406917] @447013 I see, please speak to station staff first. However, if you do have to get a taxi yourself this can be claimed back ^MW
+[CUSTOMER 1406918] @VirginTrains Now on a London Midland from Crewe to Stafford that is totally empty. What a shambles. The sooner you twats are nationalised the better eh?",2017-10-28 18:52:45+00:00,"[1406920, 1406921, 1406919, 1406915, 1406912, 1406913, 1406916, 1406914, 1406917, 1406918]",conv_1406920,,,,,
+case_1648575,201,@VirginTrains cancelled.Followed tannoy advice &amp; took alt. route via https://t.co/t4QwLsgRcg on both trains;only 1hr late home👍#nocomplaints,"[CUSTOMER 1648575] @VirginTrains cancelled.Followed tannoy advice &amp; took alt. route via https://t.co/t4QwLsgRcg on both trains;only 1hr late home👍#nocomplaints
+[AGENT 1648574] @503630 Glad to hear you're home, Dawn. Please make sure you claim dellay repay compensation here https://t.co/grB80cVthL ^KS",2017-11-05 22:22:44+00:00,"[1648575, 1648574]",conv_1648575,,,,,
+case_538329,202,@VirginTrains I have paid for a first class ticket from Manchester to London (13:40) and the first class has been declassified due cancellations of previous trains. Would I get a refund as the first class is now overcrowded and everyone can use it without having paid for it.,"[CUSTOMER 538329] @VirginTrains I have paid for a first class ticket from Manchester to London (13:40) and the first class has been declassified due cancellations of previous trains. Would I get a refund as the first class is now overcrowded and everyone can use it without having paid for it.
+[AGENT 538328] @244810 Sorry to hear about your experience while travelling with us, this can be escalated further with Customer Relations via the online complaints link - https://t.co/t20UbyOCSn ^MM",2017-12-02 14:00:28+00:00,"[538329, 538328]",conv_538329,,,,,
+case_2106653,203,hey @VirginTrains any chance of replying to my claim for delay which I sent on 18th October? And putting an email on your website for follow-ups? Thanks.,"[CUSTOMER 2106653] hey @VirginTrains any chance of replying to my claim for delay which I sent on 18th October? And putting an email on your website for follow-ups? Thanks.
+[AGENT 2106651] @621731 Hi Peter. Could you DM us your email address or VT reference number and we can take a look into this for you? ^BT
+[CUSTOMER 2106652] @VirginTrains Have DMed.",2017-11-08 09:25:56+00:00,"[2106653, 2106651, 2106652]",conv_2106653,,,,,
+case_2325644,204,"@virgintrains So when your train gets into Crewe late and you miss your connection to Nantwich, &amp; have to wait 50 minutes - do you provide a hot drink &amp; snack?  #goodwillgesture","[CUSTOMER 2325644] @virgintrains So when your train gets into Crewe late and you miss your connection to Nantwich, &amp; have to wait 50 minutes - do you provide a hot drink &amp; snack? #goodwillgesture
+[AGENT 2325643] @673640 I'm afraid not Diana. We do apologise for the delay and please make a claim here - https://t.co/z9HdYyM9ns ^MW",2017-11-13 13:28:38+00:00,"[2325644, 2325643]",conv_2325644,,,,,
+case_2669189,205,"@VirginTrains can u help? Travelling on an earlier service due to cross country strike from Oxford to Arnside, can we get an earlier connection at BHM plse?","[CUSTOMER 2669189] @VirginTrains can u help? Travelling on an earlier service due to cross country strike from Oxford to Arnside, can we get an earlier connection at BHM plse?
+[AGENT 2669187] @248558 Could you DM us with a pic of your ticket please? ^MW https://t.co/hhfk9c3ylv
+[CUSTOMER 2669188] @VirginTrains Just sent it thanks",2017-11-19 10:58:47+00:00,"[2669189, 2669187, 2669188]",conv_2669189,,,,,
+case_2695909,206,@VirginTrains east coast from Edinburgh to London Kings X absolutely packed to the rafters. Living the dream.,"[CUSTOMER 2695909] @VirginTrains east coast from Edinburgh to London Kings X absolutely packed to the rafters. Living the dream.
+[AGENT 2695910] @757579 Hi, we'll tag @120576 for you ^HP
+[OTHER-AGENT 2695936] @VirginTrains @757579 Hi David, have you been unable to get your reserved seat tonight? ^JC
+[CUSTOMER 2695905] @VirginTrains to be fair I hadn't reserved a seat but this could be the busiest train I've ever been on!
+[AGENT 2695903] @757579 So sorry David, which service are you on today? ^HP
+[CUSTOMER 2695904] @VirginTrains 1430 Edinburgh to London Kings X.
+[CUSTOMER 2695907] @VirginTrains Appreciate the dialogue but it's fine. 1st world problems... 🙂
+[AGENT 2695906] @757579 Thanks David, this is a @120576 service so we'll pass this over ^HP
+[OTHER-AGENT 2695908] @VirginTrains @757579 Really sorry to hear this David. ^KM",2017-11-19 18:14:04+00:00,"[2695909, 2695910, 2695936, 2695905, 2695903, 2695904, 2695907, 2695906, 2695908]",conv_2695909,,,,,
+case_640861,207,@VirginTrains @270841 When will the buses be here? There is no movement in queue,"[CUSTOMER 640861] @VirginTrains @270841 When will the buses be here? There is no movement in queue
+[AGENT 640858] @272052 @270841 Imminently Pamela ^MW
+[CUSTOMER 640860] @VirginTrains @270841 Still waiting an hour later
+[CUSTOMER 640859] @VirginTrains @270841 Will I get back to Glasgow?
+[CUSTOMER 640863] @270841 @VirginTrains Same 🙈 hopefully get to Glasgow",2017-11-22 20:28:20+00:00,"[640861, 640858, 640860, 640859, 640863]",conv_640865,,,,,
+case_75081,208,@VirginTrains could someone look into my delay repay claim? Been waiting over a month to hear back 😢,"[CUSTOMER 75081] @VirginTrains could someone look into my delay repay claim? Been waiting over a month to hear back 😢
+[AGENT 75082] @132801 Do you have a Vt reference number? ^PA
+[CUSTOMER 75080] @VirginTrains VT-261017-2822
+[AGENT 75079] @132801 I've just checked and it hasn't been processed yet but I have sent an email to the team for it to be looked at today. ^PA
+[CUSTOMER 75078] @VirginTrains Thank you
+[AGENT 75077] @132801 No problem.^PA
+[CUSTOMER 75076] @VirginTrains Am I likely to hear back today?
+[AGENT 75075] @132801 We've passed this onto Customer Relations who will look into this further. If we hear back from them we will let you know however they may contact you directly ^MM",2017-11-24 11:11:44+00:00,"[75081, 75082, 75080, 75079, 75078, 75077, 75076, 75075]",conv_75081,,,,,
+case_2493611,209,"Excellent delay repay service from @VirginTrains . Made application on the App whilst train pulling into Liverpool Lime Street on Monday night, PayPal just emailed me that compensation received! Thx","[CUSTOMER 2493611] Excellent delay repay service from @VirginTrains . Made application on the App whilst train pulling into Liverpool Lime Street on Monday night, PayPal just emailed me that compensation received! Thx
+[AGENT 2493609] @235677 Glad to hear that! ^MW",2017-11-15 18:16:52+00:00,"[2493611, 2493609]",conv_2493611,,,,,
+case_2271544,210,@VirginTrains complimentary meals in first class on a five an a half hour journey is subject to availability and buffet car is only accepting cash - this is extremely poor customer experience - very disappointed!!! https://t.co/VTyFHif1gD,"[CUSTOMER 2271544] @VirginTrains complimentary meals in first class on a five an a half hour journey is subject to availability and buffet car is only accepting cash - this is extremely poor customer experience - very disappointed!!! https://t.co/VTyFHif1gD
+[AGENT 2271543] @115919 If you wish to take this further you can do so by contacting our Customer Resolutions team here https://t.co/t20UbyOCSn Again please accept our apologies for this today. ^BT",2017-11-11 10:25:48+00:00,"[2271544, 2271543]",conv_2271544,,,,,
+case_591788,211,"Despite apocalyptic warnings about rail travel today, I've done Edinburgh to Chester in a breezy 4 hours 2 mins! Thanks @VirginTrains :-)","[CUSTOMER 591788] Despite apocalyptic warnings about rail travel today, I've done Edinburgh to Chester in a breezy 4 hours 2 mins! Thanks @VirginTrains :-)
+[AGENT 591789] @260038 Sorry for the delays Paul! Hope you had a great journey. ^BT
+[AGENT 591787] @260038 Not too bad then Paul!^MW",2017-12-03 16:56:20+00:00,"[591788, 591789, 591787]",conv_591788,,,,,
+case_2831245,212,"@VirginTrains how long does it take to process a claim? Sent in on 27th October and awaiting to hear, thanks","[CUSTOMER 2831245] @VirginTrains how long does it take to process a claim? Sent in on 27th October and awaiting to hear, thanks
+[AGENT 2831244] @429515 Once it's registered, it can take up to 28 days, do you have a VT reference number? ^PA
+[CUSTOMER 2831241] @VirginTrains I only have an email automated response to confirm receipt
+[AGENT 2831239] @429515 Can we take your email and it can then be looked in to. ^PA
+[CUSTOMER 2831240] @VirginTrains Thank you, appreciate that, it’s __email__
+[AGENT 2831242] @429515 Thank you, Hazel. I will chase this up with our Customer Resolution team now ^LC",2017-11-27 12:50:55+00:00,"[2831245, 2831244, 2831241, 2831239, 2831240, 2831242]",conv_2831245,,,,,
+case_1344887,213,@VirginTrains to Edinburgh Haymarket? 2.,"[CUSTOMER 1344887] @VirginTrains to Edinburgh Haymarket? 2.
+[CUSTOMER 1344886] @VirginTrains Or do I have to wait for a Virgin train?
+[AGENT 1344885] @433439 Hi Laura, are you onboard another service now? ^HP",2017-10-27 16:15:25+00:00,"[1344887, 1344886, 1344885]",conv_1344887,,,,,
+case_2418498,214,Hi @VirginTrains - paid for WiFi on your London to Manchester service and I can’t even stream a video - how do I get a refund?,"[CUSTOMER 2418498] Hi @VirginTrains - paid for WiFi on your London to Manchester service and I can’t even stream a video - how do I get a refund?
+[AGENT 2418495] @694897 Our onboard WiFi doesn't permit video streaming sites/apps. You'll need to email __email__ for any refund ^CB",2017-10-29 11:32:45+00:00,"[2418498, 2418495]",conv_2418498,,,,,
+case_1234365,215,@VirginTrains And finally get a Virgin train to EUS. Can you confirm I can travel tomorrow and if so what to do with the app?,"[CUSTOMER 1234365] @VirginTrains And finally get a Virgin train to EUS. Can you confirm I can travel tomorrow and if so what to do with the app?
+[AGENT 1234362] @367099 Hi Shyam, please speak to station staff as services are resuming, so they'll be able to advise further on this for you ^HP
+[CUSTOMER 1234363] @VirginTrains Travelling to MAN on the next available train having waited for your response. Let's hope this works
+[CUSTOMER 1234364] @VirginTrains after delaying travel to the last minute to hear back from you, @121516 are trying to make me miss your train if you do run on time https://t.co/Orw4rcsXOF
+[AGENT 1234366] @367099 Hi Shyam, we did respond to your message at 19:05, but we are experiencing a high volume of messages so please bear with us",2017-10-25 17:52:08+00:00,"[1234365, 1234362, 1234363, 1234364, 1234366]",conv_1234365,,,,,
+case_655361,216,"@VirginTrains @272598 What time will your last train to Glasgow leave Lancaster, please?","[CUSTOMER 655361] @VirginTrains @272598 What time will your last train to Glasgow leave Lancaster, please?
+[AGENT 655363] @275895 @272598 We wouldn't be aware at the moment. When arriving in Lancaster, station staff would be best to speak with. ^BT",2017-11-22 22:44:09+00:00,"[655361, 655363]",conv_655371,,,,,
+case_532947,217,"@VirginTrains the conductor on the 6.20pm from Euston to Manchester laat night was excellent. Good humoured, frank and to the point. The best part of the (delayed) journey","[CUSTOMER 532947] @VirginTrains the conductor on the 6.20pm from Euston to Manchester laat night was excellent. Good humoured, frank and to the point. The best part of the (delayed) journey
+[AGENT 532946] @233465 Thanks for your feedback, Tom, we'll be sure to pass this on for you. Apologies for the delay to your journey last night too, glad to hear the Train Manager was able to keep you updated ^HP",2017-12-02 10:33:52+00:00,"[532947, 532946]",conv_532947,,,,,
+case_2298198,218,"@VirginTrains hi, did you get rid of that horrible smell on you're pendolino trains? I'm travelling on my first 1 in 6 years soon","[CUSTOMER 2298198] @VirginTrains hi, did you get rid of that horrible smell on you're pendolino trains? I'm travelling on my first 1 in 6 years soon
+[AGENT 2298196] @435311 Hi, I'm afraid this can still be an issue for us at times but we hope your next experience of travelling with us is better ^HP
+[CUSTOMER 2298197] @VirginTrains Me too, I had a quick journey between lime street and runcorn and didn't smell anything 👃
+[AGENT 2298199] @435311 That's good to hear! ^HP",2017-10-19 20:26:45+00:00,"[2298198, 2298196, 2298197, 2298199]",conv_2298198,,,,,
+case_1961953,219,@VirginTrains Great service tonight on the 18.00 hours service from London Euston to Stoke on Trent smooth journey and train carriage was so toasty warm I did not want to get off travelling with you again in January to London.,"[CUSTOMER 1961953] @VirginTrains Great service tonight on the 18.00 hours service from London Euston to Stoke on Trent smooth journey and train carriage was so toasty warm I did not want to get off travelling with you again in January to London.
+[AGENT 1961951] @581808 Lovely to hear, April, we'll be sure to pass your comments on and we look forward to seeing you onboard again soon ^HP",2017-11-18 19:40:52+00:00,"[1961953, 1961951]",conv_1961953,,,,,
+case_1674292,220,@VirginTrains I know you were busy with the problems yesterday  but I can't find helpful info on the virgin website!! https://t.co/ChWOGNCHny,"[CUSTOMER 1674292] @VirginTrains I know you were busy with the problems yesterday but I can't find helpful info on the virgin website!! https://t.co/ChWOGNCHny
+[AGENT 1674288] @494172 Are we able to assist, Joe? ^LC
+[CUSTOMER 1674291] @VirginTrains I'm trying to find how I can claim for the cancelled trains yesterday
+[CUSTOMER 1674290] @VirginTrains but when I go into my account it says I can apply for a refund but wants to charge an admin fee!
+[CUSTOMER 1674289] @VirginTrains Can't find anything on the rest of the site about claiming for cancelled trains, only delayed ones.......
+[AGENT 1674293] @494172 Did you abandon your journey? ^LC
+[CUSTOMER 1674294] @VirginTrains Had to! Every train was cancelled! No way of getting to Manchester!
+[AGENT 1674295] @494172 Ok Joe, you can make a claim for a refund by contacting our Customer Resolutions team here: https://t.co/bQfEjbPFVW ^HP
+[CUSTOMER 1674296] @VirginTrains Great - thanks 😊",2017-11-06 13:48:27+00:00,"[1674292, 1674288, 1674291, 1674290, 1674289, 1674293, 1674294, 1674295, 1674296]",conv_1674292,,,,,
+case_1854626,221,"Story of my trip to Edinburgh with @virgintrains 1. Struggled to remove the added in error ticket from the basket. When I thought I’d sorted it, it reappeared.","[CUSTOMER 1854626] Story of my trip to Edinburgh with @virgintrains 1. Struggled to remove the added in error ticket from the basket. When I thought I’d sorted it, it reappeared.
+[AGENT 1854625] @551124 Would you like to DM us the details Charlotte, more characters are available in a DM ^JH",2017-11-25 22:05:51+00:00,"[1854626, 1854625]",conv_1854626,,,,,
+case_56491,222,What no WiFi @VirginTrains #Arghhhhhhhhhhhhh https://t.co/zSHLIBlipv,"[CUSTOMER 56491] What no WiFi @VirginTrains #Arghhhhhhhhhhhhh https://t.co/zSHLIBlipv
+[AGENT 56489] @128783 Which service, Paul? Can you get connected via https://t.co/1JEOSVPtGN ? ^MM
+[CUSTOMER 56490] @VirginTrains Nope cannot be found :(
+[CUSTOMER 56487] @VirginTrains Sorry 18:45 from wolverhampton to Euston
+[AGENT 56485] @128783 Are you in First or Standard Class? ^MM
+[CUSTOMER 56486] @VirginTrains There is a problem with the WiFi train manager has just announced and there trying to fix it #SwitchItOffAndBackOnAgain
+[AGENT 56488] @128783 The Train Manager would be best to advise, Paul ^MM",2017-11-01 19:26:39+00:00,"[56491, 56489, 56490, 56487, 56485, 56486, 56488]",conv_56491,,,,,
+case_79717,223,Hi i am wondering if I can upgrade my train tickets to first class for this Saturday?  @VirginTrains #london,"[CUSTOMER 79717] Hi i am wondering if I can upgrade my train tickets to first class for this Saturday? @VirginTrains #london
+[AGENT 79716] @133690 Which route are you travelling on? ^LC
+[CUSTOMER 79715] @VirginTrains Manchester pic to london Euston at 8.15am I need two seats. Thanks x
+[AGENT 79713] @133690 The upgrade will need to be done once onboard. It will be £20 per person on Saturday ^LC
+[CUSTOMER 79714] @VirginTrains Ok, great! Thank you x",2017-11-30 12:26:59+00:00,"[79717, 79716, 79715, 79713, 79714]",conv_79717,,,,,
+case_472725,224,@VirginTrains 3rd time this week late and 2nd time 'no chef on board' Tell me again why I keep upgrading?,"[CUSTOMER 472725] @VirginTrains 3rd time this week late and 2nd time 'no chef on board' Tell me again why I keep upgrading?
+[AGENT 472724] @227585 So sorry to hear this Steve. Which service are you on? ^BT
+[CUSTOMER 472723] @VirginTrains Newark Northgate to Kings Cross
+[AGENT 472721] @227585 Looks as though you are travelling with our friends over at @120576 and therefore they would be best to speak with. ^BT
+[OTHER-AGENT 472722] @VirginTrains @227585 Really sorry to hear this, which service are you travelling on this morning? ^JC",2017-12-01 08:49:56+00:00,"[472725, 472724, 472723, 472721, 472722]",conv_472725,,,,,
+case_1977493,225,@VirginTrains rung 3 times to reserve seats for tickets bought early. Each time told to call again. Not happy as special birthday trip!,"[CUSTOMER 1977493] @VirginTrains rung 3 times to reserve seats for tickets bought early. Each time told to call again. Not happy as special birthday trip!
+[AGENT 1977492] @377607 If you DM us we can assist. ^PA",2017-10-18 18:07:58+00:00,"[1977493, 1977492]",conv_1977493,,,,,
+case_54047,226,@2920 @VirginTrains @127472 Wasn’t to bad today from Glasgow big man for a change!,"[CUSTOMER 54047] @2920 @VirginTrains @127472 Wasn’t to bad today from Glasgow big man for a change!
+[AGENT 54046] @128225 @2920 @127472 Glad to hear it, Kevin ^MM",2017-11-01 18:49:49+00:00,"[54047, 54046]",conv_54047,,,,,
+case_1845809,227,@VirginTrains your trains are disgusting.... https://t.co/vnZr1Pf8bH,"[CUSTOMER 1845809] @VirginTrains your trains are disgusting.... https://t.co/vnZr1Pf8bH
+[AGENT 1845807] @552910 Robert, not sure what service/train this is? It's not one of ours, what journey did you make ? ^AN",2017-11-19 23:17:23+00:00,"[1845809, 1845807]",conv_1845809,,,,,
+case_1640440,228,Should have been in Manchester by 5.. just arriving in Leeds at 11. Shambolic @VirginTrains @120576,"[CUSTOMER 1640440] Should have been in Manchester by 5.. just arriving in Leeds at 11. Shambolic @VirginTrains @120576
+[AGENT 1640438] @258519 @120576 Apologies, Hollie. Which service/s were you originally booked to travel on?/ ^KS
+[CUSTOMER 1640436] @VirginTrains @120576 On 14:57 from Euston which had to deboard, run to kings x to get 16:19 to Leeds, already a long diverted train then sat at pbro for 3 hours
+[AGENT 1640437] @258519 @120576 Apologies, both of our routes have been subject to severe disruption tonight. Have you 1/2
+[AGENT 1640434] @258519 @120576 spoke to station staff about onward travel at all? ^KS 2/2
+[CUSTOMER 1640439] @VirginTrains @120576 I understand things beyond your control no info/ communication made it much worse. Train manager was great but had limited info
+[CUSTOMER 1640435] @VirginTrains @120576 staying in Leeds for the night and getting an AM train as would have got home at 1:30am at earliest had we waited for next train to manc
+[CUSTOMER 1640432] @VirginTrains @120576 Can we use these tickets in the morn to get from Leeds to manc
+[AGENT 1640442] @258519 Apologies again for the long and disrupted journey. Please make sure you claim comp here https://t.co/IYQKoS3pCM ^KS
+[AGENT 1640431] @258519 Please speak to station staff when you arrive in the morning and they should be able to assist with your ticket ^KS",2017-11-05 23:04:18+00:00,"[1640440, 1640438, 1640436, 1640437, 1640434, 1640439, 1640435, 1640432, 1640442, 1640431]",conv_1640440,,,,,
+case_1346945,229,@VirginTrains is it worth going to Euston to catch 20:03 as doesn't seem to be any information. What is happening?,"[CUSTOMER 1346945] @VirginTrains is it worth going to Euston to catch 20:03 as doesn't seem to be any information. What is happening?
+[AGENT 1346944] @128783 Where are you travelling to please, Paul? ^HP
+[CUSTOMER 1346946] @VirginTrains Going to Wolverhampton but given up now as no info and boards showing delayed with no other info
+[AGENT 1351181] @128783 You can use your ticket to travel tomorrow if this helps Paul? ^HP
+[CUSTOMER 1351182] @VirginTrains Not really",2017-10-27 16:47:14+00:00,"[1346945, 1346944, 1346946, 1351181, 1351182]",conv_1346945,,,,,
+case_110260,230,"@VirginTrains Euston in first class, no cold drinks, sparkling water flat. Place a mess https://t.co/8fH7ZgnCmW","[CUSTOMER 110260] @VirginTrains Euston in first class, no cold drinks, sparkling water flat. Place a mess https://t.co/8fH7ZgnCmW
+[AGENT 110258] @140487 Sorry for your experience, we'll pass your comments on regarding this situation ^MM",2017-11-23 19:57:27+00:00,"[110260, 110258]",conv_110260,,,,,
+case_2418539,231,Do I chance falling over on a randoms knee to go get a brew from the @VirginTrains shop? 🤔 x,"[CUSTOMER 2418539] Do I chance falling over on a randoms knee to go get a brew from the @VirginTrains shop? 🤔 x
+[AGENT 2418538] @694577 Always ^CB
+[CUSTOMER 2418537] @VirginTrains My balance is terrible though 🙈 but then tea is worth the embarrassment of falling 😂😂 x
+[AGENT 2418535] @694577 Tea &gt; Anything else! ^CB
+[CUSTOMER 2418536] @VirginTrains 🙌🏻 wholeheartedly agree x",2017-10-29 12:58:32+00:00,"[2418539, 2418538, 2418537, 2418535, 2418536]",conv_2418539,,,,,
+case_1330453,232,@VirginTrains Recommendation to get to Macclesfield from Euston? Meant to be on the 15:20.,"[CUSTOMER 1330453] @VirginTrains Recommendation to get to Macclesfield from Euston? Meant to be on the 15:20.
+[AGENT 1330451] @430388 We are awaiting an update as to when the line will reopen. Live Updates can be found via https://t.co/QlcukyjBGT ^MM
+[CUSTOMER 1330452] @VirginTrains Let me re-phrase... if it doesn’t reopen, what route would you suggest I take? The website said to Tweet all enquiries.
+[AGENT 1330454] @430388 The best route would be to travel from St Pancras via Sheffield and Stockport ^CB
+[CUSTOMER 1330456] @VirginTrains Thanks!
+[CUSTOMER 1330459] @421216 @VirginTrains @122155 Thanks... this is the 3rd time this has happened to me since July, and I’ve had to take this route every time. So painful!
+[CUSTOMER 1330457] @VirginTrains Heading out to st pancs... assume no news on if 15:20 to Manc is running?
+[CUSTOMER 1330460] @VirginTrains Reason I ask is 14:20 has a platform... https://t.co/PHBBWi2Pjy
+[AGENT 1330461] @430388 This service is showing to run, however may be subject to delay. ^BT",2017-10-27 12:31:49+00:00,"[1330453, 1330451, 1330452, 1330454, 1330456, 1330459, 1330457, 1330460, 1330461]",conv_1330453,,,,,
+case_1281706,233,I’ve purchased a monthly ticket starting tomorrow but I don’t need it until 30/11...can I get a refund and repurchase? @VirginTrains,"[CUSTOMER 1281706] I’ve purchased a monthly ticket starting tomorrow but I don’t need it until 30/11...can I get a refund and repurchase? @VirginTrains
+[AGENT 1281705] @409875 Can you send me a picture of this, Betty? ^MM",2017-10-26 17:17:58+00:00,"[1281706, 1281705]",conv_1281706,,,,,
+case_142249,234,Best way to make use of the time between Manchester and London with @VirginTrains easy fire up the laptop and @148094 #FM18,"[CUSTOMER 142249] Best way to make use of the time between Manchester and London with @VirginTrains easy fire up the laptop and @148094 #FM18
+[AGENT 142247] @148093 @148094 How is it going? I hope you started from the lower leagues to work your way to the top. ^PA
+[CUSTOMER 142248] @VirginTrains @148094 Of course start with @148095 one promotion in the bag let’s see what will happen on the journey down
+[AGENT 142250] @148093 @148094 @148095 The only way is up. ^PA
+[CUSTOMER 142258] @148094 @VirginTrains @148095 Looking good so far unbeaten on the way down and this thread is #firstclass 👏 https://t.co/HcSbcJoP5o
+[CUSTOMER 142261] @148095 @148094 @VirginTrains Just hoping the injury to @8774 doesn’t derail the promotion charge
+[CUSTOMER 142262] @148095 @148094 @VirginTrains Over to @131370 now for the rest of the journey while the #Salford story continues
+[CUSTOMER 142266] @131370 @148095 @148094 @VirginTrains I know who I would rather be right now one team is on track the other going backwards",2017-11-24 12:31:20+00:00,"[142249, 142247, 142248, 142250, 142258, 142261, 142262, 142266]",conv_142249,,,,,
+case_1660374,235,I wonder how long we get to sit here in the middle of nowhere on our broken @VirginTrains before they think of another solution,"[CUSTOMER 1660374] I wonder how long we get to sit here in the middle of nowhere on our broken @VirginTrains before they think of another solution
+[AGENT 1660373] @506496 Hi Jackie, which service are you on please? ^HP
+[CUSTOMER 1660371] @VirginTrains 13.55 Piccadilly to Euston. I don't envy the person who has to figure out solution to this 🤔
+[AGENT 1660372] @506496 1/2 Apologies Jackie, this is due to a safety inspection but you should be on the move shortly. This service is now due to
+[AGENT 1660369] @506496 2/2 arrive 58 minutes late, so please claim Delay Repay here: https://t.co/wfRYJDi9KB ^HP
+[CUSTOMER 1660370] @VirginTrains Thank you🙏",2017-10-17 14:42:53+00:00,"[1660374, 1660373, 1660371, 1660372, 1660369, 1660370]",conv_1660374,,,,,
+case_1422540,236,"Congrats @VirginTrains. Your staff have managed to, almost admirably, walk the fine line between passive aggressive and unhelpful. Hats off","[CUSTOMER 1422540] Congrats @VirginTrains. Your staff have managed to, almost admirably, walk the fine line between passive aggressive and unhelpful. Hats off
+[AGENT 1422539] @450603 Great to hear Neil. ^PA",2017-11-02 09:15:41+00:00,"[1422540, 1422539]",conv_1422540,,,,,
+case_1131588,237,Booked table of 4 with @VirginTrains. Confirmed twice and this is what we got. #trains. It this how you treat all 86 year olds!#London https://t.co/mIwV0URokd,"[CUSTOMER 1131588] Booked table of 4 with @VirginTrains. Confirmed twice and this is what we got. #trains. It this how you treat all 86 year olds!#London https://t.co/mIwV0URokd
+[AGENT 1131586] @369413 Sorry to see that, has the Train Manager been informed about this? ^MW
+[CUSTOMER 1131587] @VirginTrains Never saw the train manger. Who do I need to confirm the tickets with on the return trip or will I be wasting my time calling you again
+[AGENT 1131589] @369413 We can take a look to check which seats you've been assigned if that's what you mean? ^HP
+[CUSTOMER 1131590] @VirginTrains Yes but I did this before and you confirmed there was 3 seats sitting together on a table of 4.
+[AGENT 1131591] @369413 Can we take your booking reference number please? ^HP
+[CUSTOMER 1131592] @VirginTrains I have DM details
+[AGENT 1131593] @369413 Thanks, we'll respond via DM ^HP",2017-10-24 12:10:24+00:00,"[1131588, 1131586, 1131587, 1131589, 1131590, 1131591, 1131592, 1131593]",conv_1131588,,,,,
+case_2626148,238,Taking me home tonight is the speedy and iconic 11 car #Pendolino - thanks for the lift @VirginTrains! https://t.co/hkaTee8A1y,"[CUSTOMER 2626148] Taking me home tonight is the speedy and iconic 11 car #Pendolino - thanks for the lift @VirginTrains! https://t.co/hkaTee8A1y
+[AGENT 2626147] @676471 Have a great journey. ^PA",2017-11-17 16:34:11+00:00,"[2626148, 2626147]",conv_2626148,,,,,
+case_2881702,239,@VirginTrains on the long 6:52 journey to euston from edinburgh. Think you could sort the boy out with some free wifi? Pretty pleeeaasseee 🙏🏻🙏🏻🙏🏻🙏🏻💯,"[CUSTOMER 2881702] @VirginTrains on the long 6:52 journey to euston from edinburgh. Think you could sort the boy out with some free wifi? Pretty pleeeaasseee 🙏🏻🙏🏻🙏🏻🙏🏻💯
+[AGENT 2881701] @451305 Pop into our DM's? ^MW https://t.co/hhfk9c3ylv
+[CUSTOMER 2881700] @VirginTrains Done 💯😘
+[AGENT 2881699] @451305 oDPF-dDQw-zqqY Here you go, a free code just for you :-) ^MW
+[CUSTOMER 2881697] @VirginTrains Hi there, the code doesn’t work! I keep getting the message that the internet usage has been used :(
+[AGENT 2881695] @451305 Oh right, try this one instead - cTQm-tWKz-UxCQ ^MW
+[CUSTOMER 2881696] @VirginTrains Its worked! Thank you very much for the code!
+[AGENT 2881698] @451305 You're welcome! ^MW",2017-11-28 09:04:10+00:00,"[2881702, 2881701, 2881700, 2881699, 2881697, 2881695, 2881696, 2881698]",conv_2881702,,,,,
+case_444015,240,"@VirginTrains Is there a general customer services email address? My letter to Virgin is too long for your ""contact us"" form...","[CUSTOMER 444015] @VirginTrains Is there a general customer services email address? My letter to Virgin is too long for your ""contact us"" form...
+[AGENT 444014] @220192 Unfortunately the only way would be to complete that form, it should allow the letter to be sent in Nick. ^PA",2017-11-22 09:33:30+00:00,"[444015, 444014]",conv_444015,,,,,
+case_551604,241,@248558 @VirginTrains What's it like in first class?  for us commoners 😜,"[CUSTOMER 551604] @248558 @VirginTrains What's it like in first class? for us commoners 😜
+[AGENT 560209] @251026 @248558 It's the same for everyone! ^OL",2017-12-02 22:09:13+00:00,"[551604, 560209]",conv_551603,,,,,
+case_2931735,242,@VirginTrains why are there no early morning #trains into #London from #Midlands?,"[CUSTOMER 2931735] @VirginTrains why are there no early morning #trains into #London from #Midlands?
+[AGENT 2931734] @154735 Where are you looking to travel from? ^BT
+[CUSTOMER 2931733] @VirginTrains MK.
+[AGENT 2931732] @154735 Milton Keynes? ^BT
+[CUSTOMER 2931725] @VirginTrains Yes
+[AGENT 2931723] @154735 There will be early morning services with @LondonMidland, our first service is 06:26. ^BT
+[CUSTOMER 2931724] @VirginTrains @LondonMidland Yes I know - I want a virgin service though.
+[AGENT 2931726] @154735 @LondonMidland As advised, our first service would be at 06:26. ^BT
+[CUSTOMER 2931727] @VirginTrains @LondonMidland It’s not a virgin train so first class is basically the same as standard and it takes twice as long. I wanted to know why only @LondonMidland trains run early?
+[AGENT 2931728] @154735 @LondonMidland Unfortunately this is the timetable we have in place by our planning team, and will be the first service. ^BT
+[CUSTOMER 2931729] @VirginTrains @LondonMidland Well no it isn’t the first service that’s actually a Virgin train - that’s sort of the point. You’re aware that Virgin and LM trains are not the same? I just want to know why the virgin ones don’t start until gone 9.30.
+[AGENT 2931730] @154735 @LondonMidland 0930? ^LC
+[CUSTOMER 2931731] @VirginTrains @LondonMidland I’m not sure what you’re asking?",2017-11-29 07:58:16+00:00,"[2931735, 2931734, 2931733, 2931732, 2931725, 2931723, 2931724, 2931726, 2931727, 2931728, 2931729, 2931730, 2931731]",conv_2931735,,,,,
+case_807716,243,"@VirginTrains hi,I have an e-tix via the app for use on Saturday.It has doesn’t have an activation button to kick start it.What should I do?","[CUSTOMER 807716] @VirginTrains hi,I have an e-tix via the app for use on Saturday.It has doesn’t have an activation button to kick start it.What should I do?
+[AGENT 807713] @312467 Is it an E-Ticket or an M-Ticket? ^PA
+[CUSTOMER 807714] @VirginTrains How do I tell the difference? It doesn’t say E or M. Thanks
+[CUSTOMER 807715] @VirginTrains Ah it says ‘Mobile Ticket’ at the top
+[AGENT 807717] @312467 Ah ok, you'll need to contact Aftersales on 0344 556 5650 they can assit. ^PA
+[CUSTOMER 807718] @VirginTrains Is it open now??
+[AGENT 807719] @312467 Yes open until 10pm. ^PA
+[CUSTOMER 807720] @VirginTrains Thanks for your help",2017-10-12 18:06:13+00:00,"[807716, 807713, 807714, 807715, 807717, 807718, 807719, 807720]",conv_807716,,,,,
+case_1330455,244,@VirginTrains @430388 I’ve been advised by @122155 that ticket acceptance isn’t in place on this route,"[CUSTOMER 1330455] @VirginTrains @430388 I’ve been advised by @122155 that ticket acceptance isn’t in place on this route
+[AGENT 1330458] @421216 @430388 Can @122155 confirm this? Our Control team believe this has been in place for a couple of hours now ^CB",2017-10-27 12:53:29+00:00,"[1330455, 1330458]",conv_1330453,,,,,
+case_484235,245,I’m just leaving the surprisingly sunny North. See you soon London Town!Can’t wait for this shindig tomorrow evening 👇🏻#gwtp17 https://t.co/G7jr1RTGm9,"[CUSTOMER 484235] I’m just leaving the surprisingly sunny North. See you soon London Town!Can’t wait for this shindig tomorrow evening 👇🏻#gwtp17 https://t.co/G7jr1RTGm9
+[CUSTOMER 484232] @230215 I have snow envy ❄️ It is sunshine all the way on @VirginTrains 😎 https://t.co/TzgE0Mg4Z8
+[AGENT 484230] @230214 @230215 Looking goooooood! ^MW
+[CUSTOMER 484231] @VirginTrains @230215 Oh yes, no doom and gloom on the Northern outlook here 😎A rather speedy and smooth journey so far. Thank you 🙌🏻",2017-12-01 14:10:48+00:00,"[484235, 484232, 484230, 484231]",conv_484235,,,,,
+case_809200,246,Good idea to take it before u get on the @VirginTrains - because ur chances of sending it with their WiFi 👎🏻 make sure u eat before as well! https://t.co/bgmGMIaU3k,"[CUSTOMER 809200] Good idea to take it before u get on the @VirginTrains - because ur chances of sending it with their WiFi 👎🏻 make sure u eat before as well! https://t.co/bgmGMIaU3k
+[AGENT 809199] @137503 Anything we can help with today Daniel? ^PA",2017-10-12 18:33:03+00:00,"[809200, 809199]",conv_809200,,,,,
+case_1669641,247,@VirginTrains wow 20&amp; 25 min wait for contact cntr this morning - terrible! https://t.co/gNfTvizlLc,"[CUSTOMER 1669641] @VirginTrains wow 20&amp; 25 min wait for contact cntr this morning - terrible! https://t.co/gNfTvizlLc
+[AGENT 1669639] @115919 Are we able to assist at all? ^LC
+[CUSTOMER 1669640] @VirginTrains Hi, need 2 change seats on sat&amp;sun journey so daughter and myself can sit 2gether pls.
+[AGENT 1669642] @115919 Could you DM your booking reference and we can take a look for you? ^LC",2017-11-06 12:21:19+00:00,"[1669641, 1669639, 1669640, 1669642]",conv_1669641,,,,,
+case_2356057,248,#toxic brand @VirginTrains - @127472 you need to uncouple yourself from Virgin Trains as of this year I have cancelled ALL Virgin products due to frustration and anger at horrendous #CustomerExperience,"[CUSTOMER 2356057] #toxic brand @VirginTrains - @127472 you need to uncouple yourself from Virgin Trains as of this year I have cancelled ALL Virgin products due to frustration and anger at horrendous #CustomerExperience
+[AGENT 2356055] @453076 @127472 Sorry to hear this, Ian. Is there anything I can help with this evening? ^CB
+[CUSTOMER 2356056] @VirginTrains @127472 Even 240 characters isnt enough possibly 240 pages. Last 2-4 weeks has been a catalogue of delays and cancellations, many for very tragic reasons but some @VirginTrains staff have been insensitive and officious. rules, rules rules when people are dying!!!! #corrupting the brand
+[AGENT 2356059] @453076 @127472 (1) Hi, Ian, sorry to hear of your recent experiences with us, please use this link: https://t.co/9W25q3KYEO
+[AGENT 2356058] @453076 @127472 (2) to explain further &amp; our customer relations team can investigate further the points that you raise. ^PH",2017-11-13 19:36:06+00:00,"[2356057, 2356055, 2356056, 2356059, 2356058]",conv_2356057,,,,,
+case_703520,249,@VirginTrains pls can you explain why I haven’t automatically received delay repay for over three hours delay yesterday when ticket was booked on your website. Thank you,"[CUSTOMER 703520] @VirginTrains pls can you explain why I haven’t automatically received delay repay for over three hours delay yesterday when ticket was booked on your website. Thank you
+[AGENT 703518] @270841 Could you DM us with your booking reference number please? ^MW https://t.co/hhfk9c3ylv
+[CUSTOMER 703519] @VirginTrains Will do",2017-11-23 17:45:07+00:00,"[703520, 703518, 703519]",conv_703520,,,,,
+case_2358124,250,After about 12 years of a regular ✈️ or 🚊 commute I went back to driving today. More fun but more stress and no breakfast served. I think it’s a draw between the  car and @VirginTrains 1st Class #Audi #RSQ3 https://t.co/MIeE7MN4GT,"[CUSTOMER 2358124] After about 12 years of a regular ✈️ or 🚊 commute I went back to driving today. More fun but more stress and no breakfast served. I think it’s a draw between the car and @VirginTrains 1st Class #Audi #RSQ3 https://t.co/MIeE7MN4GT
+[AGENT 2358123] @365678 We'll be here waiting for you to come back, Mark. Plus Red &gt; Blue ^CB",2017-11-13 19:51:58+00:00,"[2358124, 2358123]",conv_2358124,,,,,
