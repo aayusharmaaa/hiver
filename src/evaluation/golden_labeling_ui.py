@@ -98,6 +98,7 @@ function render(){
     const d=el("div","turn "+cls); const w=el("div","who",t.role==="OTHER-AGENT"?"Other operator":t.role==="AGENT"?"Brand":"Customer"); w.appendChild(el("span","id","#"+t.tweet_id)); d.appendChild(w); d.appendChild(el("div",null,t.text)); conv.appendChild(d);});
   $("casemeta").textContent="\u00b7 "+cur.case_id+" \u00b7 first message "+(cur.first_timestamp||"");
   writeForm(cur.labels); setStatus(cur.status); clearErrors(); setMsg(cur.status==="partial"?"This case is partly labelled. Complete intent, escalation and resolution type.":"",false);
+  if(cur.provenance==="assistant_draft") setMsg("AI-assistant draft, not reviewed yet: check every field, then Save to confirm it or correct it.",false);
   $("jump").value=String(idx); dirty=false; updateHeader(); window.scrollTo({top:0});
 }
 async function load(i){ idx=Math.max(0,Math.min(state.cases.length-1,i)); cur=await api("/api/case/"+state.cases[idx].case_id); render(); }

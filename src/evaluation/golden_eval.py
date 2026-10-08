@@ -41,6 +41,8 @@ SOURCE_COLUMNS = ["case_id", "labeling_order", "first_customer_message", "conver
 GOLD_COLUMNS = ["gold_intent", "gold_should_escalate", "gold_resolution_type", "gold_confidence", "human_notes"]
 REQUIRED_GOLD = ["gold_intent", "gold_should_escalate", "gold_resolution_type"]
 ESCALATE_VALUES = ("yes", "no")
+HUMAN = "human"
+ASSISTANT_DRAFT = "assistant_draft"
 CONFIDENCE_VALUES = ("high", "medium", "low")
 
 TAXONOMY_HEADING = "Candidate taxonomy — provisional; choose the best-supported intent. You may use NEW:<snake_case> if none fits."
@@ -315,6 +317,37 @@ def replay_audit(path: Path) -> dict[str, dict[str, str]]:
     return state
 
 
+def label_provenance(path: Path) -> dict[str, str]:
+    """case_id -> who produced its current label, from the audit log (labelled cases only).
+
+    human                        written by the labeler and never drafted
+    assistant_draft              drafted by the AI assistant, not yet reviewed
+    assistant_draft_confirmed    drafted, then saved unchanged by the labeler
+    assistant_draft_corrected    drafted, then changed by the labeler
+    Records written before sources were tracked count as human.
+    """
+    state: dict[str, str] = {}
+    if not Path(path).exists():
+        return state
+    for line in Path(path).read_text(encoding="utf-8").splitlines():
+        if not line.strip():
+            continue
+        rec = json.loads(line)
+        cid, event, source = rec.get("case_id"), rec.get("event"), rec.get("source", HUMAN)
+        if event == "clear":
+            state.pop(cid, None)
+        elif event == "save":
+            if source == ASSISTANT_DRAFT:
+                state[cid] = ASSISTANT_DRAFT
+            elif state.get(cid, "").startswith(ASSISTANT_DRAFT):
+                state[cid] = "assistant_draft_corrected"
+            else:
+                state[cid] = HUMAN
+        elif event == "confirm" and state.get(cid) == ASSISTANT_DRAFT:
+            state[cid] = "assistant_draft_confirmed"
+    return state
+
+
 class GoldenLabelStore:
     """Reads and writes ONLY the five human columns of virgintrains_golden_v1.csv, re-verifying the frozen sample each time."""
 
@@ -433,9 +466,13 @@ class GoldenLabelStore:
                 "turns": parse_conversation(row["conversation"]),
                 "labels": {c: row[c] for c in GOLD_COLUMNS},
                 "status": case_status(row),
+                "provenance": label_provenance(self.audit_path).get(case_id, ""),
             }
 
-    def save_label(self, case_id: str, values: dict[str, Any]) -> dict[str, Any]:
+    def save_label(self, case_id: str, values: dict[str, Any], source: str = HUMAN) -> dict[str, Any]:
+        """Write one label. `source` is recorded in the audit log; saving an unchanged label as a human records a review."""
+        if source not in (HUMAN, ASSISTANT_DRAFT):
+            raise LabelStoreError(f"unknown label source {source!r}")
         with self._lock:
             clean = validate_gold_label(values, self.vocab)
             frame = self._read_verified()
@@ -443,12 +480,16 @@ class GoldenLabelStore:
             before = {c: frame.at[i, c] for c in GOLD_COLUMNS}
             if before == clean:
                 self._frame = frame
+                if source == HUMAN:
+                    self._audit({"event": "confirm", "case_id": case_id, "source": HUMAN})
                 return {"saved": False, "reason": "unchanged", "counts": self.counts(frame), "status": case_status(frame.loc[i])}
+            if source == ASSISTANT_DRAFT and any(before.values()):
+                raise LabelStoreError(f"{case_id} already has a label; an assistant draft never overwrites one")
             for c in GOLD_COLUMNS:
                 frame.at[i, c] = clean[c]
             self._write_atomic(frame)
             self._frame = frame
-            self._audit({"event": "save", "case_id": case_id, "before": before, "after": clean, "labelled_total": self.counts(frame)["labelled"]})
+            self._audit({"event": "save", "case_id": case_id, "source": source, "before": before, "after": clean, "labelled_total": self.counts(frame)["labelled"]})
             return {"saved": True, "counts": self.counts(frame), "status": "labelled"}
 
     def clear_label(self, case_id: str) -> dict[str, Any]:

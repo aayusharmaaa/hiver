@@ -18,13 +18,14 @@ from __future__ import annotations
 import argparse
 import getpass
 import logging
+from collections import Counter
 from pathlib import Path
 
 import _bootstrap  # noqa: F401
 import yaml
 
 from common.logging_utils import configure_logging
-from evaluation.golden_eval import GoldenLabelStore, GoldVocabulary, build_reference
+from evaluation.golden_eval import GoldenLabelStore, GoldVocabulary, build_reference, label_provenance
 from evaluation.golden_labeling_ui import serve_golden
 from evaluation.labeling_store import LabelStoreError
 from taxonomy.registry import load_labels
@@ -63,6 +64,8 @@ def main() -> None:
 
     counts = store.counts()
     logger.info("Golden pack verified: %d / %d labelled, %d partial, %d unlabelled", counts["labelled"], counts["total"], counts["partial"], counts["unlabelled"])
+    sources = Counter(label_provenance(store.audit_path).values())
+    logger.info("Label provenance: %s", dict(sorted(sources.items())) or "none yet")
     if args.check:
         return
     reference = build_reference(registry, load_labels(args.cluster_labels).get("confusable_notes", []))

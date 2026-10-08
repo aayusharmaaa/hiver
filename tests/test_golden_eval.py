@@ -20,6 +20,7 @@ import yaml
 from taxonomy_fixtures import FALLBACK, INTENTS, candidate_taxonomy
 
 from evaluation.golden_eval import (
+    ASSISTANT_DRAFT,
     AUDIT_LOG,
     CANDIDATES_PARQUET,
     GOLD_COLUMNS,
@@ -32,6 +33,7 @@ from evaluation.golden_eval import (
     GoldVocabulary,
     build_reference,
     guide_markdown,
+    label_provenance,
     prepare_golden_pack,
     replay_audit,
     source_fingerprint,
@@ -46,7 +48,7 @@ from taxonomy.registry import case_ids_sha256, sha256_file
 ROOT = Path(__file__).resolve().parents[1]
 N = 12
 GOOD = {"gold_intent": "ticket_booking_query", "gold_should_escalate": "no", "gold_resolution_type": "information_provided", "gold_confidence": "high", "human_notes": ""}
-PREDICTION_WORDS = ("suggest", "predict", "reveal", "candidate_intent", "cluster", "retriev", "policy", "draft", "grounding", "auto_handle", "evidence_score", "reply")
+PREDICTION_WORDS = ("suggest", "predict", "reveal", "candidate_intent", "cluster", "retriev", "policy", "draft reply", "grounding", "auto_handle", "evidence_score", "reply")
 
 
 # --------------------------------------------------------------------------------------------------------------------
@@ -327,6 +329,26 @@ def test_store_survives_crlf_conversion_of_the_pack(prepared) -> None:
     assert open_store(prepared).counts()["labelled"] == 2
 
 
+def test_assistant_drafts_are_tracked_separately_and_never_overwrite(prepared) -> None:
+    store = open_store(prepared)
+    human, drafted, confirmed, corrected = prepared["ids"][:4]
+    store.save_label(human, GOOD)
+    with pytest.raises(LabelStoreError, match="never overwrites"):
+        store.save_label(human, {**GOOD, "gold_should_escalate": "yes"}, source=ASSISTANT_DRAFT)
+    for cid in (drafted, confirmed, corrected):
+        store.save_label(cid, GOOD, source=ASSISTANT_DRAFT)
+    assert store.get_case(drafted)["provenance"] == ASSISTANT_DRAFT
+    assert store.save_label(confirmed, GOOD)["saved"] is False
+    store.save_label(corrected, {**GOOD, "gold_should_escalate": "yes"})
+    assert label_provenance(prepared["golden_dir"] / AUDIT_LOG) == {
+        human: "human", drafted: "assistant_draft", confirmed: "assistant_draft_confirmed", corrected: "assistant_draft_corrected",
+    }
+    with pytest.raises(LabelStoreError, match="unknown label source"):
+        store.save_label(prepared["ids"][5], GOOD, source="gemini")
+    store.clear_label(drafted)
+    assert drafted not in label_provenance(prepared["golden_dir"] / AUDIT_LOG)
+
+
 def test_store_never_prefills_and_reports_progress(prepared) -> None:
     store = open_store(prepared)
     state = store.state()
@@ -404,7 +426,7 @@ def test_ui_payloads_contain_only_the_conversation_and_human_labels(server) -> N
     assert all(set(c) == {"case_id", "order", "status"} for c in state["cases"])
     status, body = client.call(f"/api/case/{world['ids'][0]}")
     case = json.loads(body)
-    assert set(case) == {"case_id", "index", "total", "order", "first_timestamp", "turns", "labels", "status"}
+    assert set(case) == {"case_id", "index", "total", "order", "first_timestamp", "turns", "labels", "status", "provenance"}
     assert set(case["labels"]) == set(GOLD_COLUMNS) and all(v == "" for v in case["labels"].values())
     assert [t["role"] for t in case["turns"]] == ["CUSTOMER", "AGENT"] and case["turns"][0]["text"].endswith("& more")
     for word in ("cluster", "candidate_intent", "refund", "weight", "predict", "suggest"):
