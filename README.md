@@ -6,6 +6,9 @@ support agent that (1) classifies incoming messages into intents defined from th
 the brand actually resolved similar issues, and (3) decides whether to auto-handle or escalate, with a reason. Then show
 whether it can be trusted.
 
+**Short versions:** [two-page report](docs/HIVER_TAKEHOME_REPORT.md) · [decision log](docs/DECISION_LOG.md).
+This README is the full write-up.
+
 **Contents:**
 [1 Executive summary](#1-executive-summary) ·
 [2 Problem framing](#2-problem-framing) ·
