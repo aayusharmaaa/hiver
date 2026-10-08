@@ -2,7 +2,7 @@
 evaluation and the end-to-end agent run (which may be partial).
 
 No model is called. Every example is a real case id with its real opening message. Each failure mode states its scope (which
-cases it was measured on) so a count from the 11-case partial agent run is never mixed up with one from the 100 blind cases.
+cases it was measured on) so a count from the 50-case agent run is never mixed up with one from the 100 blind cases.
 
 The policy-oracle analysis applies the agent's hard escalation rules (never-auto-handle intents, sensitive wording, very short
 messages) to the GOLD intent, i.e. it assumes a perfect classifier. It shows how much escalation is built into the policy
@@ -174,11 +174,12 @@ def hard_rule_gaps(golden: pd.DataFrame, settings: Any, records: list[dict]) -> 
     gaps = [r for r in yes.itertuples() if not oracle_hard_reasons(r.first_customer_message, r.gold_intent, settings)]
     unsafe = [r for r in records if r["gold_should_escalate"] == "yes" and r["final_action"] == "AUTO_HANDLE"]
     return mode(
-        "unsafe_auto_handle", "Potential unsafe auto-handles", "policy", "blind 100 (oracle) + the partial agent run",
+        "unsafe_auto_handle", "Potential unsafe auto-handles", "policy", "blind 100 (oracle) + the end-to-end agent run",
         len(gaps), len(yes),
         [example(r.case_id, r.first_customer_message, f"gold intent `{r.gold_intent}`, gold should_escalate = yes; no hard rule fires; note: {excerpt(r.human_notes, 80) or '-'}") for r in gaps],
         f"{len(gaps)} of {len(yes)} blind cases that should escalate are not caught by any hard rule; only the soft checks (confidence, evidence, grounding) stand between them and an auto-reply. "
-        f"Observed in the partial agent run: {len(unsafe)} unsafe auto-handles out of {len(records)} cases.",
+        f"Observed in the agent run: {len(unsafe)} of {len(records)} scored cases auto-handled although gold says escalate"
+        + (f" ({', '.join(r['case_id'] for r in unsafe)})." if unsafe else "."),
         "Escalation-worthy cases that look like routine intents (e.g. a booking question that actually needs an account lookup) slip past intent-level rules.",
         "Measure auto-handle precision on the full 50-case slice, then add the specific triggers found (account/booking-reference requests) as rules.",
     )

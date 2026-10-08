@@ -85,7 +85,7 @@ def test_oracle_reasons_and_policy_over_escalation():
 def test_hard_rule_gaps_and_observed_unsafe_auto_handles():
     m = hard_rule_gaps(golden(), SETTINGS, [record("c3", "yes", "AUTO_HANDLE", generation="produced", grounding="pass")])
     assert (m["count"], m["denominator"]) == (1, 1) and m["examples"][0]["case_id"] == "c3"
-    assert "1 unsafe auto-handles out of 1" in m["observed"]
+    assert "1 of 1 scored cases auto-handled although gold says escalate (c3)." in m["observed"]
 
 
 def test_agent_observed_counts_and_partial_scope():
