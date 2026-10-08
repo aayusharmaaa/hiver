@@ -1,4 +1,4 @@
-# hiver support copilot(Virgin Trains)
+# Hiver support copilot(Virgin Trains)
 
 My take-home for the Hiver SDE Intern role.
 
