@@ -13,13 +13,13 @@ I picked **VirginTrains**. The system is built as an *evidence-grounded support 
 replies when it has strong historical evidence, and otherwise it hands the case to a human with its reasons.
 
 > **Where things stand (honestly).** The data pipeline, the intent taxonomy, retrieval, the agent and a blind labeling tool for
-> the golden set are built and tested (`pytest -q`: 517 passed). Retrieval has a proxy evaluation with baselines. The 250-case
+> the golden set are built and tested (`pytest -q`: 534 passed). Retrieval has a proxy evaluation with baselines. The 250-case
 > golden set is sampled, frozen and leakage-checked. **All 250 cases have human labels: 100 labelled blind, and 150
 > AI-assistant drafts reviewed and confirmed by a human** (see
 > [Golden evaluation set](#golden-evaluation-set)). Intent classification is scored on golden: the agent's LLM classifier
 > (run on Groq's `gpt-oss-120b`) gets 60% accuracy on the blind 100, against 54% for TF-IDF and 15% for the majority class.
-> Escalation and reply-quality evaluation and the LLM-as-judge are
-> **not built yet**. The
+> The end-to-end agent harness and the LLM-as-judge are built, but **the agent run and the judge-vs-human ratings are not
+> finished** (Groq free-tier daily token limit). The
 > [deliverables table](#deliverables-vs-the-brief) shows exactly what is done and what isn't.
 
 **Contents**
@@ -84,6 +84,7 @@ python scripts/evaluate_intents.py --provider gemini   # same classifier on Gemi
 ```
 
 The committed prediction cache means a re-run re-scores without calling any API.
+The report goes to [`reports/intent_eval/`](reports/intent_eval/virgintrains_intent_evaluation.md).
 
 **Run the whole agent on a 50-case golden slice.** This uses Groq's `gpt-oss-120b` by default (`--provider gemini` to switch).
 Cases are stratified by gold intent and gold escalation.
@@ -96,7 +97,17 @@ python scripts/evaluate_agent.py                 # classify, retrieve, decide, g
 The report goes to [`reports/agent_eval/`](reports/agent_eval/). If a rate limit interrupts the run, run the same command
 again: cached calls are replayed and only the missing cases are sent.
 
-The report goes to [`reports/intent_eval/`](reports/intent_eval/virgintrains_intent_evaluation.md).
+**Judge the agent's replies (LLM-as-judge) and check the judge against a human.** This needs the agent run above and
+`GROQ_API_KEY`.
+
+```bash
+python scripts/judge_replies.py                  # scores every draft reply 1-5 on correctness, groundedness, actionability, brand alignment
+```
+
+The rubric is frozen in [`src/evaluation/llm_judge.py`](src/evaluation/llm_judge.py), and its hash is stored with every
+score. Judge calls are cached. The first run also writes `reports/agent_eval/human_ratings.csv`, a blind sheet of up to 40
+representative replies that doesn't show the judge's scores. Fill in the `human_*` columns (1-5) and run again; the report
+then adds exact agreement, quadratic-weighted Cohen's κ and Spearman ρ per dimension.
 
 ---
 
@@ -109,7 +120,7 @@ The report goes to [`reports/intent_eval/`](reports/intent_eval/virgintrains_int
 | Grounded reply drafting | ✅ built and unit-tested; the live run was cut short by the Gemini free-tier quota | [`src/agent/generator.py`](src/agent/generator.py), [`src/agent/grounding.py`](src/agent/grounding.py) |
 | Auto-handle vs escalate, with a reason | ✅ deterministic policy; every decision lists its reasons | [`src/agent/policy.py`](src/agent/policy.py), [`configs/support_agent.yaml`](configs/support_agent.yaml) |
 | Golden set of 150–250 hand-labelled examples | ⚠️ 250 cases sampled, frozen and leakage-checked; **250 human-labelled or human-reviewed** (100 blind, 150 confirmed AI drafts) | [Golden evaluation set](#golden-evaluation-set) |
-| Evaluation harness: metrics, LLM judge, judge-vs-human agreement | ⚠️ retrieval and golden intent-classification harnesses done (LLM run on Groq); **LLM judge not built yet** | [`src/evaluation/retrieval.py`](src/evaluation/retrieval.py), [`src/evaluation/intent_eval.py`](src/evaluation/intent_eval.py) |
+| Evaluation harness: metrics, LLM judge, judge-vs-human agreement | ⚠️ retrieval, intent-classification, end-to-end agent and LLM-judge harnesses built; **the agent run and judge-vs-human ratings are incomplete** (Groq free-tier daily limit; few draft replies so far) | [`src/evaluation/intent_eval.py`](src/evaluation/intent_eval.py), [`src/evaluation/agent_eval.py`](src/evaluation/agent_eval.py), [`src/evaluation/llm_judge.py`](src/evaluation/llm_judge.py) |
 | Results vs a trivial and a simple baseline | ✅ done for retrieval and for intent classification (majority class, TF-IDF + logistic regression, LLM) | [Results so far](#results-so-far) |
 | Top 5 failure modes | ⚠️ retrieval and data failure modes documented below; agent failure modes need the golden run | [Failure modes](#failure-modes-i-already-know-about) |
 | "What is misleading about my headline number?" | ✅ | [below](#what-is-misleading-about-my-headline-number) |
@@ -397,8 +408,8 @@ finished,
 
    It would compare against a trivial baseline (always escalate, or always the majority intent) and a simple one (BM25 top-1
    reply plus keyword rules).
-3. **LLM-as-judge for reply quality**, with a short rubric: grounded, answers the question, no invented commitments, tone.
-   I'd label about 50 replies by hand to measure how well the judge agrees with a human (Cohen's κ) before trusting it.
+3. **Finish the judge-vs-human check.** Run the agent on enough golden cases to get 30–40 draft replies (only about 1 in 5
+   cases is auto-handled), rate them in `human_ratings.csv`, and only trust the judge where κ is high.
 4. **Calibrate the policy on dev, not golden.** Sweep the thresholds for an auto-handle precision target and report the
    coverage that buys.
 5. **Finish the live smoke test** with a paid key, to see AUTO_HANDLE plus grounding PASS end to end.
@@ -419,7 +430,7 @@ configs/         support_agent.yaml (all thresholds), virgintrains_intents.yaml 
 scripts/         one entry point per step (see below)
 reports/         EDA, intent clusters, case inspection, retrieval evaluation
 data/            raw/ (twcs.csv, not committed) · processed/ · golden/
-tests/           489 tests, no network or API key needed
+tests/           534 tests, no network or API key needed
 ```
 
 | script | what it does |
@@ -429,6 +440,7 @@ tests/           489 tests, no network or API key needed
 | `build_resolution_memory.py`, `evaluate_retrieval.py` | memory + proxy retrieval evaluation |
 | `evaluate_intents.py` | golden intent classification: majority class, TF-IDF + logistic regression, the agent's LLM classifier |
 | `evaluate_agent.py` | end-to-end agent on a stratified 50-case golden slice: routing, generation, grounding, judge inputs |
+| `judge_replies.py` | LLM-as-judge on the agent's draft replies, blind human rating sheet, judge-vs-human agreement |
 | `run_support_agent.py`, `smoke_test_agent.py` | the agent on one message / on 12 representative dev cases |
 | `prepare_golden_eval.py`, `label_golden_eval.py`, `golden_taxonomy_review.py` | golden pack, blind labeling, post-labeling taxonomy review |
 | `build_taxonomy_calibration.py`, `label_taxonomy_calibration.py`, `compare_taxonomy.py`, `finalize_taxonomy.py` | optional taxonomy-calibration path (built, not used yet) |
