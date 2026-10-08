@@ -1,418 +1,442 @@
-# An evidence-grounded support agent for VirginTrains
+# VirginTrains support copilot: evidence before generation
 
-This is my take-home for the Hiver SDE Intern role. The brief asks for an AI support agent for one brand from the
-[Customer Support on Twitter](https://www.kaggle.com/datasets/thoughtvector/customer-support-on-twitter) dataset. The agent should:
+My take-home for the Hiver SDE Intern role. The brief: pick one brand from the
+[Customer Support on Twitter](https://www.kaggle.com/datasets/thoughtvector/customer-support-on-twitter) dataset and build a
+support agent that (1) classifies incoming messages into intents defined from the data, (2) drafts replies grounded in how
+the brand actually resolved similar issues, and (3) decides whether to auto-handle or escalate, with a reason. Then show
+whether it can be trusted.
 
-1. classify incoming messages into intents defined from the data;
-2. draft replies grounded in how the brand actually resolved similar issues;
-3. decide whether to auto-handle or escalate, with a reason.
-
-The brief also asks me to prove the agent can be trusted.
-
-I picked **VirginTrains**. The system is built as an *evidence-grounded support agent with risk-aware abstention*: it only
-replies when it has strong historical evidence, and otherwise it hands the case to a human with its reasons.
-
-> **Where things stand (honestly).** The data pipeline, the intent taxonomy, retrieval, the agent and a blind labeling tool for
-> the golden set are built and tested (`pytest -q`: 534 passed). Retrieval has a proxy evaluation with baselines. The 250-case
-> golden set is sampled, frozen and leakage-checked. **All 250 cases have human labels: 100 labelled blind, and 150
-> AI-assistant drafts reviewed and confirmed by a human** (see
-> [Golden evaluation set](#golden-evaluation-set)). Intent classification is scored on golden: the agent's LLM classifier
-> (run on Groq's `gpt-oss-120b`) gets 60% accuracy on the blind 100, against 54% for TF-IDF and 15% for the majority class.
-> The end-to-end agent harness and the LLM-as-judge are built, but **the agent run and the judge-vs-human ratings are not
-> finished** (Groq free-tier daily token limit). The
-> [deliverables table](#deliverables-vs-the-brief) shows exactly what is done and what isn't.
-
-**Contents**
-
-- [Quick start](#quick-start)
-- [Deliverables vs the brief](#deliverables-vs-the-brief)
-- [Problem framing: what "good" means here](#problem-framing-what-good-means-here)
-- [Architecture](#architecture)
-- [Results so far](#results-so-far)
-- [What is misleading about my headline number?](#what-is-misleading-about-my-headline-number)
-- [Failure modes I already know about](#failure-modes-i-already-know-about)
-- [Golden evaluation set](#golden-evaluation-set)
-- [Decision log](#decision-log)
-- [What I'd do next with one more week](#what-id-do-next-with-one-more-week)
-- [Repo map](#repo-map)
-- [Reference: data contracts and pipeline details](#reference-data-contracts-and-pipeline-details)
-- [Assumptions, limitations and credits](#assumptions-limitations-and-credits)
+**Contents:**
+[1 Executive summary](#1-executive-summary) ·
+[2 Problem framing](#2-problem-framing) ·
+[3 Dataset and methodology](#3-dataset-and-methodology) ·
+[4 Architecture](#4-architecture) ·
+[5 Golden set](#5-golden-set-methodology) ·
+[6 Baselines](#6-baselines) ·
+[7 Intent results](#7-intent-classification-results) ·
+[8 Retrieval results](#8-retrieval-results) ·
+[9 End-to-end routing](#9-end-to-end-routing-results) ·
+[10 Reply quality](#10-reply-quality-evaluation) ·
+[11 Failure modes](#11-top-5-failure-modes) ·
+[12 Misleading headline](#12-what-is-misleading-about-my-headline-number) ·
+[13 Decision log](#13-key-design-decisions) ·
+[14 Next week](#14-what-id-do-with-one-more-week) ·
+[Reproduce](#reproducing-the-results) ·
+[Repo map](#repo-map)
 
 ---
 
-## Quick start
+## 1. Executive summary
 
-You need Python 3.10+. I tested on 3.11 on Windows.
+I picked **VirginTrains** and built a support copilot around one idea: **evidence before generation**. The agent does not
+write a reply until it has found strong precedent in how VirginTrains itself resolved similar tweets, and a deterministic
+policy has checked the risk. Anything it can't support goes to a human, with its reasons and the evidence it found.
+
+| what | result | status |
+|---|---|---|
+| Intent classification, **100 blind human labels** (headline) | LLM classifier 60.0% accuracy / 0.533 macro-F1, vs TF-IDF 54.0% / 0.466 and majority class 15.0% / 0.024 | final |
+| Intent classification, all 250 reviewed labels | LLM 65.6% / 0.573 (secondary: 150 labels began as assistant drafts) | final |
+| Retrieval, 857 dev queries (proxy relevance) | hybrid + intent bonus MRR 0.572, R@5 0.784, vs BM25 0.372 / 0.551 and random 0.152 / 0.237 | final, proxy |
+| End-to-end routing on a 50-case golden slice | [FINAL 50-CASE RESULT PENDING — DO NOT FABRICATE] (11 of 50 done) | **incomplete** |
+| Reply quality: LLM judge vs human ratings | [FINAL 50-CASE RESULT PENDING — DO NOT FABRICATE] | **incomplete** |
+
+The end-to-end run and the judge-vs-human check are blocked only by the Groq free-tier daily token limit. The harnesses are
+built, tested and resumable; [Reproducing the results](#reproducing-the-results) gives the exact commands.
+
+![Support Copilot UI: ticket list, conversation with a grounded suggested reply, AI analysis with risk checks and historical evidence, and the execution trace](docs/copilot.png)
+
+*The local Support Copilot UI (`python scripts/run_copilot_ui.py`). It shows real cached agent runs: decision, intent,
+risk checks, the historical VirginTrains replies used as evidence, and the execution trace. It shows no chain-of-thought.*
+
+---
+
+## 2. Problem framing
+
+VirginTrains customers tweet about a few recurring things: is my train running, the train is late or packed, Delay Repay,
+booking and seats, wifi, first-class catering, and a lot of praise and banter. **Many of those can't be answered safely
+from history alone.** "Is the 17:30 to Euston cancelled?" needs live data, and a refund needs an account lookup. A
+confident wrong reply is worse than no reply.
+
+So for this brand, **good** means:
+
+1. **Never be confidently wrong.** An auto-handled reply must be supported by what VirginTrains actually said in similar
+   past cases: no invented links, amounts, policies or "I've refunded you".
+2. **Escalate the right things.** Live status, money, complaints about staff, safety and accessibility go to a human, with
+   a reason a human can act on.
+3. **Automate only the boring, safe part**: general information, self-service steps, wifi, thanking people. That's where
+   historical replies are repetitive and safe to reuse.
+
+Precision on auto-handled messages matters far more than coverage. I'd rather escalate 70% of traffic and be right on the
+other 30% than the reverse. The baseline that matters is "always escalate": zero risk, zero automation.
+
+**Out of scope on purpose:** Hiver/Twitter API integration, databases, auth, deployment, multi-agent orchestration, vector
+databases, rerankers and fine-tuning. The agent has no live train data or account access, which is exactly why the
+policy escalates those intents.
+
+---
+
+## 3. Dataset and methodology
+
+- **Brand choice.** The dataset has 2.8M tweets across 108 brands. I ranked 78 eligible brands on volume, reconstructable
+  multi-turn threads, template repetition, intent diversity and how often resolutions are visible. VirginTrains ranked
+  3rd, and I picked it over the top two because it resolves *in public*: 3.3% of its replies go to DM, against 31.5% for
+  Tesco. You can't learn resolutions you can't see.
+- **Cases.** I rebuilt reply threads and attributed each tweet to a customer, giving 14,853 conversations, 65,810 tweets and
+  17,913 support cases (one per customer episode, new episode after a 24-hour gap). 16% are visibly resolved and 4% move
+  to DM.
+- **Resolution signals.** Rule-based, no LLM: each case gets a resolution type (information provided, self-service,
+  refund, troubleshooting, feedback acknowledged, …) with the exact sentence that triggered it quoted as evidence.
+- **Candidate taxonomy.** Entity-masked MiniLM embeddings and KMeans (k=12) gave 10 candidate intents plus a fallback.
+  Clusters are soft (silhouette ≈ 0.05), so the taxonomy is marked *candidate*, not ground truth.
+- **Splits.** Customer- and thread-grouped hashing, with the golden pool carved out *before* clustering:
+  train 14,213 · dev 2,210 · golden 250 · reserve 1,240. Leakage checks (same customer, thread, tweet or near-duplicate
+  opener) pass with zero overlaps.
+- **Resolution memory.** Only train-split cases with *strong* resolution evidence: 10,380 of 14,213. The exclusions are listed
+  in [`docs/reference.md`](docs/reference.md#resolution-memory).
+
+Every step is seeded (42). Details, schemas and the brand-ranking weights are in [`docs/reference.md`](docs/reference.md).
+
+---
+
+## 4. Architecture
+
+```text
+ twcs.csv (2.8M tweets) ─► VirginTrains cases (17,913) ─► resolution signals (rules, quoted evidence)
+                                     │
+            candidate taxonomy ◄─────┼─────► splits (train / dev / golden / reserve)
+                                     ▼
+                      resolution memory (train only, strong evidence)
+
+ ┌─────────────────────────── support agent (src/agent/support_agent.py) ───────────────────────────┐
+ │ MESSAGE   opening customer tweet                                                                  │
+ │ INTENT    LLM classifier: candidate intents, JSON, temperature 0, self-reported confidence        │
+ │ RETRIEVAL hybrid BM25 + MiniLM embeddings + soft intent bonus, top 5 past resolutions             │
+ │ EVIDENCE  similarity thresholds, usable-evidence count, intent agreement                          │
+ │ RISK      deterministic policy: blocked intents, sensitive wording, multi-intent, low information │
+ │ DECISION  ESCALATE → no reply; reasons + evidence for the human                                   │
+ │           AUTO_HANDLE → REPLY drafted from the evidence only → GROUNDING                          │
+ │ GROUNDING link/£-amount check + LLM verifier; any failure or verifier error → ESCALATE            │
+ └───────────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+- **The evidence is the brand's own history.** Retrieval returns past *resolutions* (customer problem, VirginTrains'
+  reply, outcome), each with its `case_id` and source tweet ids, so any reply can be traced to real tweets.
+- **The LLM proposes, plain code decides.** The model classifies, drafts and verifies; the auto-handle decision is made by
+  thresholds in one file, [`configs/support_agent.yaml`](configs/support_agent.yaml): classifier confidence ≥ 0.75, top
+  similarity ≥ 0.60, at least 3 usable cases (similarity ≥ 0.55), message at least 3 words.
+- **Five intents never auto-handle:** service status, journey disruption, Delay Repay, customer-service complaints and
+  unclear messages. Sensitive wording (legal, safety, accessibility, theft, refunds, …) also forces escalation.
+- **Grounding only makes the agent more cautious.** It can turn AUTO_HANDLE into ESCALATE, never the reverse.
+- **One thin model layer.** `LanguageModel` interface with REST clients for Groq ([`groq.py`](src/models/groq.py)) and
+  Gemini ([`gemini.py`](src/models/gemini.py)): timeouts, retries, JSON mode, keys never logged or put in errors.
+  The scripts default to Groq's `openai/gpt-oss-120b` (`--provider gemini` switches). Tests use fakes and need no key.
+
+Code: [`classifier.py`](src/agent/classifier.py) · [`retrieval.py`](src/retrieval.py) · [`policy.py`](src/agent/policy.py) ·
+[`generator.py`](src/agent/generator.py) · [`grounding.py`](src/agent/grounding.py) · [`schemas.py`](src/agent/schemas.py).
+
+---
+
+## 5. Golden set methodology
+
+**Sampling.** 250 cases from the held-out golden pool, stratified by candidate cluster, resolution type, conversation
+length, DM redirect and resolved. That over-represents rare and hard cases; `golden_stratum_weight` restores natural
+prevalence. No golden customer, thread, tweet or near-duplicate opener appears in train or dev.
+
+**Labeling.** A local blind tool ([`label_golden_eval.py`](scripts/label_golden_eval.py)) shows the full conversation and the
+provisional taxonomy, and **never any model output**. The labeler records `gold_intent` (or `NEW:<name>`),
+`gold_should_escalate` (judged against what *this* system can do), `gold_resolution_type`, confidence and notes.
+
+**Provenance.** 250 cases have final human-reviewed labels; 100 were labelled blindly by a human and 150 were initially
+generated as assistant drafts and subsequently reviewed by a human (150 confirmed, 0 corrected). The audit log records
+the source of every label.
+
+- **The blind 100 are the primary evaluation set.**
+- **The 250 are secondary.** Reviewing a draft is weaker than labeling blind: the draft can anchor the reviewer, and the
+  150 confirmations took about six minutes in total, so I treat them as a light review. Drafts written by an LLM may also
+  agree more with another LLM.
+
+**Freeze.** Golden labels, split membership and the taxonomy were frozen before any golden scoring. The golden set was
+never used to tune retrieval weights, prompts, thresholds or the taxonomy.
+
+**Label distribution.** `gold_should_escalate`: 52 yes / 198 no on all 250, and 19 yes / 81 no on the blind 100. Label
+confidence: 181 high, 59 medium, 4 low, 6 not given.
+
+---
+
+## 6. Baselines
+
+| layer | trivial baseline | simple baseline | system |
+|---|---|---|---|
+| intent | majority class | TF-IDF + logistic regression trained on the train split's weak cluster intents, `C` chosen on dev | agent's LLM classifier (`gpt-oss-120b` on Groq) |
+| retrieval | random | BM25 | hybrid BM25 + embeddings + soft intent bonus |
+| routing | always escalate (0 unsafe auto-handles, 0% automation) | – | full agent |
+
+All systems get only the opening customer message: the same input the agent gets.
+
+---
+
+## 7. Intent classification results
+
+Full report: [`reports/intent_eval/virgintrains_intent_evaluation.md`](reports/intent_eval/virgintrains_intent_evaluation.md)
+(per-intent precision/recall/F1 and confusion matrices).
+
+| system | **blind human (100)**: accuracy | macro-F1 | all reviewed (250): accuracy | macro-F1 |
+|---|---|---|---|---|
+| Majority class (`service_status_delay_enquiry`) | 15.0% | 0.024 | 12.4% | 0.018 |
+| TF-IDF + logistic regression | 54.0% | 0.466 | 49.6% | 0.409 |
+| **LLM: agent's classifier on `gpt-oss-120b` (Groq)** | **60.0%** | **0.533** | 65.6% | 0.573 |
+
+- **The errors are mostly confusable intents.** `journey_disruption_complaint` and `customer_service_complaint` bleed
+  into each other (F1 0.47 and 0.43). The LLM rarely picks `unclear_or_media_only` (recall 0.25). Delay Repay
+  predictions are always right (precision 1.00), but it finds only about half of them.
+- **Wrong answers come with high confidence.** 32 of the 40 blind errors had self-reported confidence ≥ 0.90, so the 0.75
+  confidence gate doesn't catch them (see [failure modes](#11-top-5-failure-modes)).
+- **The baseline learned weak labels.** Against the same weak labels on dev it scores 0.77 macro-F1; against human labels it
+  drops to 0.47. Most of that gap is the cluster labels disagreeing with people.
+- **The input is narrower than what the labeler saw**: labels come from the whole conversation, predictions from the
+  opening tweet.
+- **Two golden cases use `NEW:lost_property`**, which no system can predict; they count as errors for everyone.
+- **Taxonomy limitation.** The candidate cluster intent differs from the final gold intent on 131 of 250 cases
+  ([taxonomy review](reports/golden_taxonomy_review.md)). I report this as a limitation and did not retune against it.
+
+---
+
+## 8. Retrieval results
+
+These are **proxy metrics.** Queries are 857 held-out dev cases; the corpus is the 10,380-case train memory. A retrieved case
+counts as relevant if it has the same candidate intent *and* the same rule-derived resolution type. Weights were tuned
+on a separate half of dev. Report:
+[`reports/virgintrains_retrieval_evaluation.md`](reports/virgintrains_retrieval_evaluation.md).
+
+| strategy | R@1 | R@3 | R@5 | MRR (95% CI) |
+|---|---|---|---|---|
+| Random (trivial) | 0.053 | 0.156 | 0.237 | 0.152 |
+| BM25 (simple) | 0.223 | 0.447 | 0.551 | 0.372 (0.349–0.396) |
+| Embeddings (MiniLM) | 0.287 | 0.522 | 0.616 | 0.443 (0.418–0.470) |
+| Hybrid (0.9 semantic) | 0.299 | 0.518 | 0.623 | 0.445 (0.420–0.472) |
+| **Hybrid + soft intent bonus (0.15)** | **0.407** | **0.690** | **0.784** | **0.572 (0.547–0.598)** |
+
+**Stress test.** With 30% of predicted intents wrong, the soft bonus still beats query-only retrieval (MRR 0.519 vs 0.445),
+while a hard intent filter drops below it (0.404). That's why intent is a nudge and never a filter.
+
+---
+
+## 9. End-to-end routing results
+
+`scripts/evaluate_agent.py` runs the real `SupportAgent.handle` on a 50-case golden slice, stratified by gold intent and
+gold escalation (at least 3 per intent, seed 42; 48 of the 50 have blind human labels). It scores routing against
+`gold_should_escalate` and checks pipeline invariants on every case.
+
+| metric | definition | result |
+|---|---|---|
+| auto-handle rate (coverage) | share of cases answered without a human | [FINAL 50-CASE RESULT PENDING — DO NOT FABRICATE] |
+| false auto-handle rate | auto-handled but gold says escalate, over auto-handled | [FINAL 50-CASE RESULT PENDING — DO NOT FABRICATE] |
+| safe automation rate | auto-handled and gold says no escalation, over all cases | [FINAL 50-CASE RESULT PENDING — DO NOT FABRICATE] |
+| escalation precision / recall | against `gold_should_escalate` | [FINAL 50-CASE RESULT PENDING — DO NOT FABRICATE] |
+| generation success, grounding pass rate | over attempted drafts | [FINAL 50-CASE RESULT PENDING — DO NOT FABRICATE] |
+
+**Partial run (11 of 50 cases, not a result).** Two cases were auto-handled; both replies passed grounding and both
+matched a gold "no escalation" label. Nine were escalated: 5 correctly, and 4 that a human said could have been automated.
+There were no unsafe auto-handles, classification failures or invariant violations. This is the first live observation of
+AUTO_HANDLE with a passing grounding check. Eleven cases can't support any rate, so I don't report percentages. Partial
+outputs stay uncommitted until the run finishes.
+
+---
+
+## 10. Reply-quality evaluation
+
+`scripts/judge_replies.py` scores every draft reply (including drafts the grounding check blocked) with an LLM judge,
+1–5 on four dimensions:
+
+- **correctness**: right for this customer's message;
+- **groundedness**: every fact, link, price and promise supported by the evidence;
+- **actionability**: the customer knows what to do next;
+- **brand alignment**: polite, concise, plain, no promises it can't keep.
+
+The rubric is frozen in [`src/evaluation/llm_judge.py`](src/evaluation/llm_judge.py), and its hash is stored with every
+score. Before trusting the judge, it's checked against a human. The script writes `human_ratings.csv`, a blind sheet of up
+to 40 replies that never shows judge scores, and computes exact agreement, quadratic-weighted Cohen's κ, Spearman ρ and
+mean absolute difference per dimension. With fewer than 30 rated replies the report labels agreement "indicative, not
+reliable".
+
+| | result |
+|---|---|
+| judge scores on the 50-case slice | [FINAL 50-CASE RESULT PENDING — DO NOT FABRICATE] |
+| judge vs human agreement (κ, ρ) | [FINAL 50-CASE RESULT PENDING — DO NOT FABRICATE] |
+
+**Status:** 2 draft replies exist so far, and there are no human ratings. Only about 1 in 5 cases reaches generation, so even
+the full 50-case run will probably give fewer than 30 replies. In that case agreement will be reported as indicative only.
+
+---
+
+## 11. Top 5 failure modes
+
+From [`reports/failure_analysis.md`](reports/failure_analysis.md), generated by `scripts/analyze_failures.py` from existing
+artifacts only (no model calls). Every example is a real case id. Counts from the agent run are marked partial.
+
+1. **Policy over-escalation (policy).** Apply the hard rules to the *gold* intent of the blind 100, as if the classifier
+   were perfect. Of the 81 cases a human said needn't escalate, 40 would still be escalated: 37 by an intent rule, 7 by
+   sensitive wording, 1 for low information. Examples: `case_2396788` is praise, escalated because it mentions a
+   wheelchair; `case_1615687` is a simple "how to get a refund?". The partial run shows the same thing (4 of 6). *Fix:*
+   gate on the action needed rather than the intent, and scope sensitive words to complaints. Tune on dev.
+2. **Intent boundary ambiguity (taxonomy).** 14 of the 40 blind errors are between two pairs: journey disruption vs status
+   enquiry (`case_2639881`, `case_509179`), and chitchat vs praise. The candidate taxonomy disagrees with gold on 131 of 250
+   cases. A delayed train is both a status question and a complaint. *Fix:* define intents by the action the brand must
+   take, with decision rules for the top pairs.
+3. **Confidently wrong classifications (model).** 32 of 40 blind errors had confidence ≥ 0.90. For example,
+   `case_2607464`, a heart-condition complaint about the toilet voice, was called chitchat at 0.97. *Fix:* calibrate on
+   dev, or replace self-reported confidence with retrieval-agreement signals. The hard rules downstream limit the damage.
+4. **Right topic, wrong handling (retrieval).** 178 of the 185 dev queries with no relevant top-5 hit found the right intent
+   but the wrong resolution type. `case_527334`, "can I use virgin from Watford with this??", was historically a refund;
+   the first relevant hit was at rank 246. The opening tweet doesn't contain what decided the handling.
+5. **The request isn't in the tweet (data).** 19 of 250 golden cases are about another operator's train, where the right
+   answer is a redirect that no intent captures (`case_482898`). 7 are media-only or unclear, and the LLM labelled only 2 of
+   those as unclear (`case_1845809`: "your trains are disgusting.... <link>").
+
+Also tracked: **3 of the 19** blind should-escalate cases trigger no hard rule (`case_2884600`, a £102 change fee), so only
+the soft checks stand between them and an auto-reply. Generation and grounding failures have **not been observed yet**
+(0 of 2 partial). The UI's grounding-fail and model-error states are built and unit-tested, but no real example exists.
+
+---
+
+## 12. What is misleading about my headline number?
+
+The headline is **60.0% intent accuracy (0.533 macro-F1) on 100 blind labels**. Reasons not to over-read it:
+
+1. **It rests on 100 labels.** A 95% interval on 60% with n=100 is roughly ±10 points, so the 6-point gap over TF-IDF is
+   suggestive, not proven.
+2. **The 250-case number is higher, and that's a warning, not a bonus.** 150 of those labels began as assistant drafts that
+   were confirmed quickly; LLM-drafted labels plausibly favour an LLM classifier. It's reported as secondary.
+3. **Intent accuracy is partly a taxonomy measurement.** The candidate intents overlap (131 of 250 candidate/gold
+   disagreements, silhouette ≈ 0.05). Some "errors" are defensible second readings of the same tweet, and some
+   "correct" answers depend on where I drew a boundary.
+4. **Retrieval metrics are proxies.** Relevance is "same candidate intent + same rule-derived resolution type", and the
+   intent bonus uses the same intent, so the best row is partly self-confirming. No human has judged a retrieved case as
+   useful.
+5. **The end-to-end slice is small and not representative.** 50 cases, stratified to over-represent rare intents and
+   escalations. Its rates will not match real traffic (use `golden_stratum_weight` for prevalence), and 11 of 50 are done.
+6. **Low coverage isn't automatically failure.** The policy is deliberately conservative, and "always escalate" is a valid
+   baseline. The question is whether each extra automated case is safe. The oracle analysis shows that much of the
+   over-escalation is by design, in the rules, not caused by model errors.
+7. **The judge is only trustworthy once checked against enough human ratings.** With 2 replies and no ratings, no judge
+   score here means anything yet; under 30 rated replies, agreement is indicative only.
+8. **Resolution signals are weak heuristics.** Resolution types come from regexes over the brand's reply ("refund" means a
+   refund was *discussed*). DM-resolved cases are invisible. Both the memory filter and the retrieval relevance inherit
+   this noise.
+
+---
+
+## 13. Key design decisions
+
+1. **VirginTrains over higher-ranked brands.** It resolves in public (3.3% DM vs 31.5% for Tesco), so resolutions are
+   learnable.
+2. **One case per customer episode, 24-hour gap.** Busy threads mix several customers and other operators' agents.
+3. **Rule-based resolution labels with quoted evidence; only strong evidence enters memory.** Weak labels, but each is
+   auditable, and nothing is paraphrased by an LLM.
+4. **Mask entities before clustering, and keep the taxonomy a candidate.** Without masking, clusters were train routes.
+   Clusters are soft, so nothing calls them ground truth.
+5. **Golden carved out first; split by customer and thread groups.** Random hashing would leak customers and templated
+   replies across splits.
+6. **Golden frozen and labelled blind; taxonomy calibration skipped.** The labeler never saw model output. I built a
+   calibration workflow but skipped it to reach an end-to-end agent; `NEW:` intents plus the taxonomy review cover it.
+7. **100 blind labels are primary, 150 reviewed drafts are secondary.** Every result is reported both ways, and the
+   provenance is in the audit log.
+8. **Retrieve resolutions, not documents; hybrid BM25 + embeddings; no vector DB or reranker.** 10k records fit in memory,
+   and the question is "what did VirginTrains do last time?".
+9. **Intent is a soft retrieval bonus, never a filter.** The stress test shows filters collapse when the classifier is wrong.
+10. **Tune on one half of dev, report on the other.** Golden is never used for tuning.
+11. **Deterministic policy, separate from the LLM.** LLM confidence is uncalibrated (32 of 40 errors at ≥ 0.90), so
+    thresholds decide and list their reasons.
+12. **Some intents always escalate.** Live status, Delay Repay and complaints need data or judgment this system doesn't
+    have.
+13. **Grounding fails closed.** It can only downgrade to ESCALATE; a verifier error counts as "not grounded".
+14. **A 50-case stratified e2e slice with a cache, resume, and stop-on-rate-limit.** Free-tier quotas made a full golden run
+    impractical, so every model call is cached and the run resumes where it stopped. One REST wrapper per provider; no
+    SDK dependency.
+15. **The judge comes with a frozen rubric hash, a blind human sheet, and agreement before trust.** Judge scores aren't
+    reported as quality until they agree with a human.
+
+---
+
+## 14. What I'd do with one more week
+
+1. **Finish the 50-case run and the judge-vs-human check**, then rerun the failure analysis on the complete run.
+2. **Fix the over-escalation found by the oracle**, calibrated on dev and not golden: gate on action needed, scope
+   sensitive words, and report the auto-handle precision vs coverage curve.
+3. **Redefine the taxonomy by required action** (live info / compensation / acknowledge / redirect), add
+   `lost_property` and an "other operator" redirect path, and re-label after freezing the definitions.
+4. **Calibrate classifier confidence on dev**, or replace it with retrieval-agreement signals.
+5. **Re-review the 150 confirmed drafts slowly**, ideally blind, to promote them toward primary.
+
+---
+
+## Reproducing the results
+
+Three kinds of steps. **Local**: deterministic, no API key. **Cached**: replays committed model outputs without an API call.
+**Live**: calls an LLM and is subject to free-tier rate limits. The main data pipeline took about 5 minutes on my GPU
+(CPU is slower). The live evaluations can't promise a time budget: the Groq free tier allows about 200K tokens a day, so the
+scripts stop cleanly at the limit and resume on the next run, possibly a day later.
+
+**1. Install** (Python 3.10+; tested on 3.11, Windows).
 
 ```bash
 python -m venv .venv && .venv\Scripts\activate          # macOS/Linux: source .venv/bin/activate
 pip install -r requirements.txt
-python -m pytest -q                                      # no data or API key needed; about 1 minute
+python -m pytest -q                                      # local: no data or key needed, about 1 minute
 ```
 
-**Reproduce the headline retrieval numbers.** You need `twcs.csv` (2.8M tweets) in `data/raw/`.
+**2. Data pipeline** (local). Needs `twcs.csv` in `data/raw/`.
 
 ```bash
 python -c "import kagglehub, shutil; p = kagglehub.dataset_download('thoughtvector/customer-support-on-twitter'); shutil.copy(p + '/twcs/twcs.csv', 'data/raw/twcs.csv')"
-python scripts/run_virgintrains_pipeline.py --input data/raw/twcs.csv   # cases, intents, splits, EDA (about 5 min on a GPU, longer on CPU)
-python scripts/build_resolution_memory.py                                # historical resolution memory (train split only)
+python scripts/run_virgintrains_pipeline.py --input data/raw/twcs.csv   # cases, taxonomy, splits, EDA (~5 min on a GPU)
+python scripts/build_resolution_memory.py                                # train-only resolution memory
 python scripts/evaluate_retrieval.py                                     # -> reports/virgintrains_retrieval_evaluation.md
 ```
 
-Every step is seeded (42), so a re-run reproduces the split files byte for byte. Embeddings are cached in `data/processed/cache/`.
+**3. Provider configuration.** Copy `.env.example` to `.env` and put **your own** key in it: `GROQ_API_KEY` (default
+provider) or `GEMINI_API_KEY` (with `--provider gemini`). `.env` is git-ignored; keys are never printed or written to
+reports.
 
-**Talk to the agent.** This needs a Gemini key. Copy `.env.example` to `.env` and set `GEMINI_API_KEY`. The `.env` file is git-ignored.
+**4. Smoke test** (live): 12 representative dev cases end to end.
 
 ```bash
 python scripts/run_support_agent.py --message "The wifi on my train keeps dropping"
-python scripts/smoke_test_agent.py --limit 12 --seed 42        # 12 representative dev cases end to end; --select-only skips Gemini
+python scripts/smoke_test_agent.py --limit 12 --seed 42        # --select-only lists the cases without a key
 ```
 
-**Label the golden set.** This is local and blind, and opens http://127.0.0.1:8766/.
+**5. Intent benchmark** (local for baselines, cached for the LLM).
 
 ```bash
-python scripts/label_golden_eval.py            # --check verifies the files and prints progress
+python scripts/evaluate_intents.py --skip-llm     # majority + TF-IDF, about 40 s
+python scripts/evaluate_intents.py                # re-scores the LLM from the committed prediction cache; no API call
 ```
 
-**Score intent classification on the golden set.** This needs the pipeline outputs above. The LLM run needs
-`GROQ_API_KEY` in `.env`.
+**6. End-to-end agent evaluation** (live; resumable).
 
 ```bash
-python scripts/evaluate_intents.py --skip-llm          # majority class + TF-IDF/logistic regression, about 40 s, no key
-python scripts/evaluate_intents.py                     # adds the agent's LLM classifier on Groq; cached and resumable
-python scripts/evaluate_intents.py --provider gemini   # same classifier on Gemini instead
+python scripts/evaluate_agent.py --select-only    # the 50 cases, no key
+python scripts/evaluate_agent.py                  # rerun after a rate limit: cached calls replay, only missing cases are sent
 ```
 
-The committed prediction cache means a re-run re-scores without calling any API.
-The report goes to [`reports/intent_eval/`](reports/intent_eval/virgintrains_intent_evaluation.md).
-
-**Run the whole agent on a 50-case golden slice.** This uses Groq's `gpt-oss-120b` by default (`--provider gemini` to switch).
-Cases are stratified by gold intent and gold escalation.
+**7. Judge evaluation** (live, then a human step).
 
 ```bash
-python scripts/evaluate_agent.py --select-only   # show the 50 cases, no key needed
-python scripts/evaluate_agent.py                 # classify, retrieve, decide, generate, ground; every model call cached
+python scripts/judge_replies.py                   # judge scores + blind reports/agent_eval/human_ratings.csv
+# fill in the human_* columns (1-5) without opening the judge outputs, then:
+python scripts/judge_replies.py                   # adds judge-vs-human agreement
+python scripts/analyze_failures.py                # local: refresh the failure analysis
 ```
 
-The report goes to [`reports/agent_eval/`](reports/agent_eval/). If a rate limit interrupts the run, run the same command
-again: cached calls are replayed and only the missing cases are sent.
-
-**Judge the agent's replies (LLM-as-judge) and check the judge against a human.** This needs the agent run above and
-`GROQ_API_KEY`.
+**8. Support Copilot UI** (cached; live only on request).
 
 ```bash
-python scripts/judge_replies.py                  # scores every draft reply 1-5 on correctness, groundedness, actionability, brand alignment
+python scripts/run_copilot_ui.py --no-live        # http://127.0.0.1:8770, shows cached agent runs only
+python scripts/run_copilot_ui.py                  # with GROQ_API_KEY set, "Run agent live" analyses a pending ticket
 ```
 
-The rubric is frozen in [`src/evaluation/llm_judge.py`](src/evaluation/llm_judge.py), and its hash is stored with every
-score. Judge calls are cached. The first run also writes `reports/agent_eval/human_ratings.csv`, a blind sheet of up to 40
-representative replies that doesn't show the judge's scores. Fill in the `human_*` columns (1-5) and run again; the report
-then adds exact agreement, quadratic-weighted Cohen's κ and Spearman ρ per dimension.
-
----
-
-## Deliverables vs the brief
-
-| brief asks for | status | where |
-|---|---|---|
-| Runnable pipeline, reproducible in under 15 min | ✅ built (raw tweets → cases → taxonomy → splits → memory → agent); the main pipeline took about 5 min on my GPU, CPU is slower | [Quick start](#quick-start), [`scripts/run_virgintrains_pipeline.py`](scripts/run_virgintrains_pipeline.py) |
-| Intents defined from the data | ✅ 10 candidate intents plus a fallback, still marked *candidate* (not human-validated) | [`configs/virgintrains_intents.yaml`](configs/virgintrains_intents.yaml), [`reports/virgintrains_eda.md`](reports/virgintrains_eda.md) §4 and §8 |
-| Grounded reply drafting | ✅ built and unit-tested; the live run was cut short by the Gemini free-tier quota | [`src/agent/generator.py`](src/agent/generator.py), [`src/agent/grounding.py`](src/agent/grounding.py) |
-| Auto-handle vs escalate, with a reason | ✅ deterministic policy; every decision lists its reasons | [`src/agent/policy.py`](src/agent/policy.py), [`configs/support_agent.yaml`](configs/support_agent.yaml) |
-| Golden set of 150–250 hand-labelled examples | ⚠️ 250 cases sampled, frozen and leakage-checked; **250 human-labelled or human-reviewed** (100 blind, 150 confirmed AI drafts) | [Golden evaluation set](#golden-evaluation-set) |
-| Evaluation harness: metrics, LLM judge, judge-vs-human agreement | ⚠️ retrieval, intent-classification, end-to-end agent and LLM-judge harnesses built; **the agent run and judge-vs-human ratings are incomplete** (Groq free-tier daily limit; few draft replies so far) | [`src/evaluation/intent_eval.py`](src/evaluation/intent_eval.py), [`src/evaluation/agent_eval.py`](src/evaluation/agent_eval.py), [`src/evaluation/llm_judge.py`](src/evaluation/llm_judge.py) |
-| Results vs a trivial and a simple baseline | ✅ done for retrieval and for intent classification (majority class, TF-IDF + logistic regression, LLM) | [Results so far](#results-so-far) |
-| Top 5 failure modes | ⚠️ retrieval and data failure modes documented below; agent failure modes need the golden run | [Failure modes](#failure-modes-i-already-know-about) |
-| "What is misleading about my headline number?" | ✅ | [below](#what-is-misleading-about-my-headline-number) |
-| Decision log (10–15 items) | ✅ | [Decision log](#decision-log) |
-
----
-
-## Problem framing: what "good" means here
-
-VirginTrains customers tweet about a few recurring things: is my train running, the train is late or packed, Delay Repay,
-booking and seats, the wifi, first-class catering, and a lot of praise and banter.
-**Many of those cannot be answered safely from history alone.** "Is the 17:30 to Euston cancelled?" needs live data, and a
-refund needs an account lookup. A reply that sounds confident but is wrong is worse than no reply at all.
-
-So for this brand I define **good** as:
-
-1. **Never be confidently wrong.** If the agent auto-handles a message, the reply must be supported by what VirginTrains
-   actually said in similar past cases: no invented links, amounts, policies or "I've refunded you".
-2. **Escalate the right things.** Live status, money, complaints about staff, safety and accessibility go to a human, with
-   a reason a human can act on.
-3. **Automate only the boring, safe part.** That means general information, self-service links, wifi steps and thanking
-   people. That's where the historical replies are repetitive and safe to reuse.
-
-On this dataset, precision on auto-handled messages matters far more than coverage. I would rather escalate 70% of traffic
-and be right on the other 30% than the reverse.
-
-**What I chose not to build.** There is no frontend beyond the local labeling tool, and no Hiver API integration, database,
-Docker or multi-agent setup. There is no reranker or fine-tuning, and the agent has no live train data or account access.
-That missing access is exactly why the policy escalates those intents.
-
----
-
-## Architecture
-
-```text
- twcs.csv (2.8M tweets, 108 brands)
-   │  ingestion/loader + reconstruction       validate schema, dedupe, rebuild reply threads (provenance kept)
-   ▼
- brand ranking ──► VirginTrains (manual pick)  evaluation/brand_ranking.py
-   │  ingestion/brand_pipeline                 roles → episodes (one per customer, 24h gap) → support cases
-   ▼
- 17,913 support cases ──► rule-based resolution signals with quoted evidence (no LLM)
-   │
-   ├─► taxonomy/discovery     entity-masked MiniLM embeddings + KMeans (k=12) → 10 candidate intents + fallback
-   ├─► evaluation/splits      customer/thread-grouped hashing → train 14,213 · dev 2,210 · golden 250 · reserve 1,240
-   ▼
- resolution memory (train only)   problem · what the brand replied · resolution type · tweet ids
-   │
-   ▼
- ┌──────────────────────────── support agent (src/agent/support_agent.py) ───────────────────────────┐
- │ message → Gemini classifier (candidate intents, JSON, temp 0)                                     │
- │         → hybrid retrieval (BM25 + embeddings + soft intent bonus, top 5)                         │
- │         → deterministic risk policy (confidence, similarity, evidence count/agreement, triggers)  │
- │             ├─ ESCALATE    → no reply; reasons + evidence for the human                           │
- │             └─ AUTO_HANDLE → Gemini reply from evidence → grounding check → reply                 │
- │                                    (link/amount check + Gemini verifier; any failure → ESCALATE)  │
- └───────────────────────────────────────────────────────────────────────────────────────────────────┘
-```
-
-A few things about how it fits together:
-
-- **The evidence is the brand's own history.** Retrieval returns past *resolutions* (what the customer asked, what
-  VirginTrains replied, how it ended), not generic documents. Every evidence item keeps its `case_id` and source tweet ids, so
-  any reply can be traced back to real tweets.
-- **The policy is deterministic and separate from the LLM.** Gemini classifies and drafts; plain code decides. All
-  thresholds live in one file, [`configs/support_agent.yaml`](configs/support_agent.yaml).
-  - Five intents never auto-handle: status, disruption complaints, Delay Repay, service complaints and unclear messages.
-  - Sensitive wording also forces escalation: legal, safety, accessibility, theft, refunds.
-- **Grounding can only make the agent more cautious.** A deterministic check rejects any link or £ amount that isn't in the
-  evidence. A Gemini verifier then lists unsupported claims. If either fails, or the verifier can't run, the decision becomes
-  ESCALATE. Nothing can turn an ESCALATE into an AUTO_HANDLE.
-- **One model wrapper.** All Gemini calls go through [`src/models/gemini.py`](src/models/gemini.py), which uses plain REST
-  with timeouts, retries and JSON mode, behind a small `LanguageModel` interface. Tests use fakes and never need a key.
-
-Pointers into the code:
-[`classifier.py`](src/agent/classifier.py) ·
-[`retrieval.py`](src/retrieval.py) ·
-[`policy.py`](src/agent/policy.py) ·
-[`generator.py`](src/agent/generator.py) ·
-[`grounding.py`](src/agent/grounding.py) ·
-[`schemas.py`](src/agent/schemas.py) (`Classification`, `Evidence`, `Decision`, `GroundingResult`, `AgentResult`).
-
----
-
-## Results so far
-
-### Retrieval (the headline number, for now)
-
-Retrieval is the part I could measure without human labels. The setup:
-
-- **Queries:** 857 held-out `dev_calibration` cases.
-- **Corpus:** 10,380 train-split resolutions.
-- **Relevance:** a retrieved case counts as relevant if it has the same candidate intent *and* the same rule-derived
-  resolution type.
-- **Tuning:** weights were tuned on a separate half of dev queries.
-
-Full report: [`reports/virgintrains_retrieval_evaluation.md`](reports/virgintrains_retrieval_evaluation.md).
-
-| strategy | R@1 | R@5 | MRR (95% CI) |
-|---|---|---|---|
-| Random (trivial baseline) | 0.053 | 0.237 | 0.152 |
-| BM25 (simple baseline) | 0.223 | 0.551 | 0.372 (0.349–0.396) |
-| Embeddings (MiniLM) | 0.287 | 0.616 | 0.443 (0.418–0.470) |
-| Hybrid (0.9 semantic) | 0.299 | 0.623 | 0.445 (0.420–0.472) |
-| **Hybrid + soft intent bonus (0.15)** | **0.407** | **0.784** | **0.572 (0.547–0.598)** |
-
-**Stress test.** If 30% of the predicted intents are wrong, the soft bonus still beats query-only retrieval (MRR 0.519 vs 0.445).
-A hard intent filter drops below it (0.404). That's why the intent is only a nudge and never a filter.
-
-### Intent classification on the golden set
-
-Every system gets only the opening customer message, the same input the agent gets. The baselines are fitted on the
-train split's *weak* cluster-derived intents, and the logistic-regression `C` is chosen on dev. Golden is only scored.
-Full report, with per-intent precision/recall/F1 and confusion matrices:
-[`reports/intent_eval/virgintrains_intent_evaluation.md`](reports/intent_eval/virgintrains_intent_evaluation.md).
-
-| system | blind human (100): accuracy | macro-F1 | all reviewed (250): accuracy | macro-F1 |
-|---|---|---|---|---|
-| Majority class (`service_status_delay_enquiry`) | 15.0% | 0.024 | 12.4% | 0.018 |
-| TF-IDF + logistic regression | 54.0% | 0.466 | 49.6% | 0.409 |
-| **LLM: agent's `IntentClassifier` on `gpt-oss-120b` (Groq)** | **60.0%** | **0.533** | **65.6%** | **0.573** |
-
-Things to keep in mind when reading this:
-
-- **The LLM row runs on Groq, not Gemini.** The prompt, taxonomy and few-shot examples are the agent's own; only the
-  backend changed. `gemini-2.5-flash` allows 20 free requests a day, so I ran the same classifier on Groq's free tier.
-  It's a different model, so this is not a measurement of the production Gemini configuration.
-- **The LLM's errors are mostly confusable complaints.** On the blind 100, `journey_disruption_complaint` and
-  `customer_service_complaint` bleed into each other (F1 0.47 and 0.43). It almost never picks `unclear_or_media_only`
-  (recall 0.25). Delay Repay predictions are always right (precision 1.00) but it finds only about half of them.
-- **The LLM scores higher on all 250 than on the blind 100.** 150 of those labels started as AI drafts, and drafts written
-  by an LLM probably agree more with another LLM. That's another reason the blind 100 is the number to trust.
-- **The baseline learned weak labels.** On dev, against the same weak labels, it scores 0.77 macro-F1. On human labels it
-  drops to 0.47. Most of that gap is the cluster labels disagreeing with people, not the model.
-- **The input is narrower than what the labeler saw.** Labels came from the whole conversation, predictions from the
-  opening message only.
-- **Two golden cases use `NEW:lost_property`**, which no system can predict. They count as errors for everyone.
-- **The blind 100 are the primary number.** The other 150 are confirmed AI drafts (see the provenance note below).
-
-### Agent
-
-- **Unit level:** fully tested with fakes. Those tests cover:
-  - policy paths;
-  - multi-intent and weak-evidence escalation;
-  - grounding failure forcing escalation;
-  - provenance flowing through end to end;
-  - behaviour with no API key.
-- **Live:** a 12-case smoke test on `dev_calibration` showed classification, retrieval and policy escalation working against
-  real Gemini. Cases that passed the policy reached generation. The free-tier quota ran out before a full run, so
-  **I have not yet observed AUTO_HANDLE with a passing grounding check live**.
-- **No escalation precision or reply-quality numbers yet.** Only intent classification is scored on golden so far.
-
----
-
-## What is misleading about my headline number?
-
-The 0.572 MRR / 0.784 Recall@5 above looks good. Here is why you shouldn't read too much into it:
-
-1. **It's partly self-confirming.** The "+ intent" strategy uses the candidate intent, and so does the relevance rule.
-   Retrieval gets rewarded for agreeing with the same clustering that defines "relevant". On intent-only relevance that row
-   jumps to R@1 0.953, which mostly says the bonus works, not that the evidence is useful.
-2. **The labels behind it are heuristics.** Both the intent (an unsupervised cluster, silhouette ≈ 0.05) and the resolution
-   type (regexes over the brand's reply) are machine-made. No human has judged a single retrieved case as useful.
-3. **"Relevant" isn't "helpful".** A past reply with the same intent and resolution type can still be wrong for this
-   customer, for example a different route or a disruption that has since ended.
-4. **It measures retrieval, not the agent.** A perfect top 5 still has to get through the policy, the generator and the
-   grounding check. The number the brief actually cares about is how often an auto-handled reply is right, and that doesn't
-   exist yet.
-5. **It's seven weeks of 2017 tweets.** Almost all the data is from Oct–Dec 2017, so recurring disruption templates are
-   over-represented and there is no test of how it holds up over time.
-
----
-
-## Failure modes I already know about
-
-These come from retrieval and data analysis. The agent-level top 5 will come from the golden run.
-
-1. **Right topic, wrong handling.** 178 of the 185 retrieval misses found the same intent but a different resolution type.
-   Example: "can I use Virgin from Watford with this??" was historically a *refund*, but retrieval brought back "next train"
-   answers. *Hypothesis:* the opening message doesn't contain what decides the handling (ticket type, refund eligibility).
-2. **Sarcasm reads as praise or chitchat.** "on what planet can you justify this price? … hand-waited on by Tom Hardy" is a
-   fare complaint, but it clustered as `chitchat_non_support`. *Hypothesis:* short-text embeddings miss irony; the
-   classifier should do better, and the golden labels will show whether it does.
-3. **Mixed messages.** "I appreciate your 2-hour service… sort out your air conditioning" was filed as praise. *Hypothesis:*
-   one opener with two intents; the policy's multi-intent trigger is the safety net.
-4. **Invisible resolutions.** About 4% of cases move to DM, and whatever was resolved there is invisible to us. Refunds and
-   complaints are therefore under-represented as resolved and over-represented as "unresolved".
-5. **Routes instead of intents.** Before I masked places and times, the clusters split by route (Euston–Manchester vs
-   London–Glasgow) rather than by what people wanted. Masking fixed it, but residual entity bias is likely.
-
----
-
-## Golden evaluation set
-
-**Sampling.** I took 250 cases from a held-out golden pool, stratified by:
-
-- candidate cluster;
-- resolution type;
-- conversation length;
-- DM redirect;
-- resolved.
-
-That deliberately over-represents rare and hard cases; `golden_stratum_weight` restores natural prevalence.
-The pool is separated *before* clustering, and splits are assigned by grouping customers and threads. So no golden customer,
-conversation, thread, tweet or near-duplicate opener appears in train or dev. Train or dev cases that copied a golden opener
-or context tweet are dropped. [`evaluation/splits.py`](src/evaluation/splits.py) checks all of this, and it currently passes
-with zero overlaps.
-
-**Labeling.** [`scripts/label_golden_eval.py`](scripts/label_golden_eval.py) is a small local web tool (127.0.0.1 only). It
-shows one case at a time: the full conversation oldest-first and the candidate taxonomy, clearly marked *provisional*.
-**It never shows model output**: no predicted intent, cluster, retrieved evidence, policy decision or draft reply. The
-labeler fills in:
-
-- `gold_intent`: a candidate intent, or `NEW:<snake_case>` with a note if none fits;
-- `gold_should_escalate`: yes or no, judged against what *this* AI can actually do;
-- `gold_resolution_type`;
-- `gold_confidence` (optional);
-- `human_notes`.
-
-Before every read and write the tool re-checks the sample's fingerprints, writes only the human columns, keeps an audit log,
-and refuses to run if the CSV was edited by hand.
-
-**Status and provenance.** Not every label came from a human, and the files say so:
-
-- **Orders 1–100 are hand-labelled** in the blind tool.
-- **Orders 101–250 are AI-assistant drafts.** To save time, an AI coding assistant read those conversations and drafted labels
-  following the conventions in the first 100. They are in
-  [`virgintrains_golden_v1_assistant_drafts.csv`](data/golden/virgintrains_golden_v1_assistant_drafts.csv) and were loaded
-  with [`scripts/import_golden_drafts.py`](scripts/import_golden_drafts.py). The assistant saw only the conversation and the
-  taxonomy, never agent output, and nothing from the first 100 was changed. A draft is **not** a human label.
-- Every save in the audit log records its `source`. When a human opens a draft in the tool it shows a banner; saving it
-  unchanged records a confirmation, and editing it records a correction. `python scripts/label_golden_eval.py --check`
-  prints the counts. Right now: 100 human, 150 drafts confirmed by a human, 0 corrected.
-- Reviewing a draft is weaker than labeling blind, because the draft can anchor the reviewer. The 150 confirmations were
-  made in about six minutes in total with no corrections, so I treat them as a light review. Results will be reported twice:
-  on the 100 blind human labels alone (the primary number), and on all reviewed cases.
-
-The golden set has not been used for any tuning: not retrieval weights, prompts, thresholds or the taxonomy. When labeling is
-finished,
-[`scripts/golden_taxonomy_review.py`](scripts/golden_taxonomy_review.py) compares candidate intents against human ones.
-
----
-
-## Decision log
-
-1. **VirginTrains over higher-ranked brands.** It ranked 3rd of 78 eligible brands, but its replies happen *in public*: only
-   3.3% go to DM, against 31.5% for Tesco. You can't learn resolutions you can't see. AskAmex ranked 1st mostly because of
-   templated follow-ups.
-2. **One case per customer episode, not per thread.** Busy VirginTrains threads mix several customers and other operators'
-   agents. I attribute each tweet to a customer through the reply chain and @mentions, and treat a gap of more than 24 hours as
-   a new episode.
-3. **Rule-based resolution labels with quoted evidence, no LLM.** These are weak labels, but every one points to the exact
-   sentence that triggered it, so they're auditable and nothing is paraphrased.
-4. **Mask entities before clustering.** Without it the clusters were train routes, not intents.
-5. **Taxonomy stays a *candidate*.** Clusters are soft (silhouette ≈ 0.05), so I marked uncertain fields `NEEDS_REVIEW` and
-   never called them ground truth.
-6. **Skipped human taxonomy calibration on purpose.** I built a 200-case calibration workflow, then fast-forwarded past it to
-   get an end-to-end agent. The golden labels allow `NEW:` intents and feed a taxonomy review afterwards, so the taxonomy can
-   still change.
-7. **Split by customer and thread groups, golden pool carved out first.** Hashing cases at random would leak the same
-   customer, or the same templated reply, across splits.
-8. **Retrieve resolutions, not documents.** The question is "what did VirginTrains do last time?", so a memory record is
-   problem → brand reply → outcome, from the train split only.
-9. **Intent is a soft bonus, never a filter.** The stress test shows filters fall apart once the classifier is wrong.
-10. **Tune on one half of dev, report on the other.** Golden is never touched for tuning.
-11. **Deterministic policy, separate from the LLM.** LLM confidence is uncalibrated, so the auto-handle decision is made by
-    configurable thresholds that list their reasons, not by the model.
-12. **Some intents always escalate.** Live status, Delay Repay and complaints need live data, account access or human
-    judgment that this system doesn't have. Getting them wrong costs more than escalating them.
-13. **Grounding is one-directional and fails closed.** It can only downgrade to ESCALATE, and a verifier error counts as
-    "not grounded".
-14. **REST client instead of the Gemini SDK, one wrapper.** It's easy to fake in tests, has no SDK version drift, and is one
-    place to swap providers.
-15. **Blind golden labeling against a provisional taxonomy.** Showing the labeler predictions would anchor them, and the
-    evaluation would end up measuring agreement with the model.
-
----
-
-## What I'd do next with one more week
-
-1. **Re-check the 150 confirmed golden drafts more slowly**, then run the taxonomy review and decide on merges and renames *before* evaluating.
-2. **Run the intent harness on the production Gemini model and extend it** past intents. It would measure:
-   - escalation precision and recall;
-   - the precision of auto-handled replies (the one that matters).
-
-   It would compare against a trivial baseline (always escalate, or always the majority intent) and a simple one (BM25 top-1
-   reply plus keyword rules).
-3. **Finish the judge-vs-human check.** Run the agent on enough golden cases to get 30–40 draft replies (only about 1 in 5
-   cases is auto-handled), rate them in `human_ratings.csv`, and only trust the judge where κ is high.
-4. **Calibrate the policy on dev, not golden.** Sweep the thresholds for an auto-handle precision target and report the
-   coverage that buys.
-5. **Finish the live smoke test** with a paid key, to see AUTO_HANDLE plus grounding PASS end to end.
+**Golden labeling** (local): `python scripts/label_golden_eval.py` opens the blind tool; `--check` verifies the files and
+prints provenance counts.
 
 ---
 
@@ -420,122 +444,34 @@ finished,
 
 ```text
 src/
-  ingestion/     loader, schema, thread reconstruction, roles, episodes, resolution signals, case builder, resolution memory
-  taxonomy/      entity masking, discovery (TF-IDF / embeddings / KMeans), taxonomy builder, registry, finalize
-  evaluation/    brand ranking, splits + leakage checks, sampling, retrieval eval, smoke test, calibration and golden labeling tools
+  ingestion/     loader, thread reconstruction, roles, episodes, resolution signals, case builder, resolution memory
+  taxonomy/      entity masking, discovery (TF-IDF / embeddings / KMeans), taxonomy builder, registry
+  evaluation/    brand ranking, splits + leakage checks, sampling, retrieval / intent / agent eval, LLM judge,
+                 failure analysis, golden labeling and taxonomy review
   agent/         schemas, classifier, policy, generator, grounding, support_agent (orchestration), config
-  models/        LanguageModel interface + Gemini and Groq REST clients
+  models/        LanguageModel interface, Groq and Gemini REST clients, provider factory
+  ui/            Support Copilot (stdlib HTTP server + one HTML page)
   retrieval.py   BM25 + embeddings + hybrid retriever
-configs/         support_agent.yaml (all thresholds), virgintrains_intents.yaml (candidate taxonomy), cluster labels
-scripts/         one entry point per step (see below)
-reports/         EDA, intent clusters, case inspection, retrieval evaluation
-data/            raw/ (twcs.csv, not committed) · processed/ · golden/
-tests/           534 tests, no network or API key needed
+configs/         support_agent.yaml (all thresholds), virgintrains_intents.yaml (candidate taxonomy)
+scripts/         one entry point per step (index in docs/reference.md)
+reports/         EDA, clusters, retrieval, intent eval, taxonomy review, failure analysis
+data/            raw/ (twcs.csv, not committed) · processed/ · golden/ (frozen labels, drafts, audit log)
+docs/            reference.md (data contracts, pipeline details, script index), copilot.png
+tests/           pytest suite; no network or API key needed
 ```
-
-| script | what it does |
-|---|---|
-| `profile_dataset.py`, `build_cases.py`, `rank_brands.py` | phase 1: profile all brands, rebuild threads, rank brands |
-| `run_virgintrains_pipeline.py` | runs `build_virgintrains` → `discover_intents` → `prepare_splits` → `generate_taxonomy` → `virgintrains_report` |
-| `build_resolution_memory.py`, `evaluate_retrieval.py` | memory + proxy retrieval evaluation |
-| `evaluate_intents.py` | golden intent classification: majority class, TF-IDF + logistic regression, the agent's LLM classifier |
-| `evaluate_agent.py` | end-to-end agent on a stratified 50-case golden slice: routing, generation, grounding, judge inputs |
-| `judge_replies.py` | LLM-as-judge on the agent's draft replies, blind human rating sheet, judge-vs-human agreement |
-| `run_support_agent.py`, `smoke_test_agent.py` | the agent on one message / on 12 representative dev cases |
-| `prepare_golden_eval.py`, `label_golden_eval.py`, `golden_taxonomy_review.py` | golden pack, blind labeling, post-labeling taxonomy review |
-| `build_taxonomy_calibration.py`, `label_taxonomy_calibration.py`, `compare_taxonomy.py`, `finalize_taxonomy.py` | optional taxonomy-calibration path (built, not used yet) |
-
----
-
-## Reference: data contracts and pipeline details
-
-<details>
-<summary><b>Input format</b> (from the real <code>twcs.csv</code> header)</summary>
-
-| column | observed type | notes |
-|---|---|---|
-| `tweet_id` | integer | unique |
-| `author_id` | string | brand handle for outbound tweets, anonymised number for customers |
-| `inbound` | `"True"`/`"False"` | True = customer |
-| `created_at` | `Tue Oct 31 22:10:47 +0000 2017` | parsed to UTC |
-| `text` | string | stored untouched |
-| `response_tweet_id` | nullable, comma-separated ids | |
-| `in_response_to_tweet_id` | nullable integer | |
-
-If a required column is missing, the loader raises `SchemaError`. Extra columns trigger a warning. Rows with an invalid id or
-`inbound` value are dropped and counted. Timestamps that can't be parsed become NaT and sort last in their thread.
-`--nrows N` gives a fast debug run.
-</details>
-
-<details>
-<summary><b>How VirginTrains cases are built</b></summary>
-
-A conversation is a connected component of the reply graph. Customer tweets belong to their author. Agent tweets belong to
-the customer found by walking up the reply chain, then by `@mention`, then by the thread's only customer. A gap of more than
-24 hours starts a new case, flagged `is_continuation`. Agent tweets that answer nobody (announcements) are kept as
-`context_tweet_ids`. Some accounts flagged `inbound=True` are really other operators' agents (they sign off `^XX`); the raw
-flag is kept and a derived `role` is used.
-
-Each case carries:
-
-- `case_id`, `brand`, `conversation_id`;
-- `customer_messages`, `agent_messages`;
-- `full_turns`: every turn with its tweet id, role, raw text, timestamp and source row;
-- `turn_count`, `first_timestamp`, `last_timestamp`;
-- `resolved`, `resolution_type`, `resolution_summary`, `resolution_evidence`;
-- `dm_redirect`, `source_tweet_ids`.
-
-Outputs: `data/processed/virgintrains_{conversations,tweets,cases}.parquet`. Numbers:
-[`reports/virgintrains_eda.md`](reports/virgintrains_eda.md) has 14,853 conversations, 65,810 tweets, 17,913 cases, 16%
-visibly resolved and 4% DM-redirected.
-</details>
-
-<details>
-<summary><b>Brand ranking</b> (phase 1)</summary>
-
-Each metric is converted to a percentile among the eligible brands (at least 1,000 conversations and 85% Latin-script
-openers), then combined with these weights:
-
-| metric | weight |
-|---|---|
-| volume | 0.10 |
-| reconstructable conversations | 0.15 |
-| reconstructable rate | 0.05 |
-| multi-turn density | 0.20 |
-| template repeat rate | 0.15 |
-| intent diversity | 0.15 |
-| resolved rate | 0.10 |
-| non-DM rate | 0.10 |
-
-Top 3 of 78 eligible brands: AskAmex 0.718, Tesco 0.695, VirginTrains 0.688. The output is
-`data/processed/brand_ranking.{csv,json}`.
-</details>
-
-<details>
-<summary><b>Taxonomy-calibration path</b> (built, optional, not used yet)</summary>
-
-There is a 200-case calibration sample drawn from `golden_pool_reserve`, with a local labeling tool (the system suggestion
-is hidden until you click Reveal), a comparison report and a guarded finalizer that writes a frozen
-`virgintrains_taxonomy_v1.yaml`. I chose not to run it; the golden labels plus the taxonomy review cover the same need with
-one labeling pass. The scripts are listed in the [repo map](#repo-map).
-</details>
-
----
 
 ## Assumptions, limitations and credits
 
-- **The public view only.** Anything resolved in DMs, by phone or in person is invisible, so "resolved" is a lower bound.
-- **English-only heuristics.** The resolution signals are regexes. `refund` means a refund was *discussed*, including
-  refusals.
-- **The dataset is a sample.** Some reply links point to tweets that aren't in the file; these are flagged, not treated as
-  errors. Every tweet has at least one link, so there are no single-tweet threads.
-- **One big linked group.** The largest group of linked cases holds about 16% of all cases, so it lands in a single split.
-- **Thresholds are starting values**, chosen conservatively on dev data. They are not tuned to a validated target.
+- **Public view only.** Anything resolved in DMs, by phone or in person is invisible, so "resolved" is a lower bound.
+- **Seven weeks of 2017 tweets** (mostly Oct–Dec 2017), so recurring disruption templates are over-represented, and nothing
+  shows how the system holds up over time.
+- **English-only regex heuristics** for resolution signals.
+- **Thresholds are conservative starting values** chosen on dev, not tuned to a validated precision target.
 - **Credits.**
   - Data: Customer Support on Twitter (Kaggle, thoughtvector).
   - Embeddings: `sentence-transformers/all-MiniLM-L6-v2`.
   - Clustering and TF-IDF: scikit-learn.
-  - LLM: Google Gemini (`gemini-2.5-flash`) for the agent; OpenAI's open-weight `gpt-oss-120b` served by Groq for the golden
-    intent evaluation. Both are called over REST.
-  - BM25 is my own implementation in [`src/retrieval.py`](src/retrieval.py).
+  - LLMs: OpenAI's open-weight `gpt-oss-120b` served by Groq (evaluation and default provider), and Google Gemini
+    `gemini-2.5-flash` (supported provider, used for the first smoke test). Both are called over REST.
+  - BM25 is my own implementation.
   - Written with an AI coding assistant; I can walk through and change any part of it.
