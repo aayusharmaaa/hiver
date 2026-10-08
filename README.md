@@ -13,11 +13,12 @@ I picked **VirginTrains**. The system is built as an *evidence-grounded support 
 replies when it has strong historical evidence, and otherwise it hands the case to a human with its reasons.
 
 > **Where things stand (honestly).** The data pipeline, the intent taxonomy, retrieval, the agent and a blind labeling tool for
-> the golden set are built and tested (`pytest -q`: 490 passed). Retrieval has a proxy evaluation with baselines. The 250-case
+> the golden set are built and tested (`pytest -q`: 499 passed). Retrieval has a proxy evaluation with baselines. The 250-case
 > golden set is sampled, frozen and leakage-checked. **All 250 cases have human labels: 100 labelled blind, and 150
 > AI-assistant drafts reviewed and confirmed by a human** (see
-> [Golden evaluation set](#golden-evaluation-set)). The end-to-end evaluation harness and the
-> LLM-as-judge are **not built yet**; I didn't want to build them before the labels were final. The
+> [Golden evaluation set](#golden-evaluation-set)). Intent classification is scored on golden against two baselines; the
+> Gemini run is blocked by the free-tier quota. Escalation and reply-quality evaluation and the LLM-as-judge are
+> **not built yet**. The
 > [deliverables table](#deliverables-vs-the-brief) shows exactly what is done and what isn't.
 
 **Contents**
@@ -72,6 +73,15 @@ python scripts/smoke_test_agent.py --limit 12 --seed 42        # 12 representati
 python scripts/label_golden_eval.py            # --check verifies the files and prints progress
 ```
 
+**Score intent classification on the golden set.** This needs the pipeline outputs above; Gemini needs the key.
+
+```bash
+python scripts/evaluate_intents.py --skip-gemini       # majority class + TF-IDF/logistic regression, about 40 s, no key
+python scripts/evaluate_intents.py --pause-seconds 6   # adds the agent's Gemini classifier; cached and resumable
+```
+
+The report goes to [`reports/intent_eval/`](reports/intent_eval/virgintrains_intent_evaluation.md).
+
 ---
 
 ## Deliverables vs the brief
@@ -83,8 +93,8 @@ python scripts/label_golden_eval.py            # --check verifies the files and 
 | Grounded reply drafting | ✅ built and unit-tested; the live run was cut short by the Gemini free-tier quota | [`src/agent/generator.py`](src/agent/generator.py), [`src/agent/grounding.py`](src/agent/grounding.py) |
 | Auto-handle vs escalate, with a reason | ✅ deterministic policy; every decision lists its reasons | [`src/agent/policy.py`](src/agent/policy.py), [`configs/support_agent.yaml`](configs/support_agent.yaml) |
 | Golden set of 150–250 hand-labelled examples | ⚠️ 250 cases sampled, frozen and leakage-checked; **250 human-labelled or human-reviewed** (100 blind, 150 confirmed AI drafts) | [Golden evaluation set](#golden-evaluation-set) |
-| Evaluation harness: metrics, LLM judge, judge-vs-human agreement | ⚠️ retrieval harness done; **agent harness and LLM judge not built yet** (they need the golden labels) | [`src/evaluation/retrieval.py`](src/evaluation/retrieval.py) |
-| Results vs a trivial and a simple baseline | ⚠️ done for retrieval (random, BM25, embeddings, hybrid); agent-level baselines pending | [Results so far](#results-so-far) |
+| Evaluation harness: metrics, LLM judge, judge-vs-human agreement | ⚠️ retrieval and golden intent-classification harnesses done; **Gemini golden run blocked by the free-tier quota; LLM judge not built yet** | [`src/evaluation/retrieval.py`](src/evaluation/retrieval.py), [`src/evaluation/intent_eval.py`](src/evaluation/intent_eval.py) |
+| Results vs a trivial and a simple baseline | ⚠️ done for retrieval and for intent classification (majority class, TF-IDF + logistic regression); Gemini pending | [Results so far](#results-so-far) |
 | Top 5 failure modes | ⚠️ retrieval and data failure modes documented below; agent failure modes need the golden run | [Failure modes](#failure-modes-i-already-know-about) |
 | "What is misleading about my headline number?" | ✅ | [below](#what-is-misleading-about-my-headline-number) |
 | Decision log (10–15 items) | ✅ | [Decision log](#decision-log) |
@@ -193,6 +203,30 @@ Full report: [`reports/virgintrains_retrieval_evaluation.md`](reports/virgintrai
 **Stress test.** If 30% of the predicted intents are wrong, the soft bonus still beats query-only retrieval (MRR 0.519 vs 0.445).
 A hard intent filter drops below it (0.404). That's why the intent is only a nudge and never a filter.
 
+### Intent classification on the golden set
+
+Every system gets only the opening customer message, the same input the agent gets. The baselines are fitted on the
+train split's *weak* cluster-derived intents, and the logistic-regression `C` is chosen on dev. Golden is only scored.
+Full report, with per-intent precision/recall/F1 and confusion matrices:
+[`reports/intent_eval/virgintrains_intent_evaluation.md`](reports/intent_eval/virgintrains_intent_evaluation.md).
+
+| system | blind human (100): accuracy | macro-F1 | all reviewed (250): accuracy | macro-F1 |
+|---|---|---|---|---|
+| Majority class (`service_status_delay_enquiry`) | 15.0% | 0.024 | 12.4% | 0.018 |
+| TF-IDF + logistic regression | 54.0% | 0.466 | 49.6% | 0.409 |
+| Gemini (agent's `IntentClassifier`) | not run yet | | | |
+
+Things to keep in mind when reading this:
+
+- **Gemini is missing because of quota, not choice.** `gemini-2.5-flash` allows 20 requests a day on the free tier. The run
+  caches every prediction and resumes, so it can finish over several days or on a paid key.
+- **The baseline learned weak labels.** On dev, against the same weak labels, it scores 0.77 macro-F1. On human labels it
+  drops to 0.47. Most of that gap is the cluster labels disagreeing with people, not the model.
+- **The input is narrower than what the labeler saw.** Labels came from the whole conversation, predictions from the
+  opening message only.
+- **Two golden cases use `NEW:lost_property`**, which no system can predict. They count as errors for everyone.
+- **The blind 100 are the primary number.** The other 150 are confirmed AI drafts (see the provenance note below).
+
 ### Agent
 
 - **Unit level:** fully tested with fakes. Those tests cover:
@@ -204,7 +238,7 @@ A hard intent filter drops below it (0.404). That's why the intent is only a nud
 - **Live:** a 12-case smoke test on `dev_calibration` showed classification, retrieval and policy escalation working against
   real Gemini. Cases that passed the policy reached generation. The free-tier quota ran out before a full run, so
   **I have not yet observed AUTO_HANDLE with a passing grounding check live**.
-- **No accuracy, escalation precision or reply-quality numbers yet.** Those come from the golden set.
+- **No Gemini accuracy, escalation precision or reply-quality numbers yet.** The intent harness above is ready for Gemini.
 
 ---
 
@@ -335,8 +369,7 @@ finished,
 ## What I'd do next with one more week
 
 1. **Re-check the 150 confirmed golden drafts more slowly**, then run the taxonomy review and decide on merges and renames *before* evaluating.
-2. **Build the evaluation harness** on golden. It would measure:
-   - intent accuracy and macro-F1;
+2. **Finish the Gemini intent run and extend the harness** past intents. It would measure:
    - escalation precision and recall;
    - the precision of auto-handled replies (the one that matters).
 
@@ -372,6 +405,7 @@ tests/           489 tests, no network or API key needed
 | `profile_dataset.py`, `build_cases.py`, `rank_brands.py` | phase 1: profile all brands, rebuild threads, rank brands |
 | `run_virgintrains_pipeline.py` | runs `build_virgintrains` → `discover_intents` → `prepare_splits` → `generate_taxonomy` → `virgintrains_report` |
 | `build_resolution_memory.py`, `evaluate_retrieval.py` | memory + proxy retrieval evaluation |
+| `evaluate_intents.py` | golden intent classification: majority class, TF-IDF + logistic regression, Gemini |
 | `run_support_agent.py`, `smoke_test_agent.py` | the agent on one message / on 12 representative dev cases |
 | `prepare_golden_eval.py`, `label_golden_eval.py`, `golden_taxonomy_review.py` | golden pack, blind labeling, post-labeling taxonomy review |
 | `build_taxonomy_calibration.py`, `label_taxonomy_calibration.py`, `compare_taxonomy.py`, `finalize_taxonomy.py` | optional taxonomy-calibration path (built, not used yet) |
