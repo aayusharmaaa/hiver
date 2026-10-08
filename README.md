@@ -38,11 +38,10 @@ policy has checked the risk. Anything it can't support goes to a human, with its
 | Intent classification, all 250 reviewed labels | LLM 65.6% / 0.573 (secondary: 150 labels began as assistant drafts) | final |
 | Retrieval, 857 dev queries (proxy relevance) | hybrid + intent bonus MRR 0.572, R@5 0.784, vs BM25 0.372 / 0.551 and random 0.152 / 0.237 | final, proxy |
 | End-to-end routing on a 50-case golden slice | 11 of 50 auto-handled (22%); 1 of those 11 should have escalated (9.1%); 12 of 13 must-escalate cases escalated; 27 of 37 automatable cases escalated anyway | final, small sample |
-| Reply quality: LLM judge vs human ratings | 14 drafts judged; [HUMAN RATINGS PENDING — judge-vs-human agreement not yet computed] | **incomplete** |
+| Reply quality: LLM judge vs human ratings | 14 drafts rated by the judge and by a human; weighted κ 0.00–0.52 per dimension; the judge gave every reply 5 for groundedness | final, indicative (n=14) |
 
 The agent is conservative, as designed: it automates a fifth of the slice, with one unsafe auto-handle, and pays for that
-with heavy over-escalation. The only step left is the human side of the judge check, which needs a person to rate 14
-replies blind ([Reproducing the results](#reproducing-the-results), step 7).
+with heavy over-escalation. The LLM judge doesn't yet agree well enough with a human to replace one (section 10).
 
 ![Support Copilot UI: ticket list, conversation with a grounded suggested reply, AI analysis with risk checks and historical evidence, and the execution trace](docs/screenshots/copilot-auto-handled.png)
 
@@ -288,20 +287,36 @@ to 40 replies that never shows judge scores, and computes exact agreement, quadr
 mean absolute difference per dimension. With fewer than 30 rated replies the report labels agreement "indicative, not
 reliable".
 
-| | result |
-|---|---|
-| judge scores on the 14 drafts | [WITHHELD UNTIL HUMAN RATINGS ARE IN — see below] |
-| judge vs human agreement (κ, ρ) | [HUMAN RATINGS PENDING — DO NOT FABRICATE] |
+All 14 drafts (11 sent, 3 blocked by grounding) were scored by the judge and by me. I rated on the sheet, which hides the
+judge's scores. Report: [`reports/agent_eval/judge_evaluation.md`](reports/agent_eval/judge_evaluation.md).
 
-**Status:** The judge has scored all 14 drafts (11 sent, 3 blocked by grounding), and the blind rating sheet has been written.
-I'm leaving the judge's scores out of this README until the human ratings are in, so the rater isn't anchored by them. With
-14 replies, agreement will be reported as indicative only (fewer than 30).
+| dimension | judge mean | human mean | exact agreement | weighted κ | Spearman ρ | mean abs diff |
+|---|---|---|---|---|---|---|
+| correctness | 4.07 | 4.50 | 42.9% | 0.26 | 0.42 | 0.86 |
+| groundedness | 5.00 | 4.36 | 57.1% | 0.00 | – | 0.64 |
+| actionability | 4.43 | 4.43 | 50.0% | 0.52 | 0.45 | 0.57 |
+| brand alignment | 4.57 | 4.71 | 64.3% | 0.16 | 0.17 | 0.57 |
+
+**Indicative only: n=14.** One disagreement moves κ a lot. What the numbers say:
+
+- **The judge can't be trusted on groundedness.** It gave all 14 replies a 5, including the 3 drafts the grounding check
+  blocked, so κ is 0 and ρ is undefined. The deterministic check and the separate verifier stay the source of truth for
+  grounding.
+- **Correctness and brand alignment agree only weakly** (κ 0.26 and 0.16). The judge is harsher than the human on some
+  terse replies, for example `case_2694734` and `case_2898384`. It's more lenient on the sarcasm case `case_1035449`
+  ("Thanks for the kind words!"), where it gave correctness 4 and the human gave 2.
+- **Actionability agrees moderately** (κ 0.52).
+- **Neither rater catches routing errors.** The unsafe auto-handle `case_2884600` got 5/5 from both, because the reply
+  itself is fine; what was wrong was answering at all. Reply quality and routing need separate checks.
+
+Bottom line: the judge is usable as a coarse screen at best, not a replacement for human review. That matches the "agreement
+before trust" design.
 
 **What routing metrics miss.** `case_1035449`, "always wondered what it must be like to travel by train in India
 #mightaswellallsitontheroof", is sarcasm about overcrowding. The agent read it as praise and replied "Thanks for the kind
 words! Glad you enjoyed your journey." The gold label says this case needn't escalate, so routing counts it as a *safe*
-auto-handle, and grounding passed because the evidence contains similar thank-you replies. Only a reply-quality check
-catches this, which is why the judge-vs-human step matters.
+auto-handle, and grounding passed because the evidence contains similar thank-you replies. The human rating caught it
+(correctness 2); the LLM judge didn't (4).
 
 ---
 
@@ -361,8 +376,9 @@ The headline is **60.0% intent accuracy (0.533 macro-F1) on 100 blind labels**. 
 6. **Low coverage isn't automatically failure.** The policy is deliberately conservative, and "always escalate" is a valid
    baseline. The question is whether each extra automated case is safe. The oracle analysis shows that much of the
    over-escalation is by design, in the rules, not caused by model errors.
-7. **The judge is only trustworthy once checked against enough human ratings.** There are 14 replies and no human ratings
-   yet. Even after rating, agreement on 14 replies is indicative only. Routing "safe" doesn't mean the reply is good
+7. **The judge is only trustworthy once checked against enough human ratings.** On 14 rated replies, weighted κ ranges
+   from 0.00 (groundedness, where the judge gave everything a 5) to 0.52 (actionability). One rater and 14 replies are
+   indicative only, so judge scores can't stand in for human review. Routing "safe" doesn't mean the reply is good
    (`case_1035449` thanked a sarcastic complainant).
 8. **Resolution signals are weak heuristics.** Resolution types come from regexes over the brand's reply ("refund" means a
    refund was *discussed*). DM-resolved cases are invisible. Both the memory filter and the retrieval relevance inherit
@@ -404,8 +420,9 @@ The headline is **60.0% intent accuracy (0.533 macro-F1) on 100 blind labels**. 
 
 ## 14. What I'd do with one more week
 
-1. **Finish the judge-vs-human check, then grow the e2e slice** to the full 250 golden cases, so the false auto-handle
-   rate rests on more than one case.
+1. **Grow the e2e slice to the full 250 golden cases**, so the false auto-handle rate rests on more than one case and the
+   judge check has 30+ rated replies. Use two human raters, and fix the judge's groundedness (give it the grounding
+   check's flagged claims, or drop that dimension).
 2. **Fix the over-escalation found by the oracle**, calibrated on dev and not golden: gate on action needed, scope
    sensitive words, and report the auto-handle precision vs coverage curve.
 3. **Redefine the taxonomy by required action** (live info / compensation / acknowledge / redirect), add
